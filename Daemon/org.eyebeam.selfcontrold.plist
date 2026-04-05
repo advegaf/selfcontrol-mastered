@@ -4,6 +4,10 @@
 <dict>
 	<key>Label</key>
 	<string>org.eyebeam.selfcontrold</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Applications/SelfControl.app/Contents/MacOS/org.eyebeam.selfcontrold</string>
+	</array>
 	<key>RunAtLoad</key>
 	<true/>
 	<key>MachServices</key>

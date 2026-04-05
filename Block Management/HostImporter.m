@@ -45,6 +45,34 @@
                        @"instagram.com",
 			 ];
 }
++ (NSArray*)nsfwWebsites {
+	return @[
+			 @"pornhub.com",
+			 @"xvideos.com",
+			 @"xnxx.com",
+			 @"xhamster.com",
+			 @"redtube.com",
+			 @"youporn.com",
+			 @"tube8.com",
+			 @"beeg.com",
+			 @"spankbang.com",
+			 @"eporner.com",
+			 @"tnaflix.com",
+			 @"drtuber.com",
+			 @"txxx.com",
+			 @"hqporner.com",
+			 @"lobstertube.com",
+			 @"motherless.com",
+			 @"chaturbate.com",
+			 @"stripchat.com",
+			 @"bongacams.com",
+			 @"livejasmin.com",
+			 @"onlyfans.com",
+			 @"fansly.com",
+			 @"literotica.com",
+			 @"rule34.xxx",
+			 ];
+}
 + (NSArray*)newsAndPublications {
 	return @[
 			 @"cnn.com",

@@ -180,32 +180,25 @@ int main(int argc, char* argv[]) {
             // while our blocks are still running
             dispatch_semaphore_t installingBlockSema = dispatch_semaphore_create(0);
 
-            [xpc installDaemon:^(NSError * _Nonnull error) {
-                if (error != nil) {
-                    NSLog(@"ERROR: Failed to install daemon with error %@", error);
-                    exit(EX_SOFTWARE);
-                    return;
-                } else {
-                    // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
-                    [xpc refreshConnectionAndRun:^{
-                        NSLog(@"Refreshed connection and ready to start block!");
-                        [xpc startBlockWithControllingUID: controllingUID
-                                                     blocklist: blocklist
-                                                   isAllowlist: blockAsWhitelist
-                                                       endDate: blockEndDate
-                                                 blockSettings: blockSettings
-                                                         reply:^(NSError * _Nonnull error) {
-                            if (error != nil) {
-                                NSLog(@"ERROR: Daemon failed to start block with error %@", error);
-                                exit(EX_SOFTWARE);
-                                return;
-                            }
+            // Connect to the daemon (must already be registered via SMAppService from the app)
+            [xpc connectToHelperTool];
+            [xpc refreshConnectionAndRun:^{
+                NSLog(@"Refreshed connection and ready to start block!");
+                [xpc startBlockWithControllingUID: controllingUID
+                                             blocklist: blocklist
+                                           isAllowlist: blockAsWhitelist
+                                               endDate: blockEndDate
+                                         blockSettings: blockSettings
+                                                 reply:^(NSError * _Nonnull error) {
+                    if (error != nil) {
+                        NSLog(@"ERROR: Daemon failed to start block with error %@", error);
+                        exit(EX_SOFTWARE);
+                        return;
+                    }
 
-                            NSLog(@"INFO: Block successfully added.");
-                            dispatch_semaphore_signal(installingBlockSema);
-                        }];
-                    }];
-                }
+                    NSLog(@"INFO: Block successfully added.");
+                    dispatch_semaphore_signal(installingBlockSema);
+                }];
             }];
             
             // obj-c could decide to run our things on the main thread, or not, so be careful

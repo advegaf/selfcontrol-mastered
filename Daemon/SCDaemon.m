@@ -107,22 +107,9 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
 
 
 - (void)startInactivityTimer {
-    self.inactivityTimer = [NSTimer scheduledTimerWithTimeInterval: 15.0 repeats: YES block:^(NSTimer * _Nonnull timer) {
-        // we haven't had any activity in a while, the daemon appears to be idling
-        // so kill it to avoid the user having unnecessary processes running!
-        if ([[NSDate date] timeIntervalSinceDate: self.lastActivityDate] > INACTIVITY_LIMIT_SECS) {
-            // if we're inactive but also there's a block running, that's a bad thing
-            // start the checkups going again - unclear why they would've stopped
-            if ([SCBlockUtilities anyBlockIsRunning] || [SCBlockUtilities blockRulesFoundOnSystem]) {
-                [self startCheckupTimer];
-                [SCDaemonBlockMethods checkupBlock];
-                return;
-            }
-            
-            NSLog(@"Daemon inactive for more than %f seconds, exiting!", INACTIVITY_LIMIT_SECS);
-            [SCHelperToolUtilities unloadDaemonJob];
-        }
-    }];
+    // Inactivity auto-unload disabled. The daemon stays alive after installation
+    // so consecutive blocks don't need re-authorization via SMJobBless.
+    // The plist has KeepAlive=true, so launchd manages the lifecycle.
 }
 - (void)resetInactivityTimer {
     self.lastActivityDate = [NSDate date];
@@ -146,41 +133,55 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
 #pragma mark - NSXPCListenerDelegate
 
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection {
-    // There is a potential security issue / race condition with matching based on PID, so we use the (technically private) auditToken instead
+    // Use audit token (not PID) to avoid TOCTOU race conditions
     audit_token_t auditToken = newConnection.auditToken;
-    NSDictionary* guestAttributes = @{
-        (id)kSecGuestAttributeAudit: [NSData dataWithBytes: &auditToken length: sizeof(audit_token_t)]
+    NSDictionary *guestAttributes = @{
+        (id)kSecGuestAttributeAudit: [NSData dataWithBytes:&auditToken length:sizeof(audit_token_t)]
     };
-    SecCodeRef guest;
-    if (SecCodeCopyGuestWithAttributes(NULL, (__bridge CFDictionaryRef _Nullable)(guestAttributes), kSecCSDefaultFlags, &guest) != errSecSuccess) {
-        return NO;
-    }
-    
-    SecRequirementRef isSelfControlApp;
-    // versions before 4.0 didn't have hardened code signing, so aren't trustworthy to talk to the daemon
-    // (plus the daemon didn't exist before 4.0 so there's really no reason they should want to run it!)
-    SecRequirementCreateWithString(CFSTR("anchor apple generic and (identifier \"org.eyebeam.SelfControl\" or identifier \"org.eyebeam.selfcontrol-cli\") and info [CFBundleVersion] >= \"407\" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = EG6ZYP3AQH)"), kSecCSDefaultFlags, &isSelfControlApp);
-    OSStatus clientValidityStatus = SecCodeCheckValidity(guest, kSecCSDefaultFlags, isSelfControlApp);
-    
-    CFRelease(guest);
-    CFRelease(isSelfControlApp);
-    
-    if (clientValidityStatus) {
-        NSError* error = [NSError errorWithDomain: NSOSStatusErrorDomain code: clientValidityStatus userInfo: nil];
-        NSLog(@"Rejecting XPC connection because of invalid client signing. Error was %@", error);
-        [SCSentry captureError: error];
-        return NO;
-    }
-    
-    SCDaemonXPC* scdXPC = [[SCDaemonXPC alloc] init];
-    newConnection.exportedInterface = [NSXPCInterface interfaceWithProtocol: @protocol(SCDaemonProtocol)];
-    newConnection.exportedObject = scdXPC;
 
+    SecCodeRef guest = NULL;
+    OSStatus copyStatus = SecCodeCopyGuestWithAttributes(NULL,
+        (__bridge CFDictionaryRef)(guestAttributes), kSecCSDefaultFlags, &guest);
+
+    if (copyStatus != errSecSuccess) {
+        NSLog(@"ERROR: SecCodeCopyGuestWithAttributes failed with status %d", (int)copyStatus);
+        return NO;
+    }
+
+    // Validate the connecting process is signed by our team
+    NSString *requirementStr =
+        @"anchor apple generic"
+        @" and (identifier \"org.eyebeam.SelfControl\""
+        @"      or identifier \"org.eyebeam.selfcontrol-cli\")"
+        @" and certificate leaf[subject.OU] = \"DV483F72N3\"";
+
+    SecRequirementRef requirement = NULL;
+    OSStatus reqStatus = SecRequirementCreateWithString(
+        (__bridge CFStringRef)requirementStr, kSecCSDefaultFlags, &requirement);
+
+    if (reqStatus != errSecSuccess) {
+        NSLog(@"ERROR: SecRequirementCreateWithString failed with status %d", (int)reqStatus);
+        CFRelease(guest);
+        return NO;
+    }
+
+    OSStatus validStatus = SecCodeCheckValidity(guest, kSecCSDefaultFlags, requirement);
+    CFRelease(requirement);
+    CFRelease(guest);
+
+    if (validStatus != errSecSuccess) {
+        NSLog(@"ERROR: SecCodeCheckValidity failed with status %d — rejecting XPC connection", (int)validStatus);
+        return NO;
+    }
+
+    NSLog(@"Accepted XPC connection (code signature validated)");
+
+    SCDaemonXPC *scdXPC = [[SCDaemonXPC alloc] init];
+    newConnection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(SCDaemonProtocol)];
+    newConnection.exportedObject = scdXPC;
     [newConnection resume];
-    
-    NSLog(@"Accepted new connection!");
-    [SCSentry addBreadcrumb: @"Daemon accepted new connection" category: @"daemon"];
-    
+
+    [SCSentry addBreadcrumb:@"Daemon accepted new connection" category:@"daemon"];
     return YES;
 }
 

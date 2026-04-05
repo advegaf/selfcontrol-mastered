@@ -35,16 +35,11 @@
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
 @interface AppController : NSObject <NSApplicationDelegate> {
-	IBOutlet SCDurationSlider* blockDurationSlider_;
-	IBOutlet NSTextField* blockSliderTimeDisplayLabel_;
-    IBOutlet NSTextField* blocklistTeaserLabel_;
-	IBOutlet NSButton* submitButton_;
 	IBOutlet NSWindow* initialWindow_;
 
 	IBOutlet NSMenuItem* domainListMenuItem_;
     IBOutlet NSMenuItem* editBlocklistMenuItem_;
-    
-	IBOutlet NSButton* editBlocklistButton_;
+
 	IBOutlet DomainListWindowController* domainListWindowController_;
 	IBOutlet TimerWindowController* timerWindowController_;
 	NSWindowController* preferencesWindowController_;
@@ -102,6 +97,10 @@
 // SelfControl's helper tool with the appropriate arguments.  Meant to be called
 // as a separate thread.
 - (void)installBlock;
+
+// Prepares block settings and sends the startBlock command to the daemon.
+// Called after verifying the daemon is running (either already or just installed).
+- (void)proceedWithBlockStart;
 
 // Gets authorization for and then immediately refreshes the block by calling
 // SelfControl's helper tool with the appropriate arguments.  Meant to be called

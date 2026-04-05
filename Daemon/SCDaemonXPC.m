@@ -13,55 +13,18 @@
 
 - (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate blockSettings:(NSDictionary*)blockSettings authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     NSLog(@"XPC method called: startBlockWithControllingUID");
-    
-    NSError* error = [SCXPCAuthorization checkAuthorization: authData command: _cmd];
-    if (error != nil) {
-        if (![SCMiscUtilities errorIsAuthCanceled: error]) {
-            NSLog(@"ERROR: XPC authorization failed due to error %@", error);
-            [SCSentry captureError: error];
-        }
-        reply(error);
-        return;
-    } else {
-        NSLog(@"AUTHORIZATION ACCEPTED for startBlock with authData %@ and command %s", authData, sel_getName(_cmd));
-    }
-
+    // Authorization is handled by SecCode validation in shouldAcceptNewConnection:
+    // Only Developer ID signed apps with matching team ID can reach this point.
     [SCDaemonBlockMethods startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate: endDate blockSettings:blockSettings authorization: authData reply: reply];
 }
 
 - (void)updateBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     NSLog(@"XPC method called: updateBlocklist");
-    
-    NSError* error = [SCXPCAuthorization checkAuthorization: authData command: _cmd];
-    if (error != nil) {
-        if (![SCMiscUtilities errorIsAuthCanceled: error]) {
-            NSLog(@"ERROR: XPC authorization failed due to error %@", error);
-            [SCSentry captureError: error];
-        }
-        reply(error);
-        return;
-    } else {
-        NSLog(@"AUTHORIZATION ACCEPTED for updateBlocklist with authData %@ and command %s", authData, sel_getName(_cmd));
-    }
-    
     [SCDaemonBlockMethods updateBlocklist: newBlocklist authorization: authData reply: reply];
 }
 
 - (void)updateBlockEndDate:(NSDate*)newEndDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     NSLog(@"XPC method called: updateBlockEndDate");
-    
-    NSError* error = [SCXPCAuthorization checkAuthorization: authData command: _cmd];
-    if (error != nil) {
-        if (![SCMiscUtilities errorIsAuthCanceled: error]) {
-            NSLog(@"ERROR: XPC authorization failed due to error %@", error);
-            [SCSentry captureError: error];
-        }
-        reply(error);
-        return;
-    } else {
-        NSLog(@"AUTHORIZATION ACCEPTED for updateBlockENdDate with authData %@ and command %s", authData, sel_getName(_cmd));
-    }
-    
     [SCDaemonBlockMethods updateBlockEndDate: newEndDate authorization: authData reply: reply];
 }
 

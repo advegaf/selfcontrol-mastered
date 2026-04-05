@@ -31,3 +31,9 @@ xcuserdata/**/*
 !xcuserdata/**/xcschemes/*
 
 *.moved-aside
+
+# Certificates and signing
+*.cer
+*.certSigningRequest
+*.p12
+*.mobileprovision

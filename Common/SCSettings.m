@@ -215,12 +215,12 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
             return;
         }
 
-#if TESTING
-        // no writing to disk during unit tests
-        NSLog(@"Would write settings to disk now (but no writing during unit tests)");
-        if (completionBlock != nil) completionBlock(nil);
-        return;
-#endif
+        BOOL isTest = [[NSUserDefaults standardUserDefaults] boolForKey: @"isTest"];
+        if (isTest) {
+            NSLog(@"Would write settings to disk now (but no writing during unit tests)");
+            if (completionBlock != nil) completionBlock(nil);
+            return;
+        }
         
         // don't spend time on the main thread writing out files - it's OK for this to happen without blocking other things
         dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

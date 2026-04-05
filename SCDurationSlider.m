@@ -7,7 +7,6 @@
 
 #import "SCDurationSlider.h"
 #import "SCTimeIntervalFormatter.h"
-#import <TransformerKit/NSValueTransformer+TransformerKit.h>
 
 #define kValueTransformerName @"BlockDurationSliderTransformer"
 
@@ -15,8 +14,6 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     [super drawRect:dirtyRect];
-    
-    // Drawing code here.
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
@@ -33,29 +30,13 @@
 }
 
 - (void)initializeDurationProperties {
-    // default: 1 day max
     _maxDuration = 1440;
-
-    // register an NSValueTransformer
-    [self registerMinutesValueTransformer];
 }
 
 - (void)setMaxDuration:(NSInteger)maxDuration {
     _maxDuration = maxDuration;
-    [self setMinValue: 1]; // never start a block shorter than 1 minute
+    [self setMinValue: 1];
     [self setMaxValue: self.maxDuration];
-}
-
-- (void)registerMinutesValueTransformer {
-    [NSValueTransformer registerValueTransformerWithName: kValueTransformerName
-                                   transformedValueClass: [NSNumber class]
-                      returningTransformedValueWithBlock:^id _Nonnull(id  _Nonnull value) {
-        // if it's not a number or convertable to one, IDK man
-        if (![value respondsToSelector: @selector(floatValue)]) return @0;
-        
-        long minutesValue = lroundf([value floatValue]);
-        return @(minutesValue);
-    }];
 }
 
 - (NSInteger)durationValueMinutes {

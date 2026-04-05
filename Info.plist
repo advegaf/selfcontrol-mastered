@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ATSApplicationFontsPath</key>
+	<string>Fonts</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
@@ -38,7 +40,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.0.2</string>
+	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
 	<string>410</string>
 	<key>LSApplicationCategoryType</key>
@@ -55,21 +57,16 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>SMPrivilegedExecutables</key>
-	<dict>
-		<key>org.eyebeam.selfcontrold</key>
-		<string>anchor apple generic and identifier &quot;org.eyebeam.selfcontrold&quot; and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = EG6ZYP3AQH)</string>
-	</dict>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUEnableJavaScript</key>
+	<true/>
+	<key>SUEnableSystemProfiling</key>
 	<true/>
 	<key>SUFeedURL</key>
 	<string>https://selfcontrolapp.com/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
-	<key>SUEnableSystemProfiling</key>
-	<true/>
 	<key>SUSendProfileInfo</key>
 	<true/>
 </dict>

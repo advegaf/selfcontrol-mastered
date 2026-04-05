@@ -43,10 +43,8 @@
         NSLog(@"WARNING: Sync failed or timed out with error %@ before unloading daemon job", syncErr);
         [SCSentry captureError: syncErr];
     }
-    
-    // uh-oh, looks like it's 5 seconds later and the sync hasn't completed yet. Bad news.
+
     CFErrorRef cfError;
-    // this should block until the process is dead, so we should never get to the other side if it's successful
     SILENCE_OSX10_10_DEPRECATION(
     SMJobRemove(kSMDomainSystemLaunchd, CFSTR("org.eyebeam.selfcontrold"), NULL, YES, &cfError);
                                  );

@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-minVersion = '10.10'
+minVersion = '26.0'
 
 platform :osx, minVersion
 
@@ -10,11 +10,8 @@ plugin 'cocoapods-prune-localizations', { :localizations => supported_locales }
 
 target "SelfControl" do
     use_frameworks! :linkage => :static
-    pod 'MASPreferences', '~> 1.1.4'
-    pod 'TransformerKit', '~> 1.1.1'
     pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.0'
     pod 'LetsMove', '~> 1.24'
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
     
     # Add test target
     target 'SelfControlTests' do
@@ -24,28 +21,49 @@ end
 
 target "SelfControl Killer" do
     use_frameworks! :linkage => :static
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
 end
 
-# we can't use_frameworks on these because they're command-line tools
-# Sentry says we need use_frameworks, but they seem to work OK anyway?
 target "SCKillerHelper" do
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
 end
 target "selfcontrol-cli" do
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
 end
 target "org.eyebeam.selfcontrold" do
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
 end
 
 post_install do |pi|
    pi.pods_project.targets.each do |t|
        t.build_configurations.each do |bc|
            if Gem::Version.new(bc.build_settings['MACOSX_DEPLOYMENT_TARGET']) < Gem::Version.new(minVersion)
-#            if bc.build_settings['MACOSX_DEPLOYMENT_TARGET'] == '8.0'
                bc.build_settings['MACOSX_DEPLOYMENT_TARGET'] = minVersion
            end
        end
+   end
+
+   # Fix "Multiple commands produce Sentry.bundle" by removing output file
+   # declarations from CLI targets' resource copy phases
+   cli_targets = ['SCKillerHelper', 'selfcontrol-cli', 'org.eyebeam.selfcontrold']
+   main_project = pi.aggregate_targets.first.user_project
+   main_project.targets.each do |t|
+     next unless cli_targets.include?(t.name)
+     t.build_phases.each do |phase|
+       next unless phase.respond_to?(:name) && phase.name == '[CP] Copy Pods Resources'
+       phase.output_paths&.reject! { |p| p.include?('Sentry.bundle') }
+       phase.input_paths&.reject! { |p| p.include?('Sentry.bundle') }
+     end
+   end
+   main_project.save
+
+   # Fix "Multiple commands produce Sentry.bundle" for CLI tool targets
+   # These targets don't need the resource bundle
+   cli_targets = ['SCKillerHelper', 'selfcontrol-cli', 'org.eyebeam.selfcontrold']
+   pi.aggregate_targets.each do |at|
+     next unless cli_targets.include?(at.user_project.targets.find { |t| t.name == at.target_definition.name }&.name || at.target_definition.name)
+     at.user_targets.each do |ut|
+       ut.shell_script_build_phases.each do |phase|
+         if phase.name == '[CP] Copy Pods Resources'
+           phase.shell_script = phase.shell_script.gsub(/.*Sentry\.bundle.*\n/, '')
+         end
+       end
+     end
    end
 end

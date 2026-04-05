@@ -21,9 +21,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "AppController.h"
-#import "MASPreferencesWindowController.h"
-#import "PreferencesGeneralViewController.h"
-#import "PreferencesAdvancedViewController.h"
+// MASPreferences and Obj-C preference controllers replaced by SwiftUI
 #import "SCTimeIntervalFormatter.h"
 #import <LetsMove/PFMoveApplication.h>
 #import "SCSettings.h"
@@ -31,7 +29,7 @@
 #import "SCXPCClient.h"
 #import "SCBlockFileReaderWriter.h"
 #import "SCUIUtilities.h"
-#import <TransformerKit/NSValueTransformer+TransformerKit.h>
+#import "SelfControl-Swift.h"
 
 @interface AppController () {}
 
@@ -63,19 +61,7 @@
 }
 
 - (IBAction)updateTimeSliderDisplay:(id)sender {
-    NSInteger numMinutes = [defaults_ integerForKey: @"BlockDuration"];
-
-    // if the duration is larger than we can display on our slider
-    // chop it down to our max display value so the user doesn't
-    // accidentally start a much longer block than intended
-    if (numMinutes > blockDurationSlider_.maxDuration) {
-        [self setDefaultsBlockDurationOnMainThread: @(floor(blockDurationSlider_.maxDuration))];
-        numMinutes = [defaults_ integerForKey: @"BlockDuration"];
-    }
-
-    blockSliderTimeDisplayLabel_.stringValue = blockDurationSlider_.durationDescription;
-
-	[submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey: @"Blocklist"] count] > 0)];
+    // SwiftUI handles slider display updates via BlockStateViewModel
 }
 
 - (IBAction)addBlock:(id)sender {
@@ -181,68 +167,27 @@
 
 	if(blockIsOn) { // block is on
 		if(!blockWasOn) { // if we just switched states to on...
-			[self closeTimerWindow];
-			[self showTimerWindow];
-			[initialWindow_ close];
+			// SwiftUI UnifiedRootView handles the setup→timer transition
+			// via state observation. No window swapping needed.
 			[self closeDomainList];
-            
+
             // apparently, a block is running, so make sure FirstBlockStarted is true
             [defaults_ setBool: YES forKey: @"FirstBlockStarted"];
 		}
     } else { // block is off
 		if(blockWasOn) { // if we just switched states to off...
-			[timerWindowController_ blockEnded];
+			// SwiftUI TimerView stays visible until user clicks DONE.
+			// No window management needed.
 
 			// Makes sure the domain list will refresh when it comes back
 			[self closeDomainList];
 
-			NSWindow* mainWindow = [NSApp mainWindow];
-			// We don't necessarily want the initial window to be key and front,
-			// but no other message seems to show it properly.
-			[initialWindow_ makeKeyAndOrderFront: self];
-			// So we work around it and make key and front whatever was the main window
-			[mainWindow makeKeyAndOrderFront: self];
-            
-            // make sure the dock badge is cleared
-            [[NSApp dockTile] setBadgeLabel: nil];
-
-            // send a notification letting the user know the block ended
-            // TODO: make this sent from a background process so it shows if app is closed
-            // (but we can't send it from the selfcontrold process, because it's running as root)
+            // Send system notification
             NSUserNotificationCenter* userNoteCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
             NSUserNotification* endedNote = [NSUserNotification new];
             endedNote.title = @"Your SelfControl block has ended!";
             endedNote.informativeText = @"All sites are now accessible.";
             [userNoteCenter deliverNotification: endedNote];
-
-			[self closeTimerWindow];
-		}
-
-		[self updateTimeSliderDisplay: blockDurationSlider_];
-
-		if([defaults_ integerForKey: @"BlockDuration"] != 0 &&
-           ([[defaults_ arrayForKey: @"Blocklist"] count] != 0 || [defaults_ boolForKey: @"BlockAsWhitelist"]) &&
-           !self.addingBlock) {
-			[submitButton_ setEnabled: YES];
-		} else {
-			[submitButton_ setEnabled: NO];
-		}
-
-		// If we're adding a block, we want buttons disabled.
-        if(!self.addingBlock) {
-			[blockDurationSlider_ setEnabled: YES];
-			[editBlocklistButton_ setEnabled: YES];
-			[submitButton_ setTitle: NSLocalizedString(@"Start Block", @"Start button")];
-		} else {
-			[blockDurationSlider_ setEnabled: NO];
-			[editBlocklistButton_ setEnabled: NO];
-			[submitButton_ setTitle: NSLocalizedString(@"Starting Block", @"Starting Block button")];
-		}
-
-		// if block's off, and we haven't shown it yet, show the first-time modal
-		if (![defaults_ boolForKey: @"GetStartedShown"]) {
-			[defaults_ setBool: YES forKey: @"GetStartedShown"];
-			[self showGetStartedWindow: self];
 		}
 	}
 
@@ -261,11 +206,10 @@
         [settings_ setValue: @NO forKey: @"TamperingDetected"];
     }
     
-    // Display "blocklist" or "allowlist" as appropriate
+    // Display "blocklist" or "allowlist" as appropriate in menu items
     NSString* listType = [defaults_ boolForKey: @"BlockAsWhitelist"] ? @"Allowlist" : @"Blocklist";
     NSString* editListString = NSLocalizedString(([NSString stringWithFormat: @"Edit %@", listType]), @"Edit list button / menu item");
-    
-    editBlocklistButton_.title = editListString;
+
     editBlocklistMenuItem_.title = editListString;
 
 	[refreshUILock_ unlock];
@@ -281,60 +225,34 @@
     NSArray<NSString*>* cleanedBlocklist = [SCMiscUtilities cleanBlocklist: [defaults_ arrayForKey: @"Blocklist"]];
     [defaults_ setObject: cleanedBlocklist forKey: @"Blocklist"];
 
-    // update our blocklist teaser string
-    blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 60];
-    
     // let the domain list know!
     if (domainListWindowController_ != nil) {
         domainListWindowController_.readOnly = [SCUIUtilities blockIsRunning];
         [domainListWindowController_ refreshDomainList];
     }
     
-    // let the timer window know!
-    if (timerWindowController_ != nil) {
-        [timerWindowController_ performSelectorOnMainThread: @selector(configurationChanged)
-                                                 withObject: nil
-                                              waitUntilDone: NO];
-    }
-    
+    // SwiftUI UnifiedRootView listens for this notification directly.
+    // No need to forward to timerWindowController_.
+
     // and our interface may need to change to match!
     [self refreshUserInterface];
 }
 
 - (void)showTimerWindow {
-	if(timerWindowController_ == nil) {
-        [[NSBundle mainBundle] loadNibNamed: @"TimerWindow" owner: self topLevelObjects: nil];
-	} else {
-		[[timerWindowController_ window] makeKeyAndOrderFront: self];
-		[[timerWindowController_ window] center];
-	}
+    // No-op: UnifiedRootView handles timer display via state observation.
 }
 
 - (void)closeTimerWindow {
-	[timerWindowController_ close];
-	timerWindowController_ = nil;
+    // No-op: UnifiedRootView handles view transitions via timer.hasStarted.
 }
 
 - (IBAction)openPreferences:(id)sender {
     [SCSentry addBreadcrumb: @"Opening preferences window" category: @"app"];
-	if (preferencesWindowController_ == nil) {
-		NSViewController* generalViewController = [[PreferencesGeneralViewController alloc] init];
-		NSViewController* advancedViewController = [[PreferencesAdvancedViewController alloc] init];
-		NSString* title = NSLocalizedString(@"Preferences", @"Common title for Preferences window");
-
-		preferencesWindowController_ = [[MASPreferencesWindowController alloc] initWithViewControllers: @[generalViewController, advancedViewController] title: title];
-	}
-	[preferencesWindowController_ showWindow: nil];
+    [SelfControlBridge.shared openSettingsWindow];
 }
 
 - (IBAction)showGetStartedWindow:(id)sender {
-    [SCSentry addBreadcrumb: @"Showing \"Get Started\" window" category: @"app"];
-	if (!getStartedWindowController) {
-		getStartedWindowController = [[NSWindowController alloc] initWithWindowNibName: @"FirstTime"];
-	}
-	[getStartedWindowController.window center];
-	[getStartedWindowController.window makeKeyAndOrderFront: nil];
-	[getStartedWindowController showWindow: nil];
+    // Onboarding removed — no-op
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
@@ -358,36 +276,42 @@
 
     // start up our daemon XPC
     self.xpc = [SCXPCClient new];
-    [self.xpc connectToHelperTool];
-    
-    // if we don't have a connection within 0.5 seconds,
-    // OR we get back a connection with an old daemon version
-    // AND we're running a modern block (which should have a daemon running it)
-    // something's wrong with our app-daemon connection. This probably means one of two things:
-    //   1. The daemon got unloaded somehow and failed to restart. This is a big problem because the block won't come off.
-    //   2. The daemon doesn't want to talk to us anymore, potentially because we've changed our signing certificate. This is a
-    //      smaller problem, but still not great because the app can't communicate anything to the daemon.
-    //   3. There's a daemon but it's an old version, and should be replaced.
-    // in any case, let's go try to reinstall the daemon
-    // (we debounce this call so it happens only once, after the connection has been invalidated for an extended period)
-    if ([SCBlockUtilities modernBlockIsRunning]) {
-        [NSTimer scheduledTimerWithTimeInterval: 0.5 repeats: NO block:^(NSTimer * _Nonnull timer) {
+
+    SMAppService *service = [self daemonService];
+    if (service.status == SMAppServiceStatusEnabled) {
+        // Daemon is registered and running, connect XPC
+        [self.xpc connectToHelperTool];
+
+        // Check daemon version (update if app version is newer)
+        [NSTimer scheduledTimerWithTimeInterval:0.5 repeats:NO block:^(NSTimer * _Nonnull timer) {
             [self.xpc getVersion:^(NSString * _Nonnull daemonVersion, NSError * _Nonnull error) {
                 if (error == nil) {
-                    if ([SELFCONTROL_VERSION_STRING compare: daemonVersion options: NSNumericSearch] == NSOrderedDescending) {
-                        NSLog(@"Daemon version of %@ is out of date (current version is %@).", daemonVersion, SELFCONTROL_VERSION_STRING);
-                        [SCSentry addBreadcrumb: @"Detected out-of-date daemon" category: @"app"];
-                        [self reinstallDaemon];
+                    if ([SELFCONTROL_VERSION_STRING compare:daemonVersion options:NSNumericSearch] == NSOrderedDescending) {
+                        NSLog(@"Daemon version %@ is out of date (current: %@), re-registering...", daemonVersion, SELFCONTROL_VERSION_STRING);
+                        [SCSentry addBreadcrumb:@"Detected out-of-date daemon" category:@"app"];
+                        [service unregisterWithCompletionHandler:^(NSError * _Nullable unregError) {
+                            if (unregError) {
+                                NSLog(@"WARNING: Unregister failed: %@", unregError);
+                            }
+                            NSError *regError = nil;
+                            [service registerAndReturnError:&regError];
+                            if (regError) {
+                                NSLog(@"WARNING: Re-register failed: %@", regError);
+                            } else {
+                                NSLog(@"Daemon re-registered successfully after version update.");
+                            }
+                        }];
                     } else {
-                        [SCSentry addBreadcrumb: @"Detected up-to-date daemon" category:@"app"];
-                        NSLog(@"Daemon version of %@ is up-to-date!", daemonVersion);
+                        [SCSentry addBreadcrumb:@"Detected up-to-date daemon" category:@"app"];
+                        NSLog(@"Daemon version %@ is up-to-date!", daemonVersion);
                     }
                 } else {
-                    NSLog(@"ERROR: Fetching daemon version failed with error %@", error);
-                    [self reinstallDaemon];
+                    NSLog(@"WARNING: Failed to get daemon version: %@", error);
                 }
             }];
         }];
+    } else {
+        NSLog(@"Daemon not registered yet (status=%ld). Will register on first block start.", (long)service.status);
     }
 
     // Register observers on both distributed and normal notification centers
@@ -404,23 +328,37 @@
 												 name: @"SCConfigurationChangedNotification"
 											   object: nil];
 
-	[initialWindow_ center];
+    // Listen for pill click to reopen main window
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reopenMainWindowFromPill)
+                                                 name: @"SelfControlReopenMainWindow"
+                                               object: nil];
+
+	// Configure initial window for Nothing design system
+    initialWindow_.titlebarAppearsTransparent = YES;
+    initialWindow_.titleVisibility = NSWindowTitleHidden;
+    initialWindow_.styleMask |= NSWindowStyleMaskFullSizeContentView;
+    initialWindow_.backgroundColor = [NSColor blackColor];
+
+    // Set up unified SwiftUI root view (handles both setup and timer states)
+    initialWindow_.contentView = [SelfControlBridge.shared makeRootView];
+
+    // Resize window for unified single-window layout
+    NSRect frame = initialWindow_.frame;
+    frame.size = NSMakeSize(620, 520);
+    [initialWindow_ setFrame:frame display:YES];
+
+    [initialWindow_ center];
+    [initialWindow_ makeKeyAndOrderFront: self];
 
 	// We'll set blockIsOn to whatever is NOT right, so that in refreshUserInterface
 	// it'll fix it and properly refresh the user interface.
 	blockIsOn = ![SCUIUtilities blockIsRunning];
 
-	// Change block duration slider for hidden user defaults settings
-    blockDurationSlider_.maxDuration = [defaults_ integerForKey: @"MaxBlockLength"];
-    [blockDurationSlider_ bindDurationToObject: [NSUserDefaultsController sharedUserDefaultsController]
-                                       keyPath: @"values.BlockDuration"];
-    
-    blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 60];
-
 	[self refreshUserInterface];
     
-    NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,10,0}; // Yosemite
-    NSString* minRequiredVersionString = @"10.10 (Yosemite)";
+    NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){16,0,0};
+    NSString* minRequiredVersionString = @"16.0";
 	if (![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion: minRequiredVersion]) {
 		NSLog(@"ERROR: Unsupported version for SelfControl");
         [SCSentry captureMessage: @"Unsupported operating system version"];
@@ -436,33 +374,59 @@
     [settings_ synchronizeSettings];
 }
 
-- (void)reinstallDaemon {
-    NSLog(@"Attempting to reinstall daemon...");
-    [SCSentry addBreadcrumb: @"Reinstalling daemon" category:@"app"];
-    [self.xpc installDaemon:^(NSError * _Nonnull error) {
-        if (error == nil) {
-            NSLog(@"Reinstalled daemon successfully!");
-            [SCSentry addBreadcrumb: @"Daemon reinstalled successfully" category:@"app"];
-            
-            NSLog(@"Retrying helper tool connection...");
-            [self.xpc performSelectorOnMainThread: @selector(connectToHelperTool) withObject: nil waitUntilDone: YES];
-        } else {
-            if (![SCMiscUtilities errorIsAuthCanceled: error]) {
-                NSLog(@"ERROR: Reinstalling daemon failed with error %@", error);
-                [SCUIUtilities presentError: error];
+- (SMAppService *)daemonService {
+    return [SMAppService daemonServiceWithPlistName:@"org.eyebeam.selfcontrold.plist"];
+}
+
+- (void)registerDaemonAndStartBlock {
+    SMAppService *service = [self daemonService];
+    NSError *error = nil;
+
+    BOOL registered = [service registerAndReturnError:&error];
+
+    if (!registered) {
+        NSLog(@"ERROR: Failed to register daemon: %@", error);
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (service.status == SMAppServiceStatusRequiresApproval) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                [alert setMessageText:NSLocalizedString(@"Background Service Required",
+                    @"Alert title when daemon needs approval")];
+                [alert setInformativeText:NSLocalizedString(
+                    @"SelfControl needs a background service to enforce blocks. "
+                    @"Please enable it in System Settings > General > Login Items & Extensions.",
+                    @"Alert message when daemon needs approval")];
+                [alert addButtonWithTitle:NSLocalizedString(@"Open System Settings", nil)];
+                [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
+
+                NSModalResponse response = [alert runModal];
+                if (response == NSAlertFirstButtonReturn) {
+                    [SMAppService openSystemSettingsLoginItems];
+                }
+            } else {
+                [SCUIUtilities presentError:error ?: [SCErr errorWithCode:500]];
             }
-        }
-    }];
+
+            self.addingBlock = false;
+            [self refreshUserInterface];
+        });
+        return;
+    }
+
+    NSLog(@"Daemon registered successfully via SMAppService!");
+    [SCSentry addBreadcrumb:@"Daemon registered via SMAppService" category:@"app"];
+
+    // Give the daemon a moment to start, then connect
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{
+        [self.xpc performSelectorOnMainThread:@selector(connectToHelperTool) withObject:nil waitUntilDone:YES];
+        [self proceedWithBlockStart];
+    });
 }
 
 - (IBAction)showDomainList:(id)sender {
     [SCSentry addBreadcrumb: @"Showing domain list" category:@"app"];
-
-	if(domainListWindowController_ == nil) {
-        [[NSBundle mainBundle] loadNibNamed: @"DomainList" owner: self topLevelObjects: nil];
-	}
-    domainListWindowController_.readOnly = [SCUIUtilities blockIsRunning];
-    [domainListWindowController_ showWindow: self];
+    [SelfControlBridge.shared openSettingsWindow];
 }
 
 - (void)closeDomainList {
@@ -470,16 +434,48 @@
 	domainListWindowController_ = nil;
 }
 
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+    // During an active block with pill enabled: don't quit —
+    // close the window, show the pill, switch to accessory mode.
+    if ([SCUIUtilities blockIsRunning] &&
+        [[NSUserDefaults standardUserDefaults] boolForKey:@"ShowTimerPill"]) {
+        [initialWindow_ close];
+        return NSTerminateCancel;
+    }
+    return NSTerminateNow;
+}
+
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed: (NSApplication*) theApplication {
-	// Hack to make the application terminate after the last window is closed, but
-	// INCLUDE the HUD-style timer window.
-	if([[timerWindowController_ window] isVisible])
-		return NO;
-    
+    // Keep the app alive if a block is running and the pill preference is on.
+    // The floating pill will show the timer on the desktop.
+    if ([SCUIUtilities blockIsRunning] && [[NSUserDefaults standardUserDefaults] boolForKey: @"ShowTimerPill"]) {
+        [TimerPillWindowController.shared show];
+        [NSApp setActivationPolicy: NSApplicationActivationPolicyAccessory];
+        return NO;
+    }
+
     if (PFMoveIsInProgress())
         return NO;
-    
-	return YES;
+
+    return YES;
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+    // When the user clicks the dock icon, reopen the main window and hide the pill
+    if ([TimerPillWindowController.shared isVisible]) {
+        [TimerPillWindowController.shared hide];
+        [NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
+        [initialWindow_ makeKeyAndOrderFront: nil];
+    }
+}
+
+- (void)reopenMainWindowFromPill {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [TimerPillWindowController.shared hide];
+        [NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
+        [self->initialWindow_ makeKeyAndOrderFront: nil];
+        [NSApp activateIgnoringOtherApps: YES];
+    });
 }
 
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {
@@ -581,67 +577,66 @@
 }
 
 - (void)installBlock {
-    [SCSentry addBreadcrumb: @"App running installBlock method" category:@"app"];
-	@autoreleasepool {
-		self.addingBlock = true;
+    [SCSentry addBreadcrumb:@"App running installBlock method" category:@"app"];
+    @autoreleasepool {
+        self.addingBlock = true;
 
-        // if there are any ongoing edits in the domain list, make sure they make it in
         if (domainListWindowController_ != nil) {
             [domainListWindowController_ refreshDomainList];
         }
-		[self refreshUserInterface];
+        [self refreshUserInterface];
 
-        [self.xpc installDaemon:^(NSError * _Nonnull error) {
+        SMAppService *service = [self daemonService];
+        SMAppServiceStatus status = service.status;
+
+        if (status == SMAppServiceStatusEnabled) {
+            // Daemon already registered and running
+            [self.xpc performSelectorOnMainThread:@selector(connectToHelperTool) withObject:nil waitUntilDone:YES];
+            [self proceedWithBlockStart];
+        } else {
+            // Need to register the daemon first
+            [self registerDaemonAndStartBlock];
+        }
+    }
+}
+
+/// Prepares block settings and sends the startBlock command to the daemon.
+/// Called after verifying the daemon is running (either already or just installed).
+- (void)proceedWithBlockStart {
+    NSTimeInterval blockDurationSecs = MAX([[defaults_ valueForKey: @"BlockDuration"] intValue] * 60, 0);
+    NSDate* newBlockEndDate = [NSDate dateWithTimeIntervalSinceNow: blockDurationSecs];
+
+    [settings_ synchronizeSettings];
+    [defaults_ synchronize];
+
+    [self.xpc refreshConnectionAndRun:^{
+        NSLog(@"Refreshed connection and ready to start block!");
+        [self.xpc startBlockWithControllingUID: getuid()
+                                     blocklist: [self->defaults_ arrayForKey: @"Blocklist"]
+                                   isAllowlist: [self->defaults_ boolForKey: @"BlockAsWhitelist"]
+                                       endDate: newBlockEndDate
+                                 blockSettings: @{
+                                                    @"ClearCaches": [self->defaults_ valueForKey: @"ClearCaches"],
+                                                    @"AllowLocalNetworks": [self->defaults_ valueForKey: @"AllowLocalNetworks"],
+                                                    @"EvaluateCommonSubdomains": [self->defaults_ valueForKey: @"EvaluateCommonSubdomains"],
+                                                    @"IncludeLinkedDomains": [self->defaults_ valueForKey: @"IncludeLinkedDomains"],
+                                                    @"BlockSoundShouldPlay": [self->defaults_ valueForKey: @"BlockSoundShouldPlay"],
+                                                    @"BlockSound": [self->defaults_ valueForKey: @"BlockSound"],
+                                                    @"EnableErrorReporting": [self->defaults_ valueForKey: @"EnableErrorReporting"]
+                                                }
+                                         reply:^(NSError * _Nonnull error) {
             if (error != nil) {
                 [SCUIUtilities presentError: error];
+            } else {
+                [SCSentry addBreadcrumb: @"Block started successfully" category:@"app"];
+            }
+
+            [self->settings_ synchronizeSettingsWithCompletion:^(NSError * _Nullable syncError) {
                 self.addingBlock = false;
                 [self refreshUserInterface];
-                return;
-            } else {
-                [SCSentry addBreadcrumb: @"Daemon installed successfully (en route to installing block)" category:@"app"];
-                // helper tool installed successfully, let's prepare to start the block!
-                // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through]
-                // sanity check duration (must be above zero)
-                NSTimeInterval blockDurationSecs = MAX([[self->defaults_ valueForKey: @"BlockDuration"] intValue] * 60, 0);
-                NSDate* newBlockEndDate = [NSDate dateWithTimeIntervalSinceNow: blockDurationSecs];
-                
-                // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
-                [self->settings_ synchronizeSettings];
-                [self->defaults_ synchronize];
-
-                // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
-                [self.xpc refreshConnectionAndRun:^{
-                    NSLog(@"Refreshed connection and ready to start block!");
-                    [self.xpc startBlockWithControllingUID: getuid()
-                                                 blocklist: [self->defaults_ arrayForKey: @"Blocklist"]
-                                               isAllowlist: [self->defaults_ boolForKey: @"BlockAsWhitelist"]
-                                                   endDate: newBlockEndDate
-                                             blockSettings: @{
-                                                                @"ClearCaches": [self->defaults_ valueForKey: @"ClearCaches"],
-                                                                @"AllowLocalNetworks": [self->defaults_ valueForKey: @"AllowLocalNetworks"],
-                                                                @"EvaluateCommonSubdomains": [self->defaults_ valueForKey: @"EvaluateCommonSubdomains"],
-                                                                @"IncludeLinkedDomains": [self->defaults_ valueForKey: @"IncludeLinkedDomains"],
-                                                                @"BlockSoundShouldPlay": [self->defaults_ valueForKey: @"BlockSoundShouldPlay"],
-                                                                @"BlockSound": [self->defaults_ valueForKey: @"BlockSound"],
-                                                                @"EnableErrorReporting": [self->defaults_ valueForKey: @"EnableErrorReporting"]
-                                                            }
-                                                     reply:^(NSError * _Nonnull error) {
-                        if (error != nil) {
-                            [SCUIUtilities presentError: error];
-                        } else {
-                            [SCSentry addBreadcrumb: @"Block started successfully" category:@"app"];
-                        }
-                        
-                        // get the new settings
-                        [self->settings_ synchronizeSettingsWithCompletion:^(NSError * _Nullable error) {
-                            self.addingBlock = false;
-                            [self refreshUserInterface];
-                        }];
-                    }];
-                }];
-            }
+            }];
         }];
-	}
+    }];
 }
 
 - (void)updateActiveBlocklist:(NSLock*)lockToUse {
