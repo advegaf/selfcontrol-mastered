@@ -49,7 +49,8 @@
 
 @property (assign) BOOL addingBlock;
 @property (nonatomic, strong) NSStatusItem *statusItem;
-@property (nonatomic, strong) NSPopover *popover;
+@property (nonatomic, strong) NSPanel *menuPanel;
+@property (nonatomic, strong) id clickMonitor;
 
 // Called when the block duration slider is moved.  Updates the label that gives
 // the block duration in words (hours and minutes).

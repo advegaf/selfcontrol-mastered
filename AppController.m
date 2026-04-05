@@ -451,27 +451,77 @@
 }
 
 - (void)togglePopover:(id)sender {
-    if (self.popover != nil && self.popover.isShown) {
-        [self.popover performClose:sender];
+    if (self.menuPanel != nil && self.menuPanel.isVisible) {
+        [self dismissMenuPanel];
         return;
     }
 
-    if (self.popover == nil) {
-        self.popover = [[NSPopover alloc] init];
-        self.popover.contentSize = NSMakeSize(450, 380);
-        self.popover.behavior = NSPopoverBehaviorTransient;
-        self.popover.appearance = [NSAppearance appearanceNamed:NSAppearanceNameDarkAqua];
+    [self showMenuPanel];
+}
 
-        NSViewController *vc = [[NSViewController alloc] init];
-        vc.view = [SelfControlBridge.shared makeMenuBarContentView];
-        vc.preferredContentSize = NSMakeSize(450, 380);
-        self.popover.contentViewController = vc;
+- (void)showMenuPanel {
+    if (self.menuPanel == nil) {
+        NSPanel *panel = [[NSPanel alloc]
+            initWithContentRect:NSMakeRect(0, 0, 450, 380)
+                      styleMask:NSWindowStyleMaskBorderless | NSWindowStyleMaskNonactivatingPanel
+                        backing:NSBackingStoreBuffered
+                          defer:NO];
+        panel.level = NSStatusWindowLevel;
+        panel.backgroundColor = [NSColor clearColor];
+        [panel setOpaque:NO];
+        panel.hasShadow = YES;
+        panel.appearance = [NSAppearance appearanceNamed:NSAppearanceNameDarkAqua];
+        panel.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces |
+                                   NSWindowCollectionBehaviorFullScreenAuxiliary;
+
+        // Create a rounded visual effect container
+        NSVisualEffectView *effectView = [[NSVisualEffectView alloc]
+            initWithFrame:NSMakeRect(0, 0, 450, 380)];
+        effectView.material = NSVisualEffectMaterialHUDWindow;
+        effectView.state = NSVisualEffectStateActive;
+        effectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+        effectView.wantsLayer = YES;
+        effectView.layer.cornerRadius = 16;
+        effectView.layer.masksToBounds = YES;
+        effectView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+
+        panel.contentView.wantsLayer = YES;
+        [panel.contentView addSubview:effectView];
+
+        NSView *hostingView = [SelfControlBridge.shared makeMenuBarContentView];
+        hostingView.frame = effectView.bounds;
+        hostingView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+        [effectView addSubview:hostingView];
+
+        self.menuPanel = panel;
     }
 
+    // Position below the status item button
     if (self.statusItem.button) {
-        [self.popover showRelativeToRect:self.statusItem.button.bounds
-                                  ofView:self.statusItem.button
-                           preferredEdge:NSMinYEdge];
+        NSRect buttonFrame = [self.statusItem.button.window convertRectToScreen:
+            [self.statusItem.button convertRect:self.statusItem.button.bounds toView:nil]];
+        CGFloat panelWidth = self.menuPanel.frame.size.width;
+        CGFloat panelHeight = self.menuPanel.frame.size.height;
+        CGFloat x = NSMidX(buttonFrame) - panelWidth / 2;
+        CGFloat y = NSMinY(buttonFrame) - panelHeight - 4;
+        [self.menuPanel setFrameOrigin:NSMakePoint(x, y)];
+    }
+
+    [self.menuPanel orderFrontRegardless];
+
+    // Monitor for clicks outside to dismiss
+    self.clickMonitor = [NSEvent addGlobalMonitorForEventsMatchingMask:
+        (NSEventMaskLeftMouseDown | NSEventMaskRightMouseDown)
+        handler:^(NSEvent *event) {
+            [self dismissMenuPanel];
+        }];
+}
+
+- (void)dismissMenuPanel {
+    [self.menuPanel orderOut:nil];
+    if (self.clickMonitor) {
+        [NSEvent removeMonitor:self.clickMonitor];
+        self.clickMonitor = nil;
     }
 }
 
