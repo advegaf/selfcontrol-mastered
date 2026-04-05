@@ -7,7 +7,7 @@ import SwiftUI
 ///
 /// Usage from Obj-C:
 /// ```objc
-/// NSView *rootView = [[SelfControlBridge shared] makeRootView];
+/// NSView *menuBarView = [[SelfControlBridge shared] makeMenuBarContentView];
 /// ```
 @available(macOS 16.0, *)
 @objc
@@ -23,10 +23,7 @@ final class SelfControlBridge: NSObject {
     let timerVM: TimerViewModel
     let blocklistVM: BlocklistViewModel
     let preferencesVM: PreferencesViewModel
-
-    // MARK: - Window Controllers
-
-    private var settingsWindowController: NSWindowController?
+    let modeVM: ModeViewModel
 
     // MARK: - Init
 
@@ -37,57 +34,22 @@ final class SelfControlBridge: NSObject {
         timerVM = TimerViewModel()
         blocklistVM = BlocklistViewModel()
         preferencesVM = PreferencesViewModel()
+        modeVM = ModeViewModel()
 
         super.init()
     }
 
     // MARK: - View Factories
 
-    /// Returns the unified root view (setup + timer in one view)
-    /// wrapped in an `NSHostingView`. Timer start is handled by the
-    /// view itself via notification-driven state observation.
-    @objc func makeRootView() -> NSView {
-        let view = UnifiedRootView()
+    /// Returns the menu bar popover content view wrapped in an `NSHostingView`.
+    /// All view models are injected as environment objects.
+    @objc func makeMenuBarContentView() -> NSView {
+        let view = MenuBarContentView()
             .environment(blockState)
             .environment(timerVM)
             .environment(blocklistVM)
             .environment(preferencesVM)
+            .environment(modeVM)
         return NSHostingView(rootView: view)
-    }
-
-    // MARK: - Settings Window
-
-    /// Opens a standalone settings window (used by the timer cog).
-    /// During an active block, the blocklist is shown as read-only.
-    @objc func openSettingsWindow() {
-        // Reuse existing window if open
-        if let existing = settingsWindowController?.window, existing.isVisible {
-            existing.makeKeyAndOrderFront(nil)
-            return
-        }
-
-        blocklistVM.isReadOnly = SCUIUtilities.blockIsRunning()
-
-        let settingsView = SettingsContainerView()
-            .environment(blockState)
-            .environment(timerVM)
-            .environment(blocklistVM)
-            .environment(preferencesVM)
-
-        let window = NSWindow(
-            contentRect: NSMakeRect(0, 0, 620, 520),
-            styleMask: [.titled, .closable, .fullSizeContentView],
-            backing: .buffered,
-            defer: false
-        )
-        window.title = "Settings"
-        window.titlebarAppearsTransparent = true
-        window.titleVisibility = .hidden
-        window.backgroundColor = .black
-        window.contentView = NSHostingView(rootView: settingsView)
-        window.center()
-
-        settingsWindowController = NSWindowController(window: window)
-        settingsWindowController?.showWindow(nil)
     }
 }

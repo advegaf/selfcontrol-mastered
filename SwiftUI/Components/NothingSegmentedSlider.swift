@@ -46,7 +46,9 @@ struct NothingSegmentedSlider: View {
     }
 
     private func segmentColor(for index: Int) -> Color {
-        index < filledSegments ? NothingColors.textDisplay : NothingColors.border
+        index < filledSegments
+            ? NothingColors.textDisplay.opacity(0.9)
+            : NothingColors.textDisplay.opacity(0.12)
     }
 
     private func updateValue(at x: CGFloat, in totalWidth: CGFloat) {

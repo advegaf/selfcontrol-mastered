@@ -239,16 +239,16 @@
 }
 
 - (void)showTimerWindow {
-    // No-op: UnifiedRootView handles timer display via state observation.
+    // No-op: menu bar popover handles timer display.
 }
 
 - (void)closeTimerWindow {
-    // No-op: UnifiedRootView handles view transitions via timer.hasStarted.
+    // No-op: menu bar popover handles view transitions.
 }
 
 - (IBAction)openPreferences:(id)sender {
-    [SCSentry addBreadcrumb: @"Opening preferences window" category: @"app"];
-    [SelfControlBridge.shared openSettingsWindow];
+    // Open the popover to show settings
+    [self togglePopover: nil];
 }
 
 - (IBAction)showGetStartedWindow:(id)sender {
@@ -328,28 +328,17 @@
 												 name: @"SCConfigurationChangedNotification"
 											   object: nil];
 
-    // Listen for pill click to reopen main window
+    // Listen for pill click to toggle popover
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reopenMainWindowFromPill)
-                                                 name: @"SelfControlReopenMainWindow"
+                                             selector: @selector(togglePopoverFromNotification)
+                                                 name: @"SelfControlTogglePopover"
                                                object: nil];
 
-	// Configure initial window for Nothing design system
-    initialWindow_.titlebarAppearsTransparent = YES;
-    initialWindow_.titleVisibility = NSWindowTitleHidden;
-    initialWindow_.styleMask |= NSWindowStyleMaskFullSizeContentView;
-    initialWindow_.backgroundColor = [NSColor blackColor];
+    // Set up menu bar status item + popover (replaces main window)
+    [self setupStatusItem];
 
-    // Set up unified SwiftUI root view (handles both setup and timer states)
-    initialWindow_.contentView = [SelfControlBridge.shared makeRootView];
-
-    // Resize window for unified single-window layout
-    NSRect frame = initialWindow_.frame;
-    frame.size = NSMakeSize(620, 520);
-    [initialWindow_ setFrame:frame display:YES];
-
-    [initialWindow_ center];
-    [initialWindow_ makeKeyAndOrderFront: self];
+    // Run as accessory app (no Dock icon, no Cmd+Tab entry)
+    [NSApp setActivationPolicy: NSApplicationActivationPolicyAccessory];
 
 	// We'll set blockIsOn to whatever is NOT right, so that in refreshUserInterface
 	// it'll fix it and properly refresh the user interface.
@@ -426,7 +415,8 @@
 
 - (IBAction)showDomainList:(id)sender {
     [SCSentry addBreadcrumb: @"Showing domain list" category:@"app"];
-    [SelfControlBridge.shared openSettingsWindow];
+    // Open the popover to show settings/blocklist
+    [self togglePopover: nil];
 }
 
 - (void)closeDomainList {
@@ -435,46 +425,59 @@
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-    // During an active block with pill enabled: don't quit —
-    // close the window, show the pill, switch to accessory mode.
-    if ([SCUIUtilities blockIsRunning] &&
-        [[NSUserDefaults standardUserDefaults] boolForKey:@"ShowTimerPill"]) {
-        [initialWindow_ close];
-        return NSTerminateCancel;
-    }
-    return NSTerminateNow;
+    // Menu bar app should always persist. Cancel termination.
+    return NSTerminateCancel;
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed: (NSApplication*) theApplication {
-    // Keep the app alive if a block is running and the pill preference is on.
-    // The floating pill will show the timer on the desktop.
-    if ([SCUIUtilities blockIsRunning] && [[NSUserDefaults standardUserDefaults] boolForKey: @"ShowTimerPill"]) {
-        [TimerPillWindowController.shared show];
-        [NSApp setActivationPolicy: NSApplicationActivationPolicyAccessory];
-        return NO;
-    }
-
-    if (PFMoveIsInProgress())
-        return NO;
-
-    return YES;
+    // Menu bar app has no main window — never quit on window close.
+    return NO;
 }
 
-- (void)applicationDidBecomeActive:(NSNotification *)notification {
-    // When the user clicks the dock icon, reopen the main window and hide the pill
-    if ([TimerPillWindowController.shared isVisible]) {
-        [TimerPillWindowController.shared hide];
-        [NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
-        [initialWindow_ makeKeyAndOrderFront: nil];
+// MARK: - Status Item & Popover
+
+- (void)setupStatusItem {
+    self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSSquareStatusItemLength];
+
+    if (self.statusItem.button) {
+        // Monoline icon: SF Symbol as placeholder (timer icon)
+        NSImage *icon = [NSImage imageWithSystemSymbolName:@"timer"
+                                 accessibilityDescription:@"SelfControl"];
+        icon.size = NSMakeSize(18, 18);
+        self.statusItem.button.image = icon;
+        self.statusItem.button.action = @selector(togglePopover:);
+        self.statusItem.button.target = self;
     }
 }
 
-- (void)reopenMainWindowFromPill {
+- (void)togglePopover:(id)sender {
+    if (self.popover != nil && self.popover.isShown) {
+        [self.popover performClose:sender];
+        return;
+    }
+
+    if (self.popover == nil) {
+        self.popover = [[NSPopover alloc] init];
+        self.popover.contentSize = NSMakeSize(450, 380);
+        self.popover.behavior = NSPopoverBehaviorTransient;
+        self.popover.appearance = [NSAppearance appearanceNamed:NSAppearanceNameDarkAqua];
+
+        NSViewController *vc = [[NSViewController alloc] init];
+        vc.view = [SelfControlBridge.shared makeMenuBarContentView];
+        vc.preferredContentSize = NSMakeSize(450, 380);
+        self.popover.contentViewController = vc;
+    }
+
+    if (self.statusItem.button) {
+        [self.popover showRelativeToRect:self.statusItem.button.bounds
+                                  ofView:self.statusItem.button
+                           preferredEdge:NSMinYEdge];
+    }
+}
+
+- (void)togglePopoverFromNotification {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [TimerPillWindowController.shared hide];
-        [NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
-        [self->initialWindow_ makeKeyAndOrderFront: nil];
-        [NSApp activateIgnoringOtherApps: YES];
+        [self togglePopover: nil];
     });
 }
 
@@ -565,7 +568,7 @@
 }
 
 - (id)initialWindow {
-	return initialWindow_;
+	return nil; // No main window — menu bar app
 }
 
 - (id)domainListWindowController {

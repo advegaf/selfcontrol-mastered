@@ -28,7 +28,8 @@ enum NothingFontRegistration {
             options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
         ) else { return }
 
-        for case let fileURL as URL in enumerator where fileURL.pathExtension.lowercased() == "ttf" {
+        let fontExtensions: Set<String> = ["ttf", "otf"]
+        for case let fileURL as URL in enumerator where fontExtensions.contains(fileURL.pathExtension.lowercased()) {
             var errorRef: Unmanaged<CFError>?
             let success = CTFontManagerRegisterFontsForURL(
                 fileURL as CFURL,
@@ -85,29 +86,22 @@ extension Font {
         return .custom(familyName, size: size)
     }
 
-    /// Returns a Doto font at the given point size.
+    /// Returns an Ndot 57 font at the given point size.
     ///
-    /// Available weights: `.regular` (400), `.bold` (700).
+    /// Single weight — all weights map to Regular.
     static func doto(_ weight: NothingFontWeight = .regular, size: CGFloat) -> Font {
-        let familyName: String
-        switch weight {
-        case .regular, .light, .medium:
-            familyName = "Doto-Regular"
-        case .bold:
-            familyName = "Doto-Bold"
-        }
-        return .custom(familyName, size: size)
+        .custom("Ndot57Regular", size: size)
     }
 
     // MARK: Semantic Tokens — Display
 
-    /// Doto 72pt — hero / splash screens.
+    /// Ndot 57 72pt — hero / splash screens.
     static var nothingDisplayXL: Font { .doto(size: 72) }
 
-    /// Doto 48pt — section headers.
+    /// Ndot 57 48pt — section headers.
     static var nothingDisplayLG: Font { .doto(size: 48) }
 
-    /// Doto 36pt — card titles.
+    /// Ndot 57 36pt — card titles.
     static var nothingDisplayMD: Font { .doto(size: 36) }
 
     // MARK: Semantic Tokens — Headings
@@ -133,4 +127,25 @@ extension Font {
 
     /// Space Mono Regular 11pt — form labels, badges.
     static var nothingLabel: Font { .spaceMono(.regular, size: 11) }
+}
+
+// MARK: - Ndot 57 View Modifiers (font + proportional tracking)
+
+@available(macOS 16.0, *)
+extension View {
+
+    /// Applies Ndot 57 at the given size with proportional tracking.
+    func nothingDoto(size: CGFloat) -> some View {
+        self.font(.doto(size: size))
+            .tracking(size * 0.04)
+    }
+
+    /// Ndot 57 72pt + tracking — hero / splash screens.
+    func nothingDisplayXL() -> some View { nothingDoto(size: 72) }
+
+    /// Ndot 57 48pt + tracking — section headers.
+    func nothingDisplayLG() -> some View { nothingDoto(size: 48) }
+
+    /// Ndot 57 36pt + tracking — card titles.
+    func nothingDisplayMD() -> some View { nothingDoto(size: 36) }
 }

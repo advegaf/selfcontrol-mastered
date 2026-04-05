@@ -29,14 +29,7 @@ struct TimerView: View {
 
             // MARK: Primary — Countdown Display
 
-            Text(timer.countdownDescription)
-                .font(.nothingDisplayXL)
-                .foregroundColor(
-                    timer.isFinishing
-                        ? NothingColors.textSecondary
-                        : NothingColors.textDisplay
-                )
-                .textCase(.uppercase)
+            countdownDisplay
                 .opacity(timer.shouldPulse ? pulseOpacity : 1.0)
 
             Spacer()
@@ -79,6 +72,33 @@ struct TimerView: View {
                 }
             }
         }
+    }
+
+    // MARK: - Countdown Display
+
+    private var countdownDisplay: some View {
+        let h = String(format: "%02d", timer.hours)
+        let m = String(format: "%02d", timer.minutes)
+        let s = String(format: "%02d", timer.seconds)
+
+        let bright = timer.isFinishing ? NothingColors.textSecondary : NothingColors.textDisplay
+        let dim = NothingColors.textDisabled
+
+        let hoursDimmed = timer.hours == 0
+        let minutesDimmed = timer.hours == 0 && timer.minutes == 0
+
+        let hourColor = hoursDimmed ? dim : bright
+        let minuteColor = minutesDimmed ? dim : bright
+
+        return (
+            Text(h).foregroundColor(hourColor)
+            + Text(":").foregroundColor(hourColor)
+            + Text(m).foregroundColor(minuteColor)
+            + Text(":").foregroundColor(minuteColor)
+            + Text(s).foregroundColor(bright)
+        )
+        .font(.doto(size: 72))
+        .tracking(72 * 0.04)
     }
 }
 

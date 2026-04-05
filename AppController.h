@@ -35,14 +35,11 @@
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
 @interface AppController : NSObject <NSApplicationDelegate> {
-	IBOutlet NSWindow* initialWindow_;
-
 	IBOutlet NSMenuItem* domainListMenuItem_;
     IBOutlet NSMenuItem* editBlocklistMenuItem_;
 
 	IBOutlet DomainListWindowController* domainListWindowController_;
 	IBOutlet TimerWindowController* timerWindowController_;
-	NSWindowController* preferencesWindowController_;
 	NSUserDefaults* defaults_;
     SCSettings* settings_;
 	NSLock* refreshUILock_;
@@ -51,16 +48,12 @@
 }
 
 @property (assign) BOOL addingBlock;
+@property (nonatomic, strong) NSStatusItem *statusItem;
+@property (nonatomic, strong) NSPopover *popover;
 
 // Called when the block duration slider is moved.  Updates the label that gives
 // the block duration in words (hours and minutes).
 - (IBAction)updateTimeSliderDisplay:(id)sender;
-
-/* // Gets authorization for and then immediately removes the block by calling
- // SelfControl's helper tool with the appropriate arguments.  This can be used
- // for testing, but should not be called at all during normal execution of the
- // program.
- - (void)removeBlock; */
 
 // Called when the main Start button is clicked.  Launchs installBlock in another
 // thread after some checking and syncing.
@@ -71,27 +64,17 @@
 - (void)refreshUserInterface;
 
 // Called when the "Edit blocklist" button is clicked or the menu item is
-// selected.  Allocates a new DomainListWindowController if necessary and opens
-// the domain blocklist window.  Spawns an alert box if a block is in progress.
+// selected.  Opens settings inside the popover.
 - (IBAction)showDomainList:(id)sender;
 
-// Allocates a new TimerWindowController if necessary and opens the timer window.
+// No-op: window management removed.
 - (void)showTimerWindow;
 
-// Calls the close method of our TimerWindowController
+// No-op: window management removed.
 - (void)closeTimerWindow;
 
 // Calls the close method of our DomainListWindowController
 - (void)closeDomainList;
-
-// Called by timerWindowController_ after its sheet returns, to add a specified
-// host to the blocklist (and refresh the block to use the new blocklist).  Launches
-// a new thread with addToBlocklist:
-- (void)addToBlockList:(NSString*)host lock:(NSLock*)lock;
-
-// Called by timerWindowController_ after its sheet returns, to add a specified
-// number of minutes to the black timer.
-- (void)extendBlockTime:(NSInteger)minutes lock:(NSLock*)lock;
 
 // Gets authorization for and then immediately adds the block by calling
 // SelfControl's helper tool with the appropriate arguments.  Meant to be called
@@ -118,16 +101,27 @@
 // Opens an open panel and imports a blocklist, clearing the current one.
 - (IBAction)open:(id)sender;
 
-// Property allows initialWindow to be accessed from TimerWindowController
-// @property (retain, nonatomic, readonly) id initialWindow;
-
-// Changed property to manual accessor for pre-Leopard compatibility
-@property (nonatomic, readonly, strong) id initialWindow;
-
 // opens the SelfControl FAQ in the default browser
 - (IBAction)openFAQ:(id)sender;
 
 // opens the SelfControl Support Hub in the default browser
 - (IBAction)openSupportHub:(id)sender;
+
+// Called by timerWindowController_ after its sheet returns, to add a specified
+// host to the blocklist (and refresh the block to use the new blocklist).
+- (void)addToBlockList:(NSString*)host lock:(NSLock*)lock;
+
+// Called by timerWindowController_ after its sheet returns, to add a specified
+// number of minutes to the block timer.
+- (void)extendBlockTime:(NSInteger)minutes lock:(NSLock*)lock;
+
+// Property allows initialWindow to be accessed (returns nil for menu bar app)
+@property (nonatomic, readonly, strong) id initialWindow;
+
+// Sets up the menu bar status item and popover
+- (void)setupStatusItem;
+
+// Toggles the popover visibility
+- (void)togglePopover:(id)sender;
 
 @end

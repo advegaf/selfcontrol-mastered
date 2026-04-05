@@ -23,9 +23,10 @@ struct AboutView: View {
             // MARK: App Title
 
             Text("SELFCONTROL\nMASTERED")
-                .font(.nothingDisplayMD)
+                .nothingDisplayMD()
                 .foregroundColor(NothingColors.textDisplay)
                 .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
                 .frame(height: NothingTheme.spaceMD)
@@ -41,27 +42,21 @@ struct AboutView: View {
             Spacer()
                 .frame(height: NothingTheme.space2XL)
 
-            // MARK: Links
-
-            VStack(spacing: NothingTheme.spaceMD) {
-                linkButton("WEBSITE", urlString: "https://advegaf.com")
-                linkButton("SUPPORT", urlString: "mailto:advegaf@tamu.edu")
-            }
-
             Spacer()
 
             // MARK: Credits
 
-            Text("REMODELED BY ANGEL VEGA\nFORKED FROM CHARLIE STIGLER & STEVE LAMBERT")
+            Text("REMODELED BY ANGEL VEGA\nFORKED FROM CHARLIE STIGLER\n& STEVE LAMBERT")
                 .font(.spaceMono(.regular, size: 10))
                 .textCase(.uppercase)
                 .tracking(NothingTheme.labelTracking * 10)
                 .foregroundColor(NothingColors.textDisabled)
                 .multilineTextAlignment(.center)
-                .padding(.bottom, NothingTheme.spaceXL)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.bottom, NothingTheme.spaceLG)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.horizontal, NothingTheme.spaceXL)
+        .padding(.horizontal, NothingTheme.spaceMD)
     }
 
     // MARK: - Link Button

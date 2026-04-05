@@ -28,7 +28,7 @@
 		5E2FDDB9630DDA1F846BE9FD /* NothingSegmentedSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D53480A19A81A5149FC38D /* NothingSegmentedSlider.swift */; };
 		6301193B1BDB58B38FCF5799 /* NothingSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75272ADD0E4DBB52D2E3C543 /* NothingSegmentedControl.swift */; };
 		640A583A059C7BF52BBECCCE /* AddToBlocklistModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E72E6012107C1B4FCC300B6 /* AddToBlocklistModal.swift */; };
-		66B07849B87D5EDCBB617179 /* Doto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 140A82561E73F62E4E95D2BC /* Doto-Regular.ttf */; };
+		66B07849B87D5EDCBB617179 /* Ndot57-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 140A82561E73F62E4E95D2BC /* Ndot57-Regular.otf */; };
 		6AC2F204FE41A00F300DC5FC /* NothingFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5617C8598327CAD7F8E73EC1 /* NothingFonts.swift */; };
 		765849906CA11F86805EAF00 /* NothingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6329AF92109829A97449825 /* NothingTextField.swift */; };
 		8B1C81DAD28B4F21DBEAF820 /* SpaceMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F454A18A2105B58E99C3060 /* SpaceMono-Bold.ttf */; };
@@ -44,8 +44,6 @@
 		AA00010020000000000005 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000005 /* AboutView.swift */; };
 		AA00010020000000000006 /* TimerContentRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000006 /* TimerContentRootView.swift */; };
 		AA00010020000000000099 /* UnifiedRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000099 /* UnifiedRootView.swift */; };
-		FE0002A0000000000001 /* TimerPillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0002A0000000000010 /* TimerPillView.swift */; };
-		FE0002A0000000000002 /* TimerPillWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0002A0000000000020 /* TimerPillWindowController.swift */; };
 		ADE090ECA2EFBA7BBC78527E /* NothingColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CE9BFBD857992B6D42FE3E /* NothingColors.swift */; };
 		B4134042E0B4B30CFB53528B /* NothingDotGridBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375C126E6666F565DE4EFAB5 /* NothingDotGridBackground.swift */; };
 		B973AFFA15DB5F4875610A8B /* libPods-org.eyebeam.selfcontrold.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76AA0C4370638521F5CBDD26 /* libPods-org.eyebeam.selfcontrold.a */; };
@@ -241,10 +239,15 @@
 		CBED7D9925ABB911003080D6 /* selfcontrol-cli in Copy Executable Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* selfcontrol-cli */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 		CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
-		CD0D294BBD4640EECD2F4B4C /* Doto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55C4CCFA40B43B90B4CE5FB6 /* Doto-Bold.ttf */; };
 		D154FBE547030F5D335A791E /* NothingDropdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09417F7A132A32092CE927FF /* NothingDropdown.swift */; };
 		EE044E06494797C743BF9CDC /* NothingSegmentedProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29A8495091924B363EFC48E /* NothingSegmentedProgress.swift */; };
 		F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */; };
+		FE0002A0000000000001 /* TimerPillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0002A0000000000010 /* TimerPillView.swift */; };
+		FE0002A0000000000002 /* TimerPillWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0002A0000000000020 /* TimerPillWindowController.swift */; };
+		B0E04A26AA5A463F920B3464 /* BlockMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9093E11C44BBCB2F50B9A /* BlockMode.swift */; };
+		A6E71D66307443B48B956FE9 /* ModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3941F436E747487694172C97 /* ModeViewModel.swift */; };
+		D265D5875925448AA152DC54 /* ModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D512578E7B84CC2AF253508 /* ModeSelector.swift */; };
+		4BA154940D42403E858BAD35 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137C87D8DFA946C0963C32C8 /* MenuBarContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -569,7 +572,7 @@
 		09417F7A132A32092CE927FF /* NothingDropdown.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingDropdown.swift; sourceTree = "<group>"; };
 		0E72E6012107C1B4FCC300B6 /* AddToBlocklistModal.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddToBlocklistModal.swift; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		140A82561E73F62E4E95D2BC /* Doto-Regular.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "Doto-Regular.ttf"; sourceTree = "<group>"; };
+		140A82561E73F62E4E95D2BC /* Ndot57-Regular.otf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "Ndot57-Regular.otf"; sourceTree = "<group>"; };
 		170C73CB13CBF2705CF0BAF2 /* Pods_SelfControl_SelfControlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelfControl_SelfControlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1842E7C4FD72A2D5952F2EB4 /* NothingPillButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingPillButton.swift; sourceTree = "<group>"; };
 		20D53480A19A81A5149FC38D /* NothingSegmentedSlider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingSegmentedSlider.swift; sourceTree = "<group>"; };
@@ -589,7 +592,6 @@
 		4118BD54DA227C4C92A3303F /* Pods-SelfControl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl/Pods-SelfControl.debug.xcconfig"; sourceTree = "<group>"; };
 		4125AB7FC384B3B77373767C /* TimerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		4F454A18A2105B58E99C3060 /* SpaceMono-Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "SpaceMono-Bold.ttf"; sourceTree = "<group>"; };
-		55C4CCFA40B43B90B4CE5FB6 /* Doto-Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "Doto-Bold.ttf"; sourceTree = "<group>"; };
 		5617C8598327CAD7F8E73EC1 /* NothingFonts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingFonts.swift; sourceTree = "<group>"; };
 		596AF5EC583FB1F38399711A /* Pods-selfcontrol-cli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-selfcontrol-cli.debug.xcconfig"; path = "Pods/Target Support Files/Pods-selfcontrol-cli/Pods-selfcontrol-cli.debug.xcconfig"; sourceTree = "<group>"; };
 		5B0B636B0CB5B5BE37A21733 /* TimerViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
@@ -618,8 +620,6 @@
 		AA00010010000000000005 /* AboutView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		AA00010010000000000006 /* TimerContentRootView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerContentRootView.swift; sourceTree = "<group>"; };
 		AA00010010000000000099 /* UnifiedRootView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UnifiedRootView.swift; sourceTree = "<group>"; };
-		FE0002A0000000000010 /* TimerPillView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerPillView.swift; sourceTree = "<group>"; };
-		FE0002A0000000000020 /* TimerPillWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerPillWindowController.swift; sourceTree = "<group>"; };
 		AB8F1BC31F41E2C8C4E43C3F /* Pods-SelfControl Killer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl Killer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl Killer/Pods-SelfControl Killer.debug.xcconfig"; sourceTree = "<group>"; };
 		AC314640D6BA965F8DCDCBCA /* BlocklistViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BlocklistViewModel.swift; sourceTree = "<group>"; };
 		B6108221AF79699BC8DBD625 /* Pods-SCKillerHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCKillerHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-SCKillerHelper/Pods-SCKillerHelper.release.xcconfig"; sourceTree = "<group>"; };
@@ -1522,6 +1522,12 @@
 		F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCTimeIntervalFormatter.m; sourceTree = "<group>"; };
 		F90F62B5E4250B46C36FADDE /* SpaceGrotesk-Light.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "SpaceGrotesk-Light.ttf"; sourceTree = "<group>"; };
 		FABC47D7C1FB584448EF1EE4 /* Pods-SelfControl-SelfControlTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl-SelfControlTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests.release.xcconfig"; sourceTree = "<group>"; };
+		FE0002A0000000000010 /* TimerPillView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerPillView.swift; sourceTree = "<group>"; };
+		FE0002A0000000000020 /* TimerPillWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerPillWindowController.swift; sourceTree = "<group>"; };
+		42D9093E11C44BBCB2F50B9A /* BlockMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockMode.swift; sourceTree = "<group>"; };
+		3941F436E747487694172C97 /* ModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeViewModel.swift; sourceTree = "<group>"; };
+		2D512578E7B84CC2AF253508 /* ModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSelector.swift; sourceTree = "<group>"; };
+		137C87D8DFA946C0963C32C8 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1609,6 +1615,7 @@
 				20D53480A19A81A5149FC38D /* NothingSegmentedSlider.swift */,
 				C6329AF92109829A97449825 /* NothingTextField.swift */,
 				354AD4B5AABD832B2FBFF2C3 /* NothingToggle.swift */,
+				2D512578E7B84CC2AF253508 /* ModeSelector.swift */,
 			);
 			name = Components;
 			path = SwiftUI/Components;
@@ -1740,6 +1747,7 @@
 				AC314640D6BA965F8DCDCBCA /* BlocklistViewModel.swift */,
 				BCEE112AF2152AF6872B03DE /* PreferencesViewModel.swift */,
 				5B0B636B0CB5B5BE37A21733 /* TimerViewModel.swift */,
+				3941F436E747487694172C97 /* ModeViewModel.swift */,
 			);
 			name = ViewModels;
 			path = SwiftUI/ViewModels;
@@ -1761,6 +1769,7 @@
 				AA00010010000000000099 /* UnifiedRootView.swift */,
 				FE0002A0000000000010 /* TimerPillView.swift */,
 				FE0002A0000000000020 /* TimerPillWindowController.swift */,
+				137C87D8DFA946C0963C32C8 /* MenuBarContentView.swift */,
 			);
 			name = Views;
 			path = SwiftUI/Views;
@@ -1769,8 +1778,7 @@
 		8F38274389A294F7A7B5F1AE /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				55C4CCFA40B43B90B4CE5FB6 /* Doto-Bold.ttf */,
-				140A82561E73F62E4E95D2BC /* Doto-Regular.ttf */,
+				140A82561E73F62E4E95D2BC /* Ndot57-Regular.otf */,
 				9F8E767043B7F9807B06D5F9 /* SpaceGrotesk-Bold.ttf */,
 				F90F62B5E4250B46C36FADDE /* SpaceGrotesk-Light.ttf */,
 				DC1D7B53DCF530E2051FA211 /* SpaceGrotesk-Medium.ttf */,
@@ -1782,11 +1790,21 @@
 			path = SwiftUI/Resources/Fonts;
 			sourceTree = SOURCE_ROOT;
 		};
+		AAMODELS0000000000000001 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				42D9093E11C44BBCB2F50B9A /* BlockMode.swift */,
+			);
+			name = Models;
+			path = SwiftUI/Models;
+			sourceTree = SOURCE_ROOT;
+		};
 		AC658851806AF944368DEBEF /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
 				4830ABC5AE05CBCAA5C4D2EC /* DesignSystem */,
 				0153F21E4BA5515C7337879C /* Components */,
+				AAMODELS0000000000000001 /* Models */,
 				6F273B7A7D18E9564DEBFD03 /* ViewModels */,
 				79D042803D11126CF4BF13C2 /* Views */,
 				FD589C65B5A52C6EEC31E8E0 /* Bridge */,
@@ -3556,8 +3574,7 @@
 				CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */,
 				CB1B44BE23B7F1ED00EBA087 /* cheater-background.png in Resources */,
 				CB1465C425B0285300130D2E /* SCError.strings in Resources */,
-				CD0D294BBD4640EECD2F4B4C /* Doto-Bold.ttf in Resources */,
-				66B07849B87D5EDCBB617179 /* Doto-Regular.ttf in Resources */,
+				66B07849B87D5EDCBB617179 /* Ndot57-Regular.otf in Resources */,
 				0713E0F452EB99DD5F59339C /* SpaceGrotesk-Bold.ttf in Resources */,
 				A421D15DF8FA97D3AA3C274B /* SpaceGrotesk-Light.ttf in Resources */,
 				02511A865D756BEDDD36D3B8 /* SpaceGrotesk-Medium.ttf in Resources */,
@@ -3989,6 +4006,10 @@
 				AA00010020000000000099 /* UnifiedRootView.swift in Sources */,
 				FE0002A0000000000001 /* TimerPillView.swift in Sources */,
 				FE0002A0000000000002 /* TimerPillWindowController.swift in Sources */,
+				B0E04A26AA5A463F920B3464 /* BlockMode.swift in Sources */,
+				A6E71D66307443B48B956FE9 /* ModeViewModel.swift in Sources */,
+				D265D5875925448AA152DC54 /* ModeSelector.swift in Sources */,
+				4BA154940D42403E858BAD35 /* MenuBarContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

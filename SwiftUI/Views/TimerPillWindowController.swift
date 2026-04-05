@@ -40,6 +40,7 @@ private class TransparentHostingView<Content: View>: NSHostingView<Content> {
 
     /// Shared view models from the bridge — the pill reads the same timer state.
     private var timerVM: TimerViewModel { SelfControlBridge.shared.timerVM }
+    private var modeVM: ModeViewModel { SelfControlBridge.shared.modeVM }
     private var blockState: BlockStateViewModel { SelfControlBridge.shared.blockState }
     private var preferencesVM: PreferencesViewModel { SelfControlBridge.shared.preferencesVM }
 
@@ -59,7 +60,7 @@ private class TransparentHostingView<Content: View>: NSHostingView<Content> {
 
         let pillView = TimerPillView()
             .environment(timerVM)
-            .padding(24) // space for shadow to render outside the pill
+            .environment(modeVM)
 
         let hostingView = TransparentHostingView(rootView: pillView)
         hostingView.setFrameSize(hostingView.fittingSize)

@@ -12,33 +12,34 @@ enum SettingsSection: String, CaseIterable, Identifiable {
 
 // MARK: - SettingsContainerView
 
-/// Sidebar + content layout for the settings area.
+/// Compact settings layout for the menu bar popover.
 ///
-/// Three sidebar items (text-only, Space Mono uppercase) with a
-/// vertical divider and content area that swaps per selection.
+/// Uses a horizontal tab bar (Space Mono ALL CAPS) at the top instead
+/// of a sidebar, fitting within the 320px popover width.
 @available(macOS 16.0, *)
 struct SettingsContainerView: View {
 
     @State private var selectedSection: SettingsSection = .blocklist
 
     var body: some View {
-        HStack(spacing: 0) {
-            // MARK: Sidebar
+        VStack(spacing: 0) {
+            // MARK: Tab Bar
 
-            VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: NothingTheme.spaceXS) {
                 ForEach(SettingsSection.allCases) { section in
-                    sidebarItem(section)
+                    tabItem(section)
                 }
                 Spacer()
             }
-            .frame(width: 140)
+            .padding(.horizontal, NothingTheme.spaceMD)
             .padding(.top, NothingTheme.spaceSM)
 
             // MARK: Divider
 
             Rectangle()
                 .fill(NothingColors.borderVisible)
-                .frame(width: 1)
+                .frame(height: 1)
+                .padding(.top, NothingTheme.spaceXS)
 
             // MARK: Content
 
@@ -56,9 +57,9 @@ struct SettingsContainerView: View {
         }
     }
 
-    // MARK: - Sidebar Item
+    // MARK: - Tab Item
 
-    private func sidebarItem(_ section: SettingsSection) -> some View {
+    private func tabItem(_ section: SettingsSection) -> some View {
         Button {
             withAnimation(.easeOut(duration: NothingTheme.microDuration)) {
                 selectedSection = section
@@ -73,9 +74,8 @@ struct SettingsContainerView: View {
                         ? NothingColors.textDisplay
                         : NothingColors.textSecondary
                 )
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, NothingTheme.spaceMD)
-                .padding(.horizontal, NothingTheme.spaceLG)
+                .padding(.vertical, NothingTheme.spaceSM)
+                .padding(.horizontal, NothingTheme.spaceSM)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -90,6 +90,7 @@ struct SettingsContainerView: View {
         .environment(BlocklistViewModel())
         .environment(BlockStateViewModel())
         .environment(PreferencesViewModel())
-        .frame(width: 500, height: 500)
+        .environment(ModeViewModel())
+        .frame(width: 320, height: 340)
         .background(NothingColors.background)
 }

@@ -36,7 +36,7 @@ struct ExtendBlockModal: View {
             // MARK: Duration Display
 
             Text(extensionDescription)
-                .font(.nothingDisplayLG)
+                .nothingDisplayLG()
                 .foregroundColor(NothingColors.textDisplay)
 
             // MARK: Slider

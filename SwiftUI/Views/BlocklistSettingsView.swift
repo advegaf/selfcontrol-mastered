@@ -2,21 +2,23 @@ import SwiftUI
 
 // MARK: - BlocklistSettingsView
 
-/// Blocklist/Allowlist editor for the settings sidebar.
+/// Blocklist/Allowlist editor for the settings area.
 ///
 /// Features:
-/// - Permanent text field at top for adding new entries
+/// - A | B mode tabs at top to switch between mode blocklists
+/// - Per-mode blocklist/allowlist toggle
+/// - Permanent text field for adding new entries
 /// - Single-click inline editing of existing entries
-/// - Blocklist/Allowlist mode toggle via segmented control
-/// - Remove button and import dropdown in bottom toolbar
+/// - Import dropdown for preset lists
 /// - Read-only mode during active blocks
 @available(macOS 16.0, *)
 struct BlocklistSettingsView: View {
 
-    @Environment(BlocklistViewModel.self) private var blocklistVM
+    @Environment(ModeViewModel.self) private var modeVM
     @Environment(BlockStateViewModel.self) private var blockState
     @Environment(PreferencesViewModel.self) private var preferences
 
+    @State private var editingModeID: ModeID = .a
     @State private var newDomainText: String = ""
     @State private var editingIndex: Int? = nil
     @State private var editingText: String = ""
@@ -30,23 +32,50 @@ struct BlocklistSettingsView: View {
         blockState.blockIsActive
     }
 
+    /// The domains for the currently selected mode tab.
+    private var currentDomains: [String] {
+        modeVM.mode(for: editingModeID).domains
+    }
+
+    /// Whether the current mode tab is in allowlist mode.
+    private var currentIsAllowlist: Bool {
+        modeVM.mode(for: editingModeID).isAllowlist
+    }
+
     var body: some View {
-        @Bindable var blocklistVM = blocklistVM
-
         VStack(spacing: 0) {
-            // MARK: Mode Toggle
+            // MARK: Mode Tabs (A | B) + Allowlist Toggle
 
-            NothingSegmentedControl(
-                items: [
-                    (label: "BLOCKLIST", value: false),
-                    (label: "ALLOWLIST", value: true)
-                ],
-                selected: $blocklistVM.isAllowlist
-            )
+            HStack(spacing: NothingTheme.spaceXS) {
+                ForEach(ModeID.allCases) { id in
+                    modeTab(id)
+                }
+
+                Spacer()
+
+                // Allowlist/Blocklist toggle
+                Button {
+                    guard !isReadOnly else { return }
+                    var mode = modeVM.mode(for: editingModeID)
+                    mode.isAllowlist.toggle()
+                    modeVM.update(mode)
+                } label: {
+                    Text(currentIsAllowlist ? "ALLOWLIST" : "BLOCKLIST")
+                        .font(.spaceMono(.regular, size: 10))
+                        .textCase(.uppercase)
+                        .tracking(NothingTheme.labelTracking * 10)
+                        .foregroundColor(
+                            currentIsAllowlist
+                                ? NothingColors.interactive
+                                : NothingColors.textSecondary
+                        )
+                }
+                .buttonStyle(.plain)
+                .disabled(isReadOnly)
+            }
             .padding(.horizontal, NothingTheme.spaceMD)
-            .padding(.top, NothingTheme.spaceMD)
-            .padding(.bottom, NothingTheme.spaceMD)
-            .disabled(isReadOnly)
+            .padding(.top, NothingTheme.spaceSM)
+            .padding(.bottom, NothingTheme.spaceSM)
 
             // MARK: Add Field
 
@@ -59,7 +88,7 @@ struct BlocklistSettingsView: View {
 
             ScrollView {
                 LazyVStack(spacing: 0) {
-                    ForEach(Array(blocklistVM.domains.enumerated()), id: \.offset) { index, domain in
+                    ForEach(Array(currentDomains.enumerated()), id: \.offset) { index, domain in
                         domainRow(domain: domain, index: index)
                     }
                 }
@@ -69,12 +98,12 @@ struct BlocklistSettingsView: View {
             // MARK: Read-Only Notice
 
             if isReadOnly {
-                Text("BLOCKLIST LOCKED DURING ACTIVE BLOCK")
-                    .font(.spaceMono(.regular, size: 11))
+                Text("LOCKED DURING ACTIVE BLOCK")
+                    .font(.spaceMono(.regular, size: 10))
                     .textCase(.uppercase)
-                    .tracking(NothingTheme.labelTracking * 11)
+                    .tracking(NothingTheme.labelTracking * 10)
                     .foregroundColor(NothingColors.textDisabled)
-                    .padding(.vertical, NothingTheme.spaceMD)
+                    .padding(.vertical, NothingTheme.spaceSM)
             }
 
             // MARK: Toolbar
@@ -85,6 +114,11 @@ struct BlocklistSettingsView: View {
                     .padding(.vertical, NothingTheme.spaceSM)
             }
         }
+        .onChange(of: editingModeID) { _, _ in
+            cancelEdit()
+            selectedIndex = nil
+            newDomainText = ""
+        }
         .onChange(of: isEditFieldFocused) { _, focused in
             if !focused, let index = editingIndex {
                 commitEdit(at: index)
@@ -92,19 +126,48 @@ struct BlocklistSettingsView: View {
         }
     }
 
+    // MARK: - Mode Tab
+
+    private func modeTab(_ id: ModeID) -> some View {
+        Button {
+            withAnimation(.easeOut(duration: NothingTheme.microDuration)) {
+                editingModeID = id
+            }
+        } label: {
+            Text(id.label)
+                .font(.spaceMono(.bold, size: 12))
+                .foregroundColor(
+                    editingModeID == id
+                        ? NothingColors.textDisplay
+                        : NothingColors.textDisabled
+                )
+                .frame(width: 28, height: 26)
+                .background(
+                    editingModeID == id
+                        ? NothingColors.surface
+                        : Color.clear
+                )
+                .cornerRadius(NothingTheme.radiusTechnical)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
     // MARK: - Add Field
 
     private var addField: some View {
         VStack(spacing: 0) {
             TextField("example.com", text: $newDomainText)
-                .font(.spaceMono(.regular, size: 15))
+                .font(.spaceMono(.regular, size: 13))
                 .foregroundColor(NothingColors.textPrimary)
                 .textFieldStyle(.plain)
                 .focused($isAddFieldFocused)
                 .onSubmit {
                     let trimmed = newDomainText.trimmingCharacters(in: .whitespacesAndNewlines)
                     guard !trimmed.isEmpty else { return }
-                    blocklistVM.addDomain(trimmed)
+                    var mode = modeVM.mode(for: editingModeID)
+                    mode.domains.append(trimmed)
+                    modeVM.update(mode)
                     newDomainText = ""
                 }
                 .padding(.vertical, NothingTheme.spaceSM)
@@ -113,7 +176,7 @@ struct BlocklistSettingsView: View {
                 .fill(isAddFieldFocused ? NothingColors.textPrimary : NothingColors.borderVisible)
                 .frame(height: 1)
         }
-        .padding(.bottom, NothingTheme.spaceSM)
+        .padding(.bottom, NothingTheme.spaceXS)
     }
 
     // MARK: - Domain Row
@@ -122,19 +185,19 @@ struct BlocklistSettingsView: View {
         VStack(spacing: 0) {
             HStack {
                 if editingIndex == index && !isReadOnly {
-                    // Inline editing TextField
                     TextField("", text: $editingText)
-                        .font(.spaceMono(.regular, size: 15))
+                        .font(.spaceMono(.regular, size: 13))
                         .foregroundColor(NothingColors.textPrimary)
                         .textFieldStyle(.plain)
                         .focused($isEditFieldFocused)
                         .onSubmit { commitEdit(at: index) }
                         .onExitCommand { cancelEdit() }
                 } else {
-                    // Display text
                     Text(domain.isEmpty ? " " : domain)
-                        .font(.spaceMono(.regular, size: 15))
-                        .foregroundColor(domainColor(for: domain))
+                        .font(.spaceMono(.regular, size: 13))
+                        .foregroundColor(NothingColors.textPrimary)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
                 }
                 Spacer()
             }
@@ -147,39 +210,25 @@ struct BlocklistSettingsView: View {
             )
             .onTapGesture {
                 guard !isReadOnly else { return }
-                if editingIndex == index {
-                    return // already editing this row
-                }
-                // Commit any existing edit first
+                if editingIndex == index { return }
                 if let existingIndex = editingIndex {
                     commitEdit(at: existingIndex)
                 }
                 startEditing(index)
             }
 
-            Divider()
+            Rectangle()
+                .fill(NothingColors.border)
                 .frame(height: 1)
-                .background(NothingColors.border)
         }
-    }
-
-    private func domainColor(for domain: String) -> Color {
-        if domain.isEmpty {
-            return NothingColors.textDisabled
-        }
-        if !blocklistVM.isValidDomain(domain) {
-            return NothingColors.accent
-        }
-        return NothingColors.textPrimary
     }
 
     // MARK: - Editing
 
     private func startEditing(_ index: Int) {
         editingIndex = index
-        editingText = blocklistVM.domains[index]
+        editingText = currentDomains[index]
         selectedIndex = index
-        // Delay focus to allow view update
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             isEditFieldFocused = true
         }
@@ -187,14 +236,17 @@ struct BlocklistSettingsView: View {
 
     private func commitEdit(at index: Int) {
         guard editingIndex == index else { return }
-        blocklistVM.updateDomain(at: index, newValue: editingText)
+        let trimmed = editingText.trimmingCharacters(in: .whitespacesAndNewlines)
+        var mode = modeVM.mode(for: editingModeID)
+        if trimmed.isEmpty {
+            mode.domains.remove(at: index)
+            selectedIndex = nil
+        } else {
+            mode.domains[index] = trimmed
+        }
+        modeVM.update(mode)
         editingIndex = nil
         editingText = ""
-        // Adjust selectedIndex if domain was removed (empty edit)
-        let trimmed = editingText.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty {
-            selectedIndex = nil
-        }
     }
 
     private func cancelEdit() {
@@ -210,18 +262,21 @@ struct BlocklistSettingsView: View {
             Button {
                 if let index = selectedIndex ?? editingIndex {
                     if editingIndex != nil { cancelEdit() }
-                    blocklistVM.removeDomain(at: index)
-                    if blocklistVM.domains.isEmpty {
+                    var mode = modeVM.mode(for: editingModeID)
+                    guard mode.domains.indices.contains(index) else { return }
+                    mode.domains.remove(at: index)
+                    modeVM.update(mode)
+                    if mode.domains.isEmpty {
                         selectedIndex = nil
                     } else {
-                        selectedIndex = min(index, blocklistVM.domains.count - 1)
+                        selectedIndex = min(index, mode.domains.count - 1)
                     }
                 }
             } label: {
                 Image(systemName: "minus")
                     .font(.system(size: 14, weight: .regular))
                     .foregroundColor(NothingColors.textSecondary)
-                    .frame(width: 32, height: 32)
+                    .frame(width: 28, height: 28)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
@@ -232,7 +287,7 @@ struct BlocklistSettingsView: View {
 
             // Import dropdown
             NothingDropdown(
-                label: "IMPORT",
+                label: "",
                 options: ["Common Distractions", "News & Publications", "NSFW"],
                 selected: $importSelection,
                 onSelect: { option in
@@ -240,23 +295,31 @@ struct BlocklistSettingsView: View {
                     importSelection = "IMPORT"
                 }
             )
-            .frame(width: 220)
         }
     }
 
     // MARK: - Actions
 
     private func handleImport(_ option: String) {
+        var mode = modeVM.mode(for: editingModeID)
+        let existingSet = Set(mode.domains)
+
+        let newEntries: [String]
         switch option {
         case "Common Distractions":
-            blocklistVM.importCommonDistractions()
+            newEntries = (HostImporter.commonDistractingWebsites() as? [String]) ?? []
         case "News & Publications":
-            blocklistVM.importNews()
+            newEntries = (HostImporter.newsAndPublications() as? [String]) ?? []
         case "NSFW":
-            blocklistVM.importNSFW()
+            newEntries = (HostImporter.nsfwWebsites() as? [String]) ?? []
         default:
-            break
+            return
         }
+
+        let unique = newEntries.filter { !existingSet.contains($0) }
+        guard !unique.isEmpty else { return }
+        mode.domains.append(contentsOf: unique)
+        modeVM.update(mode)
     }
 }
 
@@ -265,9 +328,9 @@ struct BlocklistSettingsView: View {
 @available(macOS 16.0, *)
 #Preview {
     BlocklistSettingsView()
-        .environment(BlocklistViewModel())
+        .environment(ModeViewModel())
         .environment(BlockStateViewModel())
         .environment(PreferencesViewModel())
-        .frame(width: 440, height: 500)
+        .frame(width: 450, height: 340)
         .background(NothingColors.background)
 }

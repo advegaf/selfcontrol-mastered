@@ -97,8 +97,8 @@ struct PreferencesSettingsView: View {
                         .toggleStyle(NothingToggleStyle())
                 }
             }
-            .padding(NothingTheme.spaceXL)
-            .padding(.trailing, NothingTheme.spaceSM)
+            .padding(.horizontal, NothingTheme.spaceMD)
+            .padding(.vertical, NothingTheme.spaceLG)
         }
     }
 

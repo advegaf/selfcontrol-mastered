@@ -24,7 +24,7 @@ struct MainSetupView: View {
             // MARK: Primary — Duration Display
 
             Text(blockState.durationDescription)
-                .font(.nothingDisplayXL)
+                .nothingDisplayXL()
                 .foregroundColor(NothingColors.textDisplay)
                 .textCase(.uppercase)
 

@@ -117,6 +117,16 @@ final class TimerViewModel {
         }
     }
 
+    /// Extend the countdown by adding seconds to the end date.
+    /// Updates the UI immediately without waiting for daemon confirmation.
+    func extend(by seconds: TimeInterval) {
+        guard let currentEnd = endDate else { return }
+        let newEnd = currentEnd.addingTimeInterval(seconds)
+        self.endDate = newEnd
+        totalDuration += seconds
+        updateTimeRemaining()
+    }
+
     /// Stop the countdown and reset the timer.
     func stop() {
         timer?.invalidate()

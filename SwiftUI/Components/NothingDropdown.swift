@@ -10,12 +10,14 @@ struct NothingDropdown: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: NothingTheme.spaceSM) {
-            // Label
-            Text(label)
-                .font(Font.spaceMono(.regular, size: 11))
-                .textCase(.uppercase)
-                .tracking(0.88) // 0.08em at 11px
-                .foregroundColor(NothingColors.textSecondary)
+            // Label (hidden when empty)
+            if !label.isEmpty {
+                Text(label)
+                    .font(Font.spaceMono(.regular, size: 11))
+                    .textCase(.uppercase)
+                    .tracking(0.88) // 0.08em at 11px
+                    .foregroundColor(NothingColors.textSecondary)
+            }
 
             // Menu Trigger
             Menu {
