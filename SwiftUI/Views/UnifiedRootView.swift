@@ -2,9 +2,8 @@ import SwiftUI
 
 // MARK: - UnifiedRootView
 
-/// Single root view for the entire app window. Replaces the two-window
-/// architecture (ContentRootView + TimerContentRootView) with a state-driven
-/// content swap inside one NSWindow.
+/// Single root view for the entire app window. State-driven content swap
+/// inside one NSWindow.
 ///
 /// Content is selected by `timer.hasStarted`:
 /// - `false` → MainSetupView (configure and start a block)
@@ -19,13 +18,6 @@ struct UnifiedRootView: View {
     @Environment(PreferencesViewModel.self) private var preferences
 
     @State private var showSettings: Bool = false
-
-    private let configNotification = NotificationCenter.default.publisher(
-        for: NSNotification.Name("SCConfigurationChangedNotification")
-    )
-    private let distributedConfigNotification = DistributedNotificationCenter.default().publisher(
-        for: NSNotification.Name("SCConfigurationChangedNotification")
-    )
 
     var body: some View {
         ZStack {
@@ -93,21 +85,7 @@ struct UnifiedRootView: View {
             }
             .animation(.easeOut(duration: NothingTheme.transitionDuration), value: timer.hasStarted)
         }
-        .onAppear {
-            tryStartTimerIfNeeded()
-            // Retry with increasing delays — on app launch during an active block,
-            // settings may not be loaded yet and daemon won't fire a new notification.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { tryStartTimerIfNeeded() }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { tryStartTimerIfNeeded() }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { tryStartTimerIfNeeded() }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) { tryStartTimerIfNeeded() }
-        }
-        .onReceive(configNotification) { _ in
-            tryStartTimerIfNeeded()
-        }
-        .onReceive(distributedConfigNotification) { _ in
-            tryStartTimerIfNeeded()
-        }
+        .blockTimerCoordination()
         .onChange(of: timer.hasStarted) { _, started in
             // Floating window preference: float during active block
             if let window = NSApp.windows.first {
@@ -121,33 +99,6 @@ struct UnifiedRootView: View {
             if !started && showSettings {
                 showSettings = false
             }
-        }
-        .onChange(of: blockState.addingBlock) { _, adding in
-            if adding {
-                // Safety timeout: if addingBlock stays true for 30s, the XPC
-                // chain probably failed. Reset so the user can try again.
-                DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
-                    if blockState.addingBlock {
-                        if let appController = NSApp.delegate as? AppController {
-                            appController.addingBlock = false
-                        }
-                        blockState.refresh()
-                    }
-                }
-            }
-        }
-    }
-
-    // MARK: - Timer Start
-
-    /// Checks if a block is active and starts the countdown if possible.
-    /// Called on appear, with retries, and on every configuration-changed
-    /// notification.
-    private func tryStartTimerIfNeeded() {
-        SCSettings.shared().reload()
-        blockState.refresh()
-        if !timer.hasStarted, blockState.blockIsActive, let endDate = blockState.blockEndDate {
-            timer.start(endDate: endDate)
         }
     }
 }

@@ -61,6 +61,7 @@ private class TransparentHostingView<Content: View>: NSHostingView<Content> {
         let pillView = TimerPillView()
             .environment(timerVM)
             .environment(modeVM)
+            .environment(blockState)
 
         let hostingView = TransparentHostingView(rootView: pillView)
         hostingView.setFrameSize(hostingView.fittingSize)

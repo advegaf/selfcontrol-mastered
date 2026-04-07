@@ -4,6 +4,8 @@
 
 release/
 version-header.h
+dist/
+build-test/
 
 *~.nib
 

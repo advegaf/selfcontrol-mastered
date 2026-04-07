@@ -16,6 +16,17 @@ SelfControl Mastered is a redesigned fork of SelfControl for macOS with a Nothin
 - **Block modes** — switch between different blocking configurations
 - **Menu bar integration** — quick access popover from the menu bar
 
+## Install
+
+Download the latest `SelfControl-1.0.0.dmg` from the [Releases page](https://github.com/advegaf/selfcontrol-mastered/releases).
+
+1. Open the DMG and drag **SelfControl** to the **Applications** folder.
+2. Launch SelfControl from Applications.
+3. On first run, SelfControl will ask for permission to install a small background helper that enforces blocks. Click **Open System Settings**, then enable the toggle next to SelfControl under **System Settings → General → Login Items & Extensions**.
+4. Return to SelfControl. You're ready to start your first block.
+
+The helper service is required because macOS isolates background processes — only an approved Login Item can keep your block running while the app is closed. This is a one-time setup.
+
 ## Credits
 
 Remodeled by [Angel Vega](https://advegaf.com). Forked from [Charlie Stigler](http://charliestigler.com), [Steve Lambert](http://visitsteve.com), and [others](https://github.com/SelfControlApp/selfcontrol/graphs/contributors).
@@ -40,3 +51,13 @@ Or manually:
 1. `pod install`
 2. Open `SelfControl.xcworkspace` (not `.xcodeproj`)
 3. Build and run
+
+## Releasing
+
+Maintainers only. Cuts a fully signed, notarized, and stapled DMG ready for distribution.
+
+```bash
+./release.sh
+```
+
+The script clean-builds Release, notarizes the app, generates the Nothing-style DMG background, builds and styles the DMG window, then notarizes and staples the DMG. Output: `dist/SelfControl-<version>.dmg`. Requires a `Developer ID Application` certificate and a `notarytool` keychain profile named `selfcontrol-notary`.

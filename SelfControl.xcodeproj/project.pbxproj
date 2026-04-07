@@ -37,19 +37,17 @@
 		A421D15DF8FA97D3AA3C274B /* SpaceGrotesk-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F90F62B5E4250B46C36FADDE /* SpaceGrotesk-Light.ttf */; };
 		A868C8598E3CA7C3155881BD /* SpaceMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 67767ACA7F890C7BE9687193 /* SpaceMono-Regular.ttf */; };
 		A87B2637FE8986BCC0B365B7 /* MainSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A6BAAA49080A9B0692F847 /* MainSetupView.swift */; };
-		AA00010020000000000001 /* ContentRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000001 /* ContentRootView.swift */; };
+		BB0001A0000000000020 /* BlockTimerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001A0000000000010 /* BlockTimerCoordinator.swift */; };
+		BB0001A0000000000040 /* SCKeyablePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001A0000000000030 /* SCKeyablePanel.swift */; };
 		AA00010020000000000002 /* SettingsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000002 /* SettingsContainerView.swift */; };
 		AA00010020000000000003 /* BlocklistSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000003 /* BlocklistSettingsView.swift */; };
 		AA00010020000000000004 /* PreferencesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000004 /* PreferencesSettingsView.swift */; };
 		AA00010020000000000005 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000005 /* AboutView.swift */; };
-		AA00010020000000000006 /* TimerContentRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000006 /* TimerContentRootView.swift */; };
 		AA00010020000000000099 /* UnifiedRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000099 /* UnifiedRootView.swift */; };
 		ADE090ECA2EFBA7BBC78527E /* NothingColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CE9BFBD857992B6D42FE3E /* NothingColors.swift */; };
 		B4134042E0B4B30CFB53528B /* NothingDotGridBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375C126E6666F565DE4EFAB5 /* NothingDotGridBackground.swift */; };
 		B973AFFA15DB5F4875610A8B /* libPods-org.eyebeam.selfcontrold.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76AA0C4370638521F5CBDD26 /* libPods-org.eyebeam.selfcontrold.a */; };
 		C76364614CBFED485D636886 /* BlocklistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC314640D6BA965F8DCDCBCA /* BlocklistViewModel.swift */; };
-		CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DD19D77051004614B6 /* PreferencesAdvancedViewController.xib */; };
-		CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DF19D77051004614B6 /* PreferencesGeneralViewController.xib */; };
 		CB066F6C2652037E0076964D /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
 		CB066F91265203800076964D /* HostFileBlockerSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5888B225F6056400B5C64D /* HostFileBlockerSet.m */; };
 		CB066F92265203830076964D /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
@@ -240,7 +238,6 @@
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 		CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		D154FBE547030F5D335A791E /* NothingDropdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09417F7A132A32092CE927FF /* NothingDropdown.swift */; };
-		EE044E06494797C743BF9CDC /* NothingSegmentedProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29A8495091924B363EFC48E /* NothingSegmentedProgress.swift */; };
 		F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */; };
 		FE0002A0000000000001 /* TimerPillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0002A0000000000010 /* TimerPillView.swift */; };
 		FE0002A0000000000002 /* TimerPillWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0002A0000000000020 /* TimerPillWindowController.swift */; };
@@ -613,19 +610,18 @@
 		A7A6BAAA49080A9B0692F847 /* MainSetupView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MainSetupView.swift; sourceTree = "<group>"; };
 		A8CE9BFBD857992B6D42FE3E /* NothingColors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingColors.swift; sourceTree = "<group>"; };
 		A9AA4B09947773858F671B4C /* Pods-SelfControl-SelfControlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl-SelfControlTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests.debug.xcconfig"; sourceTree = "<group>"; };
-		AA00010010000000000001 /* ContentRootView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentRootView.swift; sourceTree = "<group>"; };
+		BB0001A0000000000010 /* BlockTimerCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BlockTimerCoordinator.swift; sourceTree = "<group>"; };
+		BB0001A0000000000030 /* SCKeyablePanel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SCKeyablePanel.swift; sourceTree = "<group>"; };
 		AA00010010000000000002 /* SettingsContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsContainerView.swift; sourceTree = "<group>"; };
 		AA00010010000000000003 /* BlocklistSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BlocklistSettingsView.swift; sourceTree = "<group>"; };
 		AA00010010000000000004 /* PreferencesSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PreferencesSettingsView.swift; sourceTree = "<group>"; };
 		AA00010010000000000005 /* AboutView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
-		AA00010010000000000006 /* TimerContentRootView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerContentRootView.swift; sourceTree = "<group>"; };
 		AA00010010000000000099 /* UnifiedRootView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UnifiedRootView.swift; sourceTree = "<group>"; };
 		AB8F1BC31F41E2C8C4E43C3F /* Pods-SelfControl Killer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl Killer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl Killer/Pods-SelfControl Killer.debug.xcconfig"; sourceTree = "<group>"; };
 		AC314640D6BA965F8DCDCBCA /* BlocklistViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BlocklistViewModel.swift; sourceTree = "<group>"; };
 		B6108221AF79699BC8DBD625 /* Pods-SCKillerHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCKillerHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-SCKillerHelper/Pods-SCKillerHelper.release.xcconfig"; sourceTree = "<group>"; };
 		BCEE112AF2152AF6872B03DE /* PreferencesViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
 		BD7534A9984FEEEA1321133E /* ExtendBlockModal.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExtendBlockModal.swift; sourceTree = "<group>"; };
-		C29A8495091924B363EFC48E /* NothingSegmentedProgress.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingSegmentedProgress.swift; sourceTree = "<group>"; };
 		C6329AF92109829A97449825 /* NothingTextField.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingTextField.swift; sourceTree = "<group>"; };
 		CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SelfControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0EEF6120FD8CE00024D27B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1611,7 +1607,6 @@
 				6CD7F79D56FCC6B7C3BC9098 /* NothingModalContainer.swift */,
 				1842E7C4FD72A2D5952F2EB4 /* NothingPillButton.swift */,
 				75272ADD0E4DBB52D2E3C543 /* NothingSegmentedControl.swift */,
-				C29A8495091924B363EFC48E /* NothingSegmentedProgress.swift */,
 				20D53480A19A81A5149FC38D /* NothingSegmentedSlider.swift */,
 				C6329AF92109829A97449825 /* NothingTextField.swift */,
 				354AD4B5AABD832B2FBFF2C3 /* NothingToggle.swift */,
@@ -1760,12 +1755,12 @@
 				BD7534A9984FEEEA1321133E /* ExtendBlockModal.swift */,
 				A7A6BAAA49080A9B0692F847 /* MainSetupView.swift */,
 				4125AB7FC384B3B77373767C /* TimerView.swift */,
-				AA00010010000000000001 /* ContentRootView.swift */,
+				BB0001A0000000000010 /* BlockTimerCoordinator.swift */,
+				BB0001A0000000000030 /* SCKeyablePanel.swift */,
 				AA00010010000000000002 /* SettingsContainerView.swift */,
 				AA00010010000000000003 /* BlocklistSettingsView.swift */,
 				AA00010010000000000004 /* PreferencesSettingsView.swift */,
 				AA00010010000000000005 /* AboutView.swift */,
-				AA00010010000000000006 /* TimerContentRootView.swift */,
 				AA00010010000000000099 /* UnifiedRootView.swift */,
 				FE0002A0000000000010 /* TimerPillView.swift */,
 				FE0002A0000000000020 /* TimerPillWindowController.swift */,
@@ -1876,8 +1871,6 @@
 				CBBF4E7D1582F7A200E364D9 /* MainMenu.xib */,
 				CBBF4E7B1582F7A200E364D9 /* DomainList.xib */,
 				CBBF4EE715830D7300E364D9 /* TimerWindow.xib */,
-				CB0385DF19D77051004614B6 /* PreferencesGeneralViewController.xib */,
-				CB0385DD19D77051004614B6 /* PreferencesAdvancedViewController.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -3564,14 +3557,12 @@
 				CBDB118C2084239D0010397E /* FirstTime.xib in Resources */,
 				CB62FC3024B11A4F00ADBC40 /* selfcontrold-Info.plist in Resources */,
 				CBBF4EE515830D7300E364D9 /* TimerWindow.xib in Resources */,
-				CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */,
 				CB40A8680FBC7DE700167727 /* SelfControlBlocklist.icns in Resources */,
 				CBBF4E7F1582F7A200E364D9 /* DomainList.xib in Resources */,
 				CBBF4E801582F7A200E364D9 /* MainMenu.xib in Resources */,
 				CBBF4E8B1582F8BD00E364D9 /* InfoPlist.strings in Resources */,
 				CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */,
 				CBBF4E8E1582F8E000E364D9 /* Localizable.strings in Resources */,
-				CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */,
 				CB1B44BE23B7F1ED00EBA087 /* cheater-background.png in Resources */,
 				CB1465C425B0285300130D2E /* SCError.strings in Resources */,
 				66B07849B87D5EDCBB617179 /* Ndot57-Regular.otf in Resources */,
@@ -3984,7 +3975,6 @@
 				47712760D15AFA1530C91109 /* NothingModalContainer.swift in Sources */,
 				1C33671376E694ED468927B8 /* NothingPillButton.swift in Sources */,
 				6301193B1BDB58B38FCF5799 /* NothingSegmentedControl.swift in Sources */,
-				EE044E06494797C743BF9CDC /* NothingSegmentedProgress.swift in Sources */,
 				5E2FDDB9630DDA1F846BE9FD /* NothingSegmentedSlider.swift in Sources */,
 				765849906CA11F86805EAF00 /* NothingTextField.swift in Sources */,
 				048C28FAFA001787447EB9F6 /* NothingToggle.swift in Sources */,
@@ -3997,12 +3987,12 @@
 				A87B2637FE8986BCC0B365B7 /* MainSetupView.swift in Sources */,
 				0D97604FBA23346092099739 /* TimerView.swift in Sources */,
 				0856EC4C22A2B7D57F3FE7B1 /* SelfControlBridge.swift in Sources */,
-				AA00010020000000000001 /* ContentRootView.swift in Sources */,
+				BB0001A0000000000020 /* BlockTimerCoordinator.swift in Sources */,
+				BB0001A0000000000040 /* SCKeyablePanel.swift in Sources */,
 				AA00010020000000000002 /* SettingsContainerView.swift in Sources */,
 				AA00010020000000000003 /* BlocklistSettingsView.swift in Sources */,
 				AA00010020000000000004 /* PreferencesSettingsView.swift in Sources */,
 				AA00010020000000000005 /* AboutView.swift in Sources */,
-				AA00010020000000000006 /* TimerContentRootView.swift in Sources */,
 				AA00010020000000000099 /* UnifiedRootView.swift in Sources */,
 				FE0002A0000000000001 /* TimerPillView.swift in Sources */,
 				FE0002A0000000000002 /* TimerPillWindowController.swift in Sources */,
@@ -4179,20 +4169,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		CB0385DD19D77051004614B6 /* PreferencesAdvancedViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-			);
-			name = PreferencesAdvancedViewController.xib;
-			sourceTree = "<group>";
-		};
-		CB0385DF19D77051004614B6 /* PreferencesGeneralViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-			);
-			name = PreferencesGeneralViewController.xib;
-			sourceTree = "<group>";
-		};
 		CB9C810219CFB79700CDCAE1 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -4323,7 +4299,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 410;
+				CURRENT_PROJECT_VERSION = 1000;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = DV483F72N3;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4360,7 +4336,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 410;
+				CURRENT_PROJECT_VERSION = 1000;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = DV483F72N3;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4427,7 +4403,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 4.0.2;
+				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "-o library,hard,kill,runtime";
 				SDKROOT = macosx;
@@ -4475,7 +4451,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 4.0.2;
+				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CODE_SIGN_FLAGS = "-o library,hard,kill,runtime";
 				SDKROOT = macosx;
@@ -4571,7 +4547,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 410;
+				CURRENT_PROJECT_VERSION = 1000;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = DV483F72N3;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -4618,7 +4594,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 410;
+				CURRENT_PROJECT_VERSION = 1000;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = DV483F72N3;
 				GCC_MODEL_TUNING = G5;
@@ -4673,7 +4649,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 410;
+				CURRENT_PROJECT_VERSION = 1000;
 				DEVELOPMENT_TEAM = DV483F72N3;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4721,7 +4697,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 410;
+				CURRENT_PROJECT_VERSION = 1000;
 				DEVELOPMENT_TEAM = DV483F72N3;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -4841,7 +4817,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 410;
+				CURRENT_PROJECT_VERSION = 1000;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = DV483F72N3;
 				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n";
@@ -4879,7 +4855,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 410;
+				CURRENT_PROJECT_VERSION = 1000;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = DV483F72N3;
 				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n";

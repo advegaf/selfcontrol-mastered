@@ -14,6 +14,14 @@ struct TimerPillView: View {
 
     @Environment(TimerViewModel.self) private var timer
     @Environment(ModeViewModel.self) private var modeVM
+    @Environment(BlockStateViewModel.self) private var blockState
+
+    // MARK: - Shake State
+
+    /// Horizontal offset applied to the pill capsule for the failure-shake animation.
+    /// Driven by `.selfControlPillShake` notification posted by `BlockTimerCoordinator`
+    /// when an optimistic extension got clamped or rejected by the daemon.
+    @State private var shakeOffset: CGFloat = 0
 
     // MARK: - Dimming Logic
 
@@ -46,11 +54,32 @@ struct TimerPillView: View {
         .animation(.easeOut(duration: 0.15), value: timer.hours)
         .animation(.easeOut(duration: 0.15), value: timer.minutes)
         .animation(.easeOut(duration: 0.15), value: timer.seconds)
+        .offset(x: shakeOffset)
         .onTapGesture {
             NotificationCenter.default.post(
                 name: .selfControlTogglePopover,
                 object: nil
             )
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .selfControlPillShake)) { _ in
+            playShake()
+        }
+    }
+
+    // MARK: - Shake Animation
+
+    /// Three-oscillation horizontal shake (~6pt amplitude) used to signal that an
+    /// optimistic extension got clamped or rejected by the daemon. Total duration ~240ms.
+    private func playShake() {
+        let amplitude: CGFloat = 6
+        let step: TimeInterval = 0.04
+        let offsets: [CGFloat] = [-amplitude, amplitude, -amplitude, amplitude, -amplitude / 2, 0]
+        for (i, value) in offsets.enumerated() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + step * Double(i)) {
+                withAnimation(.easeOut(duration: step)) {
+                    shakeOffset = value
+                }
+            }
         }
     }
 
@@ -113,12 +142,19 @@ struct TimerPillView: View {
 
     // MARK: - Extend Block
 
+    /// Optimistically bumps the displayed countdown and asks `AppController` to
+    /// persist the new block end date via the daemon XPC. The minutes are clamped
+    /// to the user's configured `MaxBlockLength` so the optimistic display matches
+    /// what the daemon will actually write — preventing a surprise pull-back.
+    /// If the daemon rejects or clamps further, `BlockTimerCoordinator` reconciles
+    /// the running timer and shakes the pill (see `playShake()`).
     private func extendBlock(minutes: Int) {
-        // Instant UI update
-        timer.extend(by: TimeInterval(minutes * 60))
-        // Persist via daemon XPC
+        let cap = blockState.maxBlockLength
+        let clamped = (cap > 0) ? min(minutes, cap) : minutes
+        guard clamped > 0 else { return }
+        timer.extend(by: TimeInterval(clamped * 60))
         guard let appController = NSApp.delegate as? AppController else { return }
-        appController.extendBlockTime(minutes, lock: nil)
+        appController.extendBlockTime(clamped, lock: nil)
     }
 }
 
@@ -128,4 +164,7 @@ extension Notification.Name {
     static let selfControlTogglePopover = Notification.Name("SelfControlTogglePopover")
     static let selfControlShowTimerPill = Notification.Name("SelfControlShowTimerPill")
     static let selfControlHideTimerPill = Notification.Name("SelfControlHideTimerPill")
+    /// Posted by `BlockTimerCoordinator` when an optimistic extend was clamped or
+    /// rejected by the daemon and the pill should shake to surface the failure.
+    static let selfControlPillShake = Notification.Name("SelfControlPillShake")
 }

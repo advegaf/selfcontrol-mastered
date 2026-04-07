@@ -21,7 +21,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "AppController.h"
-// MASPreferences and Obj-C preference controllers replaced by SwiftUI
+#import "SCDurationSlider.h"
 #import "SCTimeIntervalFormatter.h"
 #import <LetsMove/PFMoveApplication.h>
 #import "SCSettings.h"
@@ -30,6 +30,7 @@
 #import "SCBlockFileReaderWriter.h"
 #import "SCUIUtilities.h"
 #import "SelfControl-Swift.h"
+#import <UserNotifications/UserNotifications.h>
 
 @interface AppController () {}
 
@@ -37,9 +38,7 @@
 
 @end
 
-@implementation AppController {
-	NSWindowController* getStartedWindowController;
-}
+@implementation AppController
 
 @synthesize addingBlock;
 
@@ -50,18 +49,9 @@
 		[defaults_ registerDefaults: SCConstants.defaultUserDefaults];
 
 		self.addingBlock = false;
-
-		// refreshUILock_ is a lock that prevents a race condition by making the refreshUserInterface
-		// method alter the blockIsOn variable atomically (will no longer be necessary once we can
-		// use properties).
-		refreshUILock_ = [[NSLock alloc] init];
 	}
 
 	return self;
-}
-
-- (IBAction)updateTimeSliderDisplay:(id)sender {
-    // SwiftUI handles slider display updates via BlockStateViewModel
 }
 
 - (IBAction)addBlock:(id)sender {
@@ -96,8 +86,6 @@
     if (![self showLongBlockWarningsIfNecessary]) {
         return;
     }
-
-	[timerWindowController_ resetStrikes];
 
 	[NSThread detachNewThreadSelector: @selector(installBlock) toTarget: self withObject: nil];
 }
@@ -157,11 +145,6 @@
         return;
     }
 
-	if(![refreshUILock_ tryLock]) {
-		// already refreshing the UI, no need to wait and do it again
-		return;
-	}
-
 	BOOL blockWasOn = blockIsOn;
 	blockIsOn = [SCUIUtilities blockIsRunning];
 
@@ -183,11 +166,14 @@
 			[self closeDomainList];
 
             // Send system notification
-            NSUserNotificationCenter* userNoteCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
-            NSUserNotification* endedNote = [NSUserNotification new];
-            endedNote.title = @"Your SelfControl block has ended!";
-            endedNote.informativeText = @"All sites are now accessible.";
-            [userNoteCenter deliverNotification: endedNote];
+            UNMutableNotificationContent *noteContent = [UNMutableNotificationContent new];
+            noteContent.title = @"Your SelfControl block has ended!";
+            noteContent.body = @"All sites are now accessible.";
+            UNNotificationRequest *noteRequest = [UNNotificationRequest requestWithIdentifier:@"blockEnded"
+                                                                                      content:noteContent
+                                                                                      trigger:nil];
+            [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:noteRequest
+                                                                   withCompletionHandler:nil];
 		}
 	}
 
@@ -211,8 +197,6 @@
     NSString* editListString = NSLocalizedString(([NSString stringWithFormat: @"Edit %@", listType]), @"Edit list button / menu item");
 
     editBlocklistMenuItem_.title = editListString;
-
-	[refreshUILock_ unlock];
 }
 
 - (void)handleConfigurationChangedNotification {
@@ -231,28 +215,13 @@
         [domainListWindowController_ refreshDomainList];
     }
     
-    // SwiftUI UnifiedRootView listens for this notification directly.
-    // No need to forward to timerWindowController_.
-
     // and our interface may need to change to match!
     [self refreshUserInterface];
-}
-
-- (void)showTimerWindow {
-    // No-op: menu bar popover handles timer display.
-}
-
-- (void)closeTimerWindow {
-    // No-op: menu bar popover handles view transitions.
 }
 
 - (IBAction)openPreferences:(id)sender {
     // Open the popover to show settings
     [self togglePopover: nil];
-}
-
-- (IBAction)showGetStartedWindow:(id)sender {
-    // Onboarding removed — no-op
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
@@ -461,7 +430,7 @@
 
 - (void)showMenuPanel {
     if (self.menuPanel == nil) {
-        NSPanel *panel = [[NSPanel alloc]
+        SCKeyablePanel *panel = [[SCKeyablePanel alloc]
             initWithContentRect:NSMakeRect(0, 0, 450, 380)
                       styleMask:NSWindowStyleMaskBorderless | NSWindowStyleMaskNonactivatingPanel
                         backing:NSBackingStoreBuffered
@@ -507,7 +476,8 @@
         [self.menuPanel setFrameOrigin:NSMakePoint(x, y)];
     }
 
-    [self.menuPanel orderFrontRegardless];
+    [NSApp activate];
+    [self.menuPanel makeKeyAndOrderFront:nil];
 
     // Monitor for clicks outside to dismiss
     self.clickMonitor = [NSEvent addGlobalMonitorForEventsMatchingMask:
@@ -515,13 +485,27 @@
         handler:^(NSEvent *event) {
             [self dismissMenuPanel];
         }];
+
+    self.localClickMonitor = [NSEvent addLocalMonitorForEventsMatchingMask:
+        (NSEventMaskLeftMouseDown | NSEventMaskRightMouseDown)
+        handler:^NSEvent *(NSEvent *event) {
+            if (event.window != self.menuPanel) {
+                [self dismissMenuPanel];
+            }
+            return event;
+        }];
 }
 
 - (void)dismissMenuPanel {
     [self.menuPanel orderOut:nil];
+    [NSApp deactivate];
     if (self.clickMonitor) {
         [NSEvent removeMonitor:self.clickMonitor];
         self.clickMonitor = nil;
+    }
+    if (self.localClickMonitor) {
+        [NSEvent removeMonitor:self.localClickMonitor];
+        self.localClickMonitor = nil;
     }
 }
 
@@ -600,12 +584,6 @@
     }
   
     [self updateBlockEndDate: lock minutesToAdd: minutesToAdd];
-//    [NSThread detachNewThreadSelector: @selector(extendBlockDuration:)
-//                             toTarget: self
-//                           withObject: @{
-//                                         @"lock": lock,
-//                                         @"minutesToAdd": @(minutesToAdd)
-//                                                                                                    }];
 }
 
 - (void)dealloc {
@@ -615,18 +593,6 @@
 	[[NSDistributedNotificationCenter defaultCenter] removeObserver: self
 															   name: @"SCConfigurationChangedNotification"
 															 object: nil];
-}
-
-- (id)initialWindow {
-	return nil; // No main window — menu bar app
-}
-
-- (id)domainListWindowController {
-	return domainListWindowController_;
-}
-
-- (void)setDomainListWindowController:(id)newController {
-	domainListWindowController_ = newController;
 }
 
 - (void)installBlock {
@@ -707,14 +673,12 @@
         NSLog(@"Refreshed connection updating active blocklist!");
         [self.xpc updateBlocklist: [self->defaults_ arrayForKey: @"Blocklist"]
                             reply:^(NSError * _Nonnull error) {
-            [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
-            
             if (error != nil) {
                 [SCUIUtilities presentError: error];
             } else {
                 [SCSentry addBreadcrumb: @"Blocklist updated successfully" category:@"app"];
             }
-            
+
             [lockToUse unlock];
         }];
     }];
@@ -731,7 +695,11 @@
 }
 
 - (void)updateBlockEndDate:(NSLock*)lockToUse minutesToAdd:(NSInteger)minutesToAdd {
-    if(![lockToUse tryLock]) {
+    // Lock is optional. SwiftUI callers (TimerPillView, ExtendBlockModal) pass nil
+    // because the daemon already serializes XPC writes and the user-facing flow
+    // intentionally allows multiple in-flight extends. Legacy TimerWindowController
+    // still passes a real lock for its old single-window contention model.
+    if (lockToUse != nil && ![lockToUse tryLock]) {
         return;
     }
     [SCSentry addBreadcrumb: @"App running updateBlockEndDate method" category:@"app"];
@@ -755,14 +723,13 @@
         NSLog(@"Refreshed connection updating active block end date!");
         [self.xpc updateBlockEndDate: newBlockEndDate
                                reply:^(NSError * _Nonnull error) {
-            [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
-
-            if (error != nil) {
-                [SCUIUtilities presentError: error];
-            } else {
+            // Errors are surfaced to the SwiftUI pill via reconcile-and-shake
+            // (BlockTimerCoordinator observes BlockEndDate changes and shakes
+            // the pill on a downward correction). No modal here.
+            if (error == nil) {
                 [SCSentry addBreadcrumb: @"App extended block duration successfully" category:@"app"];
             }
-            
+
             [lockToUse unlock];
         }];
     }];

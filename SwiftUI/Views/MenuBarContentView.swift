@@ -23,13 +23,6 @@ struct MenuBarContentView: View {
     @State private var showSettings: Bool = false
     @State private var errorMessage: String? = nil
 
-    private let configNotification = NotificationCenter.default.publisher(
-        for: NSNotification.Name("SCConfigurationChangedNotification")
-    )
-    private let distributedConfigNotification = DistributedNotificationCenter.default().publisher(
-        for: NSNotification.Name("SCConfigurationChangedNotification")
-    )
-
     var body: some View {
         ZStack {
             NothingDotGridBackground(style: preferences.backgroundStyle)
@@ -63,30 +56,7 @@ struct MenuBarContentView: View {
             .animation(.easeOut(duration: NothingTheme.transitionDuration), value: timer.hasStarted)
         }
         .frame(width: 450, height: 380)
-        .onAppear {
-            tryStartTimerIfNeeded()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { tryStartTimerIfNeeded() }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { tryStartTimerIfNeeded() }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { tryStartTimerIfNeeded() }
-        }
-        .onReceive(configNotification) { _ in
-            tryStartTimerIfNeeded()
-        }
-        .onReceive(distributedConfigNotification) { _ in
-            tryStartTimerIfNeeded()
-        }
-        .onChange(of: blockState.addingBlock) { _, adding in
-            if adding {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
-                    if blockState.addingBlock {
-                        if let appController = NSApp.delegate as? AppController {
-                            appController.addingBlock = false
-                        }
-                        blockState.refresh()
-                    }
-                }
-            }
-        }
+        .blockTimerCoordination()
         .onChange(of: timer.hasStarted) { _, started in
             // Close settings when transitioning back to idle
             if !started && showSettings {
@@ -306,15 +276,6 @@ struct MenuBarContentView: View {
         blockState.startBlock()
     }
 
-    // MARK: - Timer Start
-
-    private func tryStartTimerIfNeeded() {
-        SCSettings.shared().reload()
-        blockState.refresh()
-        if !timer.hasStarted, blockState.blockIsActive, let endDate = blockState.blockEndDate {
-            timer.start(endDate: endDate)
-        }
-    }
 }
 
 // MARK: - Preview

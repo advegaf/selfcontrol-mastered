@@ -20,29 +20,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Forward declaration to avoid compiler weirdness
-@class TimerWindowController;
-
 #import <Cocoa/Cocoa.h>
 #import "DomainListWindowController.h"
-#import "TimerWindowController.h"
 #import <Security/Security.h>
 #import <SystemConfiguration/SCNetwork.h>
 #import <unistd.h>
 #import "SCSettings.h"
-#import "SCDurationSlider.h"
 
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
 @interface AppController : NSObject <NSApplicationDelegate> {
-	IBOutlet NSMenuItem* domainListMenuItem_;
     IBOutlet NSMenuItem* editBlocklistMenuItem_;
 
 	IBOutlet DomainListWindowController* domainListWindowController_;
-	IBOutlet TimerWindowController* timerWindowController_;
 	NSUserDefaults* defaults_;
     SCSettings* settings_;
-	NSLock* refreshUILock_;
 	BOOL blockIsOn;
 	BOOL addingBlock;
 }
@@ -51,10 +43,7 @@
 @property (nonatomic, strong) NSStatusItem *statusItem;
 @property (nonatomic, strong) NSPanel *menuPanel;
 @property (nonatomic, strong) id clickMonitor;
-
-// Called when the block duration slider is moved.  Updates the label that gives
-// the block duration in words (hours and minutes).
-- (IBAction)updateTimeSliderDisplay:(id)sender;
+@property (nonatomic, strong) id localClickMonitor;
 
 // Called when the main Start button is clicked.  Launchs installBlock in another
 // thread after some checking and syncing.
@@ -67,12 +56,6 @@
 // Called when the "Edit blocklist" button is clicked or the menu item is
 // selected.  Opens settings inside the popover.
 - (IBAction)showDomainList:(id)sender;
-
-// No-op: window management removed.
-- (void)showTimerWindow;
-
-// No-op: window management removed.
-- (void)closeTimerWindow;
 
 // Calls the close method of our DomainListWindowController
 - (void)closeDomainList;
@@ -94,8 +77,6 @@
 // open preferences panel
 - (IBAction)openPreferences:(id)sender;
 
-- (IBAction)showGetStartedWindow:(id)sender;
-
 // Opens a save panel and saves the blocklist.
 - (IBAction)save:(id)sender;
 
@@ -108,16 +89,11 @@
 // opens the SelfControl Support Hub in the default browser
 - (IBAction)openSupportHub:(id)sender;
 
-// Called by timerWindowController_ after its sheet returns, to add a specified
-// host to the blocklist (and refresh the block to use the new blocklist).
+// Add a host to the blocklist and refresh the active block.
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock;
 
-// Called by timerWindowController_ after its sheet returns, to add a specified
-// number of minutes to the block timer.
+// Extend the active block by a specified number of minutes.
 - (void)extendBlockTime:(NSInteger)minutes lock:(NSLock*)lock;
-
-// Property allows initialWindow to be accessed (returns nil for menu bar app)
-@property (nonatomic, readonly, strong) id initialWindow;
 
 // Sets up the menu bar status item and popover
 - (void)setupStatusItem;

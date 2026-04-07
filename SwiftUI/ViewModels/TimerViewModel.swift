@@ -117,14 +117,34 @@ final class TimerViewModel {
         }
     }
 
-    /// Extend the countdown by adding seconds to the end date.
+    /// Optimistically extend the countdown by adding seconds to the end date.
     /// Updates the UI immediately without waiting for daemon confirmation.
+    /// `reconcile(to:)` will overwrite this with the daemon's authoritative value
+    /// once `SCConfigurationChangedNotification` fires.
     func extend(by seconds: TimeInterval) {
         guard let currentEnd = endDate else { return }
         let newEnd = currentEnd.addingTimeInterval(seconds)
         self.endDate = newEnd
         totalDuration += seconds
         updateTimeRemaining()
+    }
+
+    /// Reconcile the running countdown against the persistent `BlockEndDate` from
+    /// `SCSettings`. Called by `BlockTimerCoordinator` whenever
+    /// `BlockStateViewModel.blockEndDate` changes. Returns `true` when the new
+    /// authoritative value is meaningfully *earlier* than what was being displayed
+    /// (i.e. an optimistic extension was clamped, rejected, or otherwise reversed),
+    /// so the caller can trigger a shake on the pill.
+    @discardableResult
+    func reconcile(to newEndDate: Date) -> Bool {
+        let previous = self.endDate ?? newEndDate
+        let delta = newEndDate.timeIntervalSince(previous)
+        self.endDate = newEndDate
+        // Keep totalDuration aligned with whatever the new authoritative end date
+        // implies, so progress stays sane after a reconciliation.
+        totalDuration = max(1, totalDuration + delta)
+        updateTimeRemaining()
+        return delta < -1.0
     }
 
     /// Stop the countdown and reset the timer.
