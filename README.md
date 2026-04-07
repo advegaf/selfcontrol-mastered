@@ -37,7 +37,7 @@ SelfControl is free software under the GPL. See [this file](./COPYING) for more 
 
 ## Building
 
-Requires macOS 16.0+, Xcode, and CocoaPods.
+Requires macOS 26.0+, Xcode 17+, and CocoaPods.
 
 ```bash
 git clone https://github.com/advegaf/selfcontrol-mastered.git
@@ -60,4 +60,12 @@ Maintainers only. Cuts a fully signed, notarized, and stapled DMG ready for dist
 ./release.sh
 ```
 
-The script clean-builds Release, notarizes the app, generates the Nothing-style DMG background, builds and styles the DMG window, then notarizes and staples the DMG. Output: `dist/SelfControl-<version>.dmg`. Requires a `Developer ID Application` certificate and a `notarytool` keychain profile named `selfcontrol-notary`.
+The script does a clean Release build, re-signs every embedded binary with hardened runtime + secure timestamp (stripping debug entitlements and re-signing the bundled Sparkle framework), notarizes and staples the `.app`, generates the Nothing-style DMG background image at 660×400 @2x retina, builds the DMG via `sindresorhus/create-dmg` and post-processes it (swaps the background TIFF and rewrites `.DS_Store` with a centered icon layout), then signs, notarizes, and staples the final DMG. Output: `dist/SelfControl-<version>.dmg`.
+
+Run `REBUILD=1 ./release.sh` to force a fresh build (otherwise the script reuses the cached notarized `.app` from `dist/build/`).
+
+**Prerequisites**:
+- Developer ID Application certificate in your keychain
+- Notarytool keychain profile named `selfcontrol-notary` — configure once with `xcrun notarytool store-credentials selfcontrol-notary --apple-id <id> --team-id DV483F72N3 --password <app-specific-password>`
+- Node.js (for `npx create-dmg`) — `brew install node`
+- Python `ds_store` and `mac_alias` — `pip3 install --user ds-store mac-alias`
