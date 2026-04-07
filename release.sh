@@ -306,20 +306,39 @@ hdiutil attach -readwrite -noverify "${RW_DMG}" >/dev/null
 readonly MOUNT_DIR="/Volumes/SelfControl"
 [[ -d "${MOUNT_DIR}" ]] || die "expected mount at ${MOUNT_DIR} but it's missing"
 
-# Swap the background TIFF with ours (sindresorhus's alias still resolves
-# because we keep the same path inside the volume).
+# Swap the background TIFF with ours, and move it OUT of the .background/
+# folder so the folder doesn't show up to Show-All-Files users. The Python
+# block below regenerates the alias bytes for the new file location via
+# `mac_alias.Alias.for_file()`.
 cp "${DIST}/dmg-background.tiff" "${MOUNT_DIR}/.background/dmg-background.tiff"
 
-# Rewrite the .DS_Store with our preferred icon size + positions while
-# preserving sindresorhus's working backgroundImageAlias bytes. The ds_store
-# library has a bug updating existing entries on certain layouts, so we
-# extract → delete → recreate from scratch.
-PYTHONPATH="${DSSTORE_SITE}" "${DSSTORE_PY}" - "${MOUNT_DIR}/.DS_Store" <<'PY'
-import sys, os
+# Rewrite .DS_Store: relocate the background to a single dot-prefix file at
+# the volume root, regenerate the alias for the new path, recreate the
+# .DS_Store from scratch (the ds_store library has a tree-traversal bug when
+# updating existing entries on sindresorhus's layout, so write a fresh file).
+PYTHONPATH="${DSSTORE_SITE}" "${DSSTORE_PY}" - "${MOUNT_DIR}" <<'PY'
+import sys, os, shutil
 from ds_store import DSStore
-ds_path = sys.argv[1]
-with DSStore.open(ds_path, 'r') as ds:
-    bg_alias = ds['.']['icvp'].get('backgroundImageAlias')
+from mac_alias import Alias
+
+mount = sys.argv[1]
+ds_path = os.path.join(mount, '.DS_Store')
+old_bg  = os.path.join(mount, '.background', 'dmg-background.tiff')
+new_bg  = os.path.join(mount, '.bg.tiff')
+
+# Move background to a flat dot-prefix file at the volume root, then drop
+# the empty .background/ directory.
+shutil.move(old_bg, new_bg)
+try:
+    os.rmdir(os.path.join(mount, '.background'))
+except OSError as e:
+    print(f"warning: could not rmdir .background: {e}", file=sys.stderr)
+
+# Build a fresh alias bytes blob pointing at the new location.
+new_alias = Alias.for_file(new_bg).to_bytes()
+print(f"new alias: {len(new_alias)} bytes for {new_bg}")
+
+# Write a fresh .DS_Store with our centered icon layout + the new alias.
 os.remove(ds_path)
 with DSStore.open(ds_path, 'w+') as ds:
     ds['.']['icvp'] = {
@@ -327,7 +346,7 @@ with DSStore.open(ds_path, 'w+') as ds:
         'backgroundColorBlue':  0.0,
         'backgroundColorGreen': 0.0,
         'backgroundColorRed':   0.0,
-        'backgroundImageAlias': bg_alias,
+        'backgroundImageAlias': new_alias,
         'backgroundType':       2,
         'gridOffsetX':          0.0,
         'gridOffsetY':          0.0,
@@ -363,14 +382,18 @@ PY
 # Delete sindresorhus's custom volume icon (one fewer hidden file in the root)
 rm -f "${MOUNT_DIR}/.VolumeIcon.icns"
 
-# Hide every remaining dot-prefix file from Finder (best-effort; users with
-# AppleShowAllFiles=YES will still see them, normal users won't)
-for f in "${MOUNT_DIR}/.background" "${MOUNT_DIR}/.DS_Store" "${MOUNT_DIR}/.fseventsd"; do
+# Hide remaining dot-prefix files for non-Show-All-Files users
+for f in "${MOUNT_DIR}/.bg.tiff" "${MOUNT_DIR}/.DS_Store"; do
     [[ -e "$f" ]] && chflags hidden "$f" 2>/dev/null || true
 done
 
+# Last write before sync: nuke .fseventsd. macOS auto-creates this on every
+# filesystem event, so we have to do it as the very last operation, then
+# sync and detach immediately. The detach makes the volume read-only, which
+# prevents any further fsevents from materializing.
+rm -rf "${MOUNT_DIR}/.fseventsd"
+
 sync; sync
-sleep 1
 hdiutil detach "${MOUNT_DIR}" >/dev/null \
     || hdiutil detach "${MOUNT_DIR}" -force >/dev/null
 

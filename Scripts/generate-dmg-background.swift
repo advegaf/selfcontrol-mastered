@@ -265,17 +265,21 @@ drawCenteredLabel("FORK / NOTHING DESIGN",
                   color: textDisabled,
                   tracking: 2.0)
 
-// Tertiary install hint near the bottom of the window, below the icon row.
+// Tertiary install hint sits in the breathing room between the hero
+// typography (ends ~y=170) and the icon row (centers at y=270, top edge
+// of icon body at ~y=222 with 96px icons). Putting the hint at y=210
+// places it visually adjacent to the icons it describes, well above the
+// icon labels — so it never collides.
 let hintWidth = drawCenteredLabel("DRAG TO INSTALL",
                                   centerXLogical: cx - 12,
-                                  baselineYLogical: 372,
+                                  baselineYLogical: 210,
                                   font: hintMono,
                                   color: textSecondary,
                                   tracking: 2.0)
 // Arrow → starts just after the hint and points right.
 let hintRightLogical = (cx - 12) + (hintWidth / scale) / 2
-drawArrow(fromLogical: CGPoint(x: hintRightLogical + 8,  y: 368),
-          toLogical:   CGPoint(x: hintRightLogical + 24, y: 368),
+drawArrow(fromLogical: CGPoint(x: hintRightLogical + 8,  y: 206),
+          toLogical:   CGPoint(x: hintRightLogical + 24, y: 206),
           color: textSecondary)
 
 NSGraphicsContext.restoreGraphicsState()
