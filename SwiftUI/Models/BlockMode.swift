@@ -43,10 +43,6 @@ struct BlockMode: Codable, Equatable {
 
     // MARK: - Defaults
 
-    static func defaultA() -> BlockMode {
-        BlockMode(id: .a, durationMinutes: 0, domains: [], isAllowlist: false)
-    }
-
     static func defaultB() -> BlockMode {
         BlockMode(id: .b, durationMinutes: 0, domains: [], isAllowlist: false)
     }

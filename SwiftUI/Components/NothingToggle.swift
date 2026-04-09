@@ -45,35 +45,3 @@ struct NothingToggleStyle: ToggleStyle {
     }
 }
 
-// MARK: - Convenience View
-
-struct NothingToggle: View {
-    let label: String
-    @Binding var isOn: Bool
-
-    var body: some View {
-        Toggle(label, isOn: $isOn)
-            .toggleStyle(NothingToggleStyle())
-    }
-}
-
-// MARK: - Preview
-
-#Preview {
-    struct TogglePreview: View {
-        @State private var blockEnabled = true
-        @State private var notifyEnabled = false
-
-        var body: some View {
-            VStack(spacing: 24) {
-                NothingToggle(label: "Block enabled", isOn: $blockEnabled)
-                NothingToggle(label: "Notifications", isOn: $notifyEnabled)
-            }
-            .padding(40)
-            .frame(width: 320)
-            .background(NothingColors.background)
-        }
-    }
-
-    return TogglePreview()
-}

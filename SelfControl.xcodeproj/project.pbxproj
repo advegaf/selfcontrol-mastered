@@ -12,41 +12,37 @@
 		048C28FAFA001787447EB9F6 /* NothingToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354AD4B5AABD832B2FBFF2C3 /* NothingToggle.swift */; };
 		0713E0F452EB99DD5F59339C /* SpaceGrotesk-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F8E767043B7F9807B06D5F9 /* SpaceGrotesk-Bold.ttf */; };
 		0856EC4C22A2B7D57F3FE7B1 /* SelfControlBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B9DC73003000E2650267D0 /* SelfControlBridge.swift */; };
-		0D97604FBA23346092099739 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125AB7FC384B3B77373767C /* TimerView.swift */; };
 		1000CDC7CF5A16BB7C73505C /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEE112AF2152AF6872B03DE /* PreferencesViewModel.swift */; };
 		11F2C295DC7CC0390D379820 /* libPods-selfcontrol-cli.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE54F8769B7134FB513C4650 /* libPods-selfcontrol-cli.a */; };
 		1C33671376E694ED468927B8 /* NothingPillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1842E7C4FD72A2D5952F2EB4 /* NothingPillButton.swift */; };
 		2649FB4668791D03ACE94C25 /* Pods_SelfControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D7E92613B36AE2C94542AC /* Pods_SelfControl.framework */; };
-		273CE5977595E33F08BB21ED /* ExtendBlockModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7534A9984FEEEA1321133E /* ExtendBlockModal.swift */; };
 		42C0327695353CFBED2ECA6B /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B636B0CB5B5BE37A21733 /* TimerViewModel.swift */; };
 		47006584BC290729D6FE7ABF /* libPods-SCKillerHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBEBE222030882B7A217D22D /* libPods-SCKillerHelper.a */; };
 		47227FCB63EFA78B5C4789B9 /* BlockStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830E6297DB4054194B9833C6 /* BlockStateViewModel.swift */; };
-		47712760D15AFA1530C91109 /* NothingModalContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD7F79D56FCC6B7C3BC9098 /* NothingModalContainer.swift */; };
+		4BA154940D42403E858BAD35 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137C87D8DFA946C0963C32C8 /* MenuBarContentView.swift */; };
 		51DEDA1D038E8487A4AB503B /* Pods_SelfControl_SelfControlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 170C73CB13CBF2705CF0BAF2 /* Pods_SelfControl_SelfControlTests.framework */; };
 		5320202D3A2AE00D9E7FFF7E /* SpaceGrotesk-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF99B44CF60E167A663DA640 /* SpaceGrotesk-Regular.ttf */; };
 		56A78048BAAB7C7447DE80EC /* NothingTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602FADAD122DC627ABB162DE /* NothingTheme.swift */; };
 		5E2FDDB9630DDA1F846BE9FD /* NothingSegmentedSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D53480A19A81A5149FC38D /* NothingSegmentedSlider.swift */; };
 		6301193B1BDB58B38FCF5799 /* NothingSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75272ADD0E4DBB52D2E3C543 /* NothingSegmentedControl.swift */; };
-		640A583A059C7BF52BBECCCE /* AddToBlocklistModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E72E6012107C1B4FCC300B6 /* AddToBlocklistModal.swift */; };
 		66B07849B87D5EDCBB617179 /* Ndot57-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 140A82561E73F62E4E95D2BC /* Ndot57-Regular.otf */; };
 		6AC2F204FE41A00F300DC5FC /* NothingFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5617C8598327CAD7F8E73EC1 /* NothingFonts.swift */; };
-		765849906CA11F86805EAF00 /* NothingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6329AF92109829A97449825 /* NothingTextField.swift */; };
 		8B1C81DAD28B4F21DBEAF820 /* SpaceMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F454A18A2105B58E99C3060 /* SpaceMono-Bold.ttf */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		A421D15DF8FA97D3AA3C274B /* SpaceGrotesk-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F90F62B5E4250B46C36FADDE /* SpaceGrotesk-Light.ttf */; };
+		A6E71D66307443B48B956FE9 /* ModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3941F436E747487694172C97 /* ModeViewModel.swift */; };
 		A868C8598E3CA7C3155881BD /* SpaceMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 67767ACA7F890C7BE9687193 /* SpaceMono-Regular.ttf */; };
-		A87B2637FE8986BCC0B365B7 /* MainSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A6BAAA49080A9B0692F847 /* MainSetupView.swift */; };
-		BB0001A0000000000020 /* BlockTimerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001A0000000000010 /* BlockTimerCoordinator.swift */; };
-		BB0001A0000000000040 /* SCKeyablePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001A0000000000030 /* SCKeyablePanel.swift */; };
 		AA00010020000000000002 /* SettingsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000002 /* SettingsContainerView.swift */; };
 		AA00010020000000000003 /* BlocklistSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000003 /* BlocklistSettingsView.swift */; };
 		AA00010020000000000004 /* PreferencesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000004 /* PreferencesSettingsView.swift */; };
 		AA00010020000000000005 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000005 /* AboutView.swift */; };
-		AA00010020000000000099 /* UnifiedRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010010000000000099 /* UnifiedRootView.swift */; };
 		ADE090ECA2EFBA7BBC78527E /* NothingColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CE9BFBD857992B6D42FE3E /* NothingColors.swift */; };
+		B0E04A26AA5A463F920B3464 /* BlockMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9093E11C44BBCB2F50B9A /* BlockMode.swift */; };
 		B4134042E0B4B30CFB53528B /* NothingDotGridBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375C126E6666F565DE4EFAB5 /* NothingDotGridBackground.swift */; };
 		B973AFFA15DB5F4875610A8B /* libPods-org.eyebeam.selfcontrold.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76AA0C4370638521F5CBDD26 /* libPods-org.eyebeam.selfcontrold.a */; };
+		BB0001A0000000000020 /* BlockTimerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001A0000000000010 /* BlockTimerCoordinator.swift */; };
+		BB0001A0000000000040 /* SCKeyablePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001A0000000000030 /* SCKeyablePanel.swift */; };
 		C76364614CBFED485D636886 /* BlocklistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC314640D6BA965F8DCDCBCA /* BlocklistViewModel.swift */; };
 		CB066F6C2652037E0076964D /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
 		CB066F91265203800076964D /* HostFileBlockerSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5888B225F6056400B5C64D /* HostFileBlockerSet.m */; };
@@ -238,13 +234,10 @@
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 		CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		D154FBE547030F5D335A791E /* NothingDropdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09417F7A132A32092CE927FF /* NothingDropdown.swift */; };
+		D265D5875925448AA152DC54 /* ModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D512578E7B84CC2AF253508 /* ModeSelector.swift */; };
 		F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */; };
 		FE0002A0000000000001 /* TimerPillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0002A0000000000010 /* TimerPillView.swift */; };
 		FE0002A0000000000002 /* TimerPillWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0002A0000000000020 /* TimerPillWindowController.swift */; };
-		B0E04A26AA5A463F920B3464 /* BlockMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9093E11C44BBCB2F50B9A /* BlockMode.swift */; };
-		A6E71D66307443B48B956FE9 /* ModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3941F436E747487694172C97 /* ModeViewModel.swift */; };
-		D265D5875925448AA152DC54 /* ModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D512578E7B84CC2AF253508 /* ModeSelector.swift */; };
-		4BA154940D42403E858BAD35 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137C87D8DFA946C0963C32C8 /* MenuBarContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -567,8 +560,8 @@
 
 /* Begin PBXFileReference section */
 		09417F7A132A32092CE927FF /* NothingDropdown.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingDropdown.swift; sourceTree = "<group>"; };
-		0E72E6012107C1B4FCC300B6 /* AddToBlocklistModal.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddToBlocklistModal.swift; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		137C87D8DFA946C0963C32C8 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
 		140A82561E73F62E4E95D2BC /* Ndot57-Regular.otf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "Ndot57-Regular.otf"; sourceTree = "<group>"; };
 		170C73CB13CBF2705CF0BAF2 /* Pods_SelfControl_SelfControlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelfControl_SelfControlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1842E7C4FD72A2D5952F2EB4 /* NothingPillButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingPillButton.swift; sourceTree = "<group>"; };
@@ -576,18 +569,20 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		2D512578E7B84CC2AF253508 /* ModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSelector.swift; sourceTree = "<group>"; };
 		306CB4E76381F9B01756F275 /* Pods-SCKillerHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCKillerHelper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SCKillerHelper/Pods-SCKillerHelper.debug.xcconfig"; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* SelfControl_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControl_Prefix.pch; sourceTree = "<group>"; };
 		338D5BADA3DB68B2AF224258 /* Pods-org.eyebeam.selfcontrold.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-org.eyebeam.selfcontrold.debug.xcconfig"; path = "Pods/Target Support Files/Pods-org.eyebeam.selfcontrold/Pods-org.eyebeam.selfcontrold.debug.xcconfig"; sourceTree = "<group>"; };
 		354AD4B5AABD832B2FBFF2C3 /* NothingToggle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingToggle.swift; sourceTree = "<group>"; };
 		35D7E92613B36AE2C94542AC /* Pods_SelfControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelfControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		375C126E6666F565DE4EFAB5 /* NothingDotGridBackground.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingDotGridBackground.swift; sourceTree = "<group>"; };
+		3941F436E747487694172C97 /* ModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeViewModel.swift; sourceTree = "<group>"; };
 		3C28205AD96BF044532FF75F /* org.eyebeam.selfcontrold.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = org.eyebeam.selfcontrold.plist; path = Daemon/org.eyebeam.selfcontrold.plist; sourceTree = "<group>"; };
 		3EF418F71CC7F7FA002D99E8 /* nl */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3EF418F81CC7F7FA002D99E8 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4039B7767F71EB07CD52A7C6 /* Pods-SelfControl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl.release.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl/Pods-SelfControl.release.xcconfig"; sourceTree = "<group>"; };
 		4118BD54DA227C4C92A3303F /* Pods-SelfControl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl/Pods-SelfControl.debug.xcconfig"; sourceTree = "<group>"; };
-		4125AB7FC384B3B77373767C /* TimerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		42D9093E11C44BBCB2F50B9A /* BlockMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockMode.swift; sourceTree = "<group>"; };
 		4F454A18A2105B58E99C3060 /* SpaceMono-Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "SpaceMono-Bold.ttf"; sourceTree = "<group>"; };
 		5617C8598327CAD7F8E73EC1 /* NothingFonts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingFonts.swift; sourceTree = "<group>"; };
 		596AF5EC583FB1F38399711A /* Pods-selfcontrol-cli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-selfcontrol-cli.debug.xcconfig"; path = "Pods/Target Support Files/Pods-selfcontrol-cli/Pods-selfcontrol-cli.debug.xcconfig"; sourceTree = "<group>"; };
@@ -597,7 +592,6 @@
 		640D40CB16D6E962003034B3 /* it */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		640D40CC16D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		67767ACA7F890C7BE9687193 /* SpaceMono-Regular.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "SpaceMono-Regular.ttf"; sourceTree = "<group>"; };
-		6CD7F79D56FCC6B7C3BC9098 /* NothingModalContainer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingModalContainer.swift; sourceTree = "<group>"; };
 		75272ADD0E4DBB52D2E3C543 /* NothingSegmentedControl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingSegmentedControl.swift; sourceTree = "<group>"; };
 		76AA0C4370638521F5CBDD26 /* libPods-org.eyebeam.selfcontrold.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-org.eyebeam.selfcontrold.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		830E6297DB4054194B9833C6 /* BlockStateViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BlockStateViewModel.swift; sourceTree = "<group>"; };
@@ -607,22 +601,18 @@
 		949F9F8D15B333A1007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		94F08F5BA1F9870549DC3CD8 /* Pods-selfcontrol-cli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-selfcontrol-cli.release.xcconfig"; path = "Pods/Target Support Files/Pods-selfcontrol-cli/Pods-selfcontrol-cli.release.xcconfig"; sourceTree = "<group>"; };
 		9F8E767043B7F9807B06D5F9 /* SpaceGrotesk-Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "SpaceGrotesk-Bold.ttf"; sourceTree = "<group>"; };
-		A7A6BAAA49080A9B0692F847 /* MainSetupView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MainSetupView.swift; sourceTree = "<group>"; };
 		A8CE9BFBD857992B6D42FE3E /* NothingColors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingColors.swift; sourceTree = "<group>"; };
 		A9AA4B09947773858F671B4C /* Pods-SelfControl-SelfControlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl-SelfControlTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests.debug.xcconfig"; sourceTree = "<group>"; };
-		BB0001A0000000000010 /* BlockTimerCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BlockTimerCoordinator.swift; sourceTree = "<group>"; };
-		BB0001A0000000000030 /* SCKeyablePanel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SCKeyablePanel.swift; sourceTree = "<group>"; };
 		AA00010010000000000002 /* SettingsContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsContainerView.swift; sourceTree = "<group>"; };
 		AA00010010000000000003 /* BlocklistSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BlocklistSettingsView.swift; sourceTree = "<group>"; };
 		AA00010010000000000004 /* PreferencesSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PreferencesSettingsView.swift; sourceTree = "<group>"; };
 		AA00010010000000000005 /* AboutView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
-		AA00010010000000000099 /* UnifiedRootView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UnifiedRootView.swift; sourceTree = "<group>"; };
 		AB8F1BC31F41E2C8C4E43C3F /* Pods-SelfControl Killer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl Killer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl Killer/Pods-SelfControl Killer.debug.xcconfig"; sourceTree = "<group>"; };
 		AC314640D6BA965F8DCDCBCA /* BlocklistViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BlocklistViewModel.swift; sourceTree = "<group>"; };
 		B6108221AF79699BC8DBD625 /* Pods-SCKillerHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCKillerHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-SCKillerHelper/Pods-SCKillerHelper.release.xcconfig"; sourceTree = "<group>"; };
+		BB0001A0000000000010 /* BlockTimerCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BlockTimerCoordinator.swift; sourceTree = "<group>"; };
+		BB0001A0000000000030 /* SCKeyablePanel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SCKeyablePanel.swift; sourceTree = "<group>"; };
 		BCEE112AF2152AF6872B03DE /* PreferencesViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
-		BD7534A9984FEEEA1321133E /* ExtendBlockModal.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExtendBlockModal.swift; sourceTree = "<group>"; };
-		C6329AF92109829A97449825 /* NothingTextField.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingTextField.swift; sourceTree = "<group>"; };
 		CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SelfControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0EEF6120FD8CE00024D27B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB0EEF7720FE49020024D27B /* SCUtilityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUtilityTests.m; sourceTree = "<group>"; };
@@ -1520,10 +1510,6 @@
 		FABC47D7C1FB584448EF1EE4 /* Pods-SelfControl-SelfControlTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl-SelfControlTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests.release.xcconfig"; sourceTree = "<group>"; };
 		FE0002A0000000000010 /* TimerPillView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerPillView.swift; sourceTree = "<group>"; };
 		FE0002A0000000000020 /* TimerPillWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerPillWindowController.swift; sourceTree = "<group>"; };
-		42D9093E11C44BBCB2F50B9A /* BlockMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockMode.swift; sourceTree = "<group>"; };
-		3941F436E747487694172C97 /* ModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeViewModel.swift; sourceTree = "<group>"; };
-		2D512578E7B84CC2AF253508 /* ModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSelector.swift; sourceTree = "<group>"; };
-		137C87D8DFA946C0963C32C8 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1604,11 +1590,9 @@
 			children = (
 				375C126E6666F565DE4EFAB5 /* NothingDotGridBackground.swift */,
 				09417F7A132A32092CE927FF /* NothingDropdown.swift */,
-				6CD7F79D56FCC6B7C3BC9098 /* NothingModalContainer.swift */,
 				1842E7C4FD72A2D5952F2EB4 /* NothingPillButton.swift */,
 				75272ADD0E4DBB52D2E3C543 /* NothingSegmentedControl.swift */,
 				20D53480A19A81A5149FC38D /* NothingSegmentedSlider.swift */,
-				C6329AF92109829A97449825 /* NothingTextField.swift */,
 				354AD4B5AABD832B2FBFF2C3 /* NothingToggle.swift */,
 				2D512578E7B84CC2AF253508 /* ModeSelector.swift */,
 			);
@@ -1751,17 +1735,12 @@
 		79D042803D11126CF4BF13C2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0E72E6012107C1B4FCC300B6 /* AddToBlocklistModal.swift */,
-				BD7534A9984FEEEA1321133E /* ExtendBlockModal.swift */,
-				A7A6BAAA49080A9B0692F847 /* MainSetupView.swift */,
-				4125AB7FC384B3B77373767C /* TimerView.swift */,
 				BB0001A0000000000010 /* BlockTimerCoordinator.swift */,
 				BB0001A0000000000030 /* SCKeyablePanel.swift */,
 				AA00010010000000000002 /* SettingsContainerView.swift */,
 				AA00010010000000000003 /* BlocklistSettingsView.swift */,
 				AA00010010000000000004 /* PreferencesSettingsView.swift */,
 				AA00010010000000000005 /* AboutView.swift */,
-				AA00010010000000000099 /* UnifiedRootView.swift */,
 				FE0002A0000000000010 /* TimerPillView.swift */,
 				FE0002A0000000000020 /* TimerPillWindowController.swift */,
 				137C87D8DFA946C0963C32C8 /* MenuBarContentView.swift */,
@@ -3972,20 +3951,14 @@
 				56A78048BAAB7C7447DE80EC /* NothingTheme.swift in Sources */,
 				B4134042E0B4B30CFB53528B /* NothingDotGridBackground.swift in Sources */,
 				D154FBE547030F5D335A791E /* NothingDropdown.swift in Sources */,
-				47712760D15AFA1530C91109 /* NothingModalContainer.swift in Sources */,
 				1C33671376E694ED468927B8 /* NothingPillButton.swift in Sources */,
 				6301193B1BDB58B38FCF5799 /* NothingSegmentedControl.swift in Sources */,
 				5E2FDDB9630DDA1F846BE9FD /* NothingSegmentedSlider.swift in Sources */,
-				765849906CA11F86805EAF00 /* NothingTextField.swift in Sources */,
 				048C28FAFA001787447EB9F6 /* NothingToggle.swift in Sources */,
 				47227FCB63EFA78B5C4789B9 /* BlockStateViewModel.swift in Sources */,
 				C76364614CBFED485D636886 /* BlocklistViewModel.swift in Sources */,
 				1000CDC7CF5A16BB7C73505C /* PreferencesViewModel.swift in Sources */,
 				42C0327695353CFBED2ECA6B /* TimerViewModel.swift in Sources */,
-				640A583A059C7BF52BBECCCE /* AddToBlocklistModal.swift in Sources */,
-				273CE5977595E33F08BB21ED /* ExtendBlockModal.swift in Sources */,
-				A87B2637FE8986BCC0B365B7 /* MainSetupView.swift in Sources */,
-				0D97604FBA23346092099739 /* TimerView.swift in Sources */,
 				0856EC4C22A2B7D57F3FE7B1 /* SelfControlBridge.swift in Sources */,
 				BB0001A0000000000020 /* BlockTimerCoordinator.swift in Sources */,
 				BB0001A0000000000040 /* SCKeyablePanel.swift in Sources */,
@@ -3993,7 +3966,6 @@
 				AA00010020000000000003 /* BlocklistSettingsView.swift in Sources */,
 				AA00010020000000000004 /* PreferencesSettingsView.swift in Sources */,
 				AA00010020000000000005 /* AboutView.swift in Sources */,
-				AA00010020000000000099 /* UnifiedRootView.swift in Sources */,
 				FE0002A0000000000001 /* TimerPillView.swift in Sources */,
 				FE0002A0000000000002 /* TimerPillWindowController.swift in Sources */,
 				B0E04A26AA5A463F920B3464 /* BlockMode.swift in Sources */,

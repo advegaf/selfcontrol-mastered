@@ -44,21 +44,6 @@ final class TimerViewModel {
         max(0, Int(timeRemaining) % 60)
     }
 
-    /// Zero-padded two-digit hours string.
-    var hoursString: String {
-        String(format: "%02d", hours)
-    }
-
-    /// Zero-padded two-digit minutes string.
-    var minutesString: String {
-        String(format: "%02d", minutes)
-    }
-
-    /// Zero-padded two-digit seconds string.
-    var secondsString: String {
-        String(format: "%02d", seconds)
-    }
-
     // MARK: - Computed — Status
 
     /// `true` during the final 30 seconds of the countdown AND after completion.
@@ -69,20 +54,6 @@ final class TimerViewModel {
     /// `true` when the countdown has reached or passed zero (and was actually started).
     var isFinishing: Bool {
         hasStarted && timeRemaining <= 0
-    }
-
-    /// Human-readable countdown string in the same format as the setup view.
-    /// Drops leading zeros: "2H 30M 15S" → "30M 15S" → "15S" → "0S".
-    var countdownDescription: String {
-        if timeRemaining <= 0 { return "0S" }
-        let h = hours
-        let m = minutes
-        let s = seconds
-        var parts: [String] = []
-        if h > 0 { parts.append("\(h)H") }
-        if m > 0 { parts.append("\(m)M") }
-        if s > 0 || parts.isEmpty { parts.append("\(s)S") }
-        return parts.joined(separator: " ")
     }
 
     // MARK: - Private

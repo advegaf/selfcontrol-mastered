@@ -59,16 +59,6 @@ struct AboutView: View {
         .padding(.horizontal, NothingTheme.spaceMD)
     }
 
-    // MARK: - Link Button
-
-    private func linkButton(_ title: String, urlString: String) -> some View {
-        NothingPillButton(title: title, variant: .ghost) {
-            if let url = URL(string: urlString) {
-                NSWorkspace.shared.open(url)
-            }
-        }
-        .frame(width: 200)
-    }
 }
 
 // MARK: - Preview

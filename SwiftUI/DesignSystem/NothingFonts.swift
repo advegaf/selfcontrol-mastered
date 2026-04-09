@@ -87,46 +87,10 @@ extension Font {
     }
 
     /// Returns an Ndot 57 font at the given point size.
-    ///
-    /// Single weight — all weights map to Regular.
-    static func doto(_ weight: NothingFontWeight = .regular, size: CGFloat) -> Font {
+    /// Single weight — the Ndot 57 family only ships Regular.
+    static func doto(size: CGFloat) -> Font {
         .custom("Ndot57Regular", size: size)
     }
-
-    // MARK: Semantic Tokens — Display
-
-    /// Ndot 57 72pt — hero / splash screens.
-    static var nothingDisplayXL: Font { .doto(size: 72) }
-
-    /// Ndot 57 48pt — section headers.
-    static var nothingDisplayLG: Font { .doto(size: 48) }
-
-    /// Ndot 57 36pt — card titles.
-    static var nothingDisplayMD: Font { .doto(size: 36) }
-
-    // MARK: Semantic Tokens — Headings
-
-    /// Space Grotesk Medium 24pt.
-    static var nothingHeading: Font { .spaceGrotesk(.medium, size: 24) }
-
-    /// Space Grotesk Regular 18pt.
-    static var nothingSubheading: Font { .spaceGrotesk(.regular, size: 18) }
-
-    // MARK: Semantic Tokens — Body
-
-    /// Space Grotesk Regular 16pt — default reading size.
-    static var nothingBody: Font { .spaceGrotesk(.regular, size: 16) }
-
-    /// Space Grotesk Regular 14pt — secondary content.
-    static var nothingBodySM: Font { .spaceGrotesk(.regular, size: 14) }
-
-    // MARK: Semantic Tokens — Utility
-
-    /// Space Mono Regular 12pt — timestamps, metadata.
-    static var nothingCaption: Font { .spaceMono(.regular, size: 12) }
-
-    /// Space Mono Regular 11pt — form labels, badges.
-    static var nothingLabel: Font { .spaceMono(.regular, size: 11) }
 }
 
 // MARK: - Ndot 57 View Modifiers (font + proportional tracking)
@@ -134,18 +98,9 @@ extension Font {
 @available(macOS 16.0, *)
 extension View {
 
-    /// Applies Ndot 57 at the given size with proportional tracking.
-    func nothingDoto(size: CGFloat) -> some View {
-        self.font(.doto(size: size))
-            .tracking(size * 0.04)
-    }
-
-    /// Ndot 57 72pt + tracking — hero / splash screens.
-    func nothingDisplayXL() -> some View { nothingDoto(size: 72) }
-
-    /// Ndot 57 48pt + tracking — section headers.
-    func nothingDisplayLG() -> some View { nothingDoto(size: 48) }
-
     /// Ndot 57 36pt + tracking — card titles.
-    func nothingDisplayMD() -> some View { nothingDoto(size: 36) }
+    func nothingDisplayMD() -> some View {
+        self.font(.doto(size: 36))
+            .tracking(36 * 0.04)
+    }
 }

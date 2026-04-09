@@ -1,24 +1,5 @@
 import SwiftUI
 
-// MARK: - Color Hex Initializer
-
-extension Color {
-    /// Initialize a Color from a hex string (e.g. "#D71921" or "D71921").
-    init(hex: String) {
-        let sanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
-            .replacingOccurrences(of: "#", with: "")
-
-        var rgb: UInt64 = 0
-        Scanner(string: sanitized).scanHexInt64(&rgb)
-
-        let r = Double((rgb >> 16) & 0xFF) / 255.0
-        let g = Double((rgb >> 8) & 0xFF) / 255.0
-        let b = Double(rgb & 0xFF) / 255.0
-
-        self.init(red: r, green: g, blue: b)
-    }
-}
-
 // MARK: - Nothing Design System Colors
 
 /// Color tokens for the Nothing design system.
@@ -87,16 +68,6 @@ struct NothingColors {
 
     /// Nothing Phone(1) signature red. Same in both appearances.
     static let accent = Color(red: 0.843, green: 0.098, blue: 0.129)  // #D71921
-
-    /// Subtle variant of accent for tinted backgrounds.
-    static let accentSubtle = Color(red: 0.843, green: 0.098, blue: 0.129)
-        .opacity(0.15)
-
-    /// Positive / success indicator. Same in both appearances.
-    static let success = Color(red: 0.29, green: 0.62, blue: 0.36)    // #4A9E5C
-
-    /// Warning indicator. Same in both appearances.
-    static let warning = Color(red: 0.831, green: 0.659, blue: 0.263) // #D4A843
 
     /// Interactive / link color. System blue in light mode, softer blue in dark.
     static let interactive = Color(

@@ -162,7 +162,6 @@ struct TimerPillView: View {
 
 extension Notification.Name {
     static let selfControlTogglePopover = Notification.Name("SelfControlTogglePopover")
-    static let selfControlShowTimerPill = Notification.Name("SelfControlShowTimerPill")
     static let selfControlHideTimerPill = Notification.Name("SelfControlHideTimerPill")
     /// Posted by `BlockTimerCoordinator` when an optimistic extend was clamped or
     /// rejected by the daemon and the pill should shake to surface the failure.

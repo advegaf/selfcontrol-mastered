@@ -16,7 +16,6 @@ struct BlocklistSettingsView: View {
 
     @Environment(ModeViewModel.self) private var modeVM
     @Environment(BlockStateViewModel.self) private var blockState
-    @Environment(PreferencesViewModel.self) private var preferences
 
     @State private var editingModeID: ModeID = .a
     @State private var newDomainText: String = ""

@@ -22,7 +22,6 @@
 
 #import "AppController.h"
 #import "SCDurationSlider.h"
-#import "SCTimeIntervalFormatter.h"
 #import <LetsMove/PFMoveApplication.h>
 #import "SCSettings.h"
 #import <ServiceManagement/ServiceManagement.h>
@@ -150,7 +149,7 @@
 
 	if(blockIsOn) { // block is on
 		if(!blockWasOn) { // if we just switched states to on...
-			// SwiftUI UnifiedRootView handles the setup→timer transition
+			// SwiftUI MenuBarContentView handles the setup→timer transition
 			// via state observation. No window swapping needed.
 			[self closeDomainList];
 

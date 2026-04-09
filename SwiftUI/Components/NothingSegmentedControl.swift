@@ -10,8 +10,8 @@ struct NothingSegmentedControl<T: Hashable>: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(Array(items.enumerated()), id: \.offset) { index, item in
-                segmentButton(for: item, index: index)
+            ForEach(Array(items.enumerated()), id: \.offset) { _, item in
+                segmentButton(for: item)
             }
         }
         .frame(height: 36)
@@ -25,7 +25,7 @@ struct NothingSegmentedControl<T: Hashable>: View {
     // MARK: - Segment Button
 
     @ViewBuilder
-    private func segmentButton(for item: (label: String, value: T), index: Int) -> some View {
+    private func segmentButton(for item: (label: String, value: T)) -> some View {
         let isActive = selected == item.value
 
         Button {

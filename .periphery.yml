@@ -1,0 +1,10 @@
+project: SelfControl.xcworkspace
+schemes:
+  - SelfControl
+retain_objc_accessible: true
+clean_build: true
+exclude_tests: true
+report_exclude:
+  - "Pods/**"
+  - "Sparkle.framework/**"
+  - "Scripts/generate-dmg-background.swift"

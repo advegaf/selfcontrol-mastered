@@ -44,26 +44,6 @@ final class BlockStateViewModel {
     /// Short human-readable summary of the blocklist contents.
     var blocklistTeaser: String = ""
 
-    // MARK: - Computed Properties
-
-    /// Human-readable description of the current block duration
-    /// (e.g. "1 hour 30 minutes"), powered by `SCDurationSlider`.
-    var durationDescription: String {
-        let hours = blockDurationMinutes / 60
-        let mins = blockDurationMinutes % 60
-        if blockDurationMinutes == 0 { return "0 MIN" }
-        if hours > 0 && mins > 0 { return "\(hours)H \(mins)M" }
-        if hours > 0 { return "\(hours) HOUR\(hours > 1 ? "S" : "")" }
-        return "\(mins) MIN"
-    }
-
-    /// Whether the user can currently initiate a new block.
-    var canStartBlock: Bool {
-        blockDurationMinutes > 0
-            && (blocklist.count > 0 || isAllowlist)
-            && !addingBlock
-    }
-
     // MARK: - Private
 
     private var notificationObservers: [NSObjectProtocol] = []

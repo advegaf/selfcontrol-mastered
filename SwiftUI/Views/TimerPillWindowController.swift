@@ -133,7 +133,7 @@ private class TransparentHostingView<Content: View>: NSHostingView<Content> {
 
     // MARK: - Position Persistence
 
-    @objc private func panelDidMove(_ notification: Notification) {
+    @objc private func panelDidMove(_: Notification) {
         savePosition()
     }
 

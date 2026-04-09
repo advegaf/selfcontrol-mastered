@@ -42,17 +42,6 @@ final class ModeViewModel {
         }
     }
 
-    /// Human-readable description of current mode's duration.
-    var durationDescription: String {
-        let mins = currentMode.durationMinutes
-        let hours = mins / 60
-        let remainder = mins % 60
-        if mins == 0 { return "0 MIN" }
-        if hours > 0 && remainder > 0 { return "\(hours)H \(remainder)M" }
-        if hours > 0 { return "\(hours) HOUR\(hours > 1 ? "S" : "")" }
-        return "\(remainder) MIN"
-    }
-
     // MARK: - Init
 
     init() {
@@ -88,20 +77,6 @@ final class ModeViewModel {
     func updateDuration(_ minutes: Int) {
         var mode = currentMode
         mode.durationMinutes = minutes
-        currentMode = mode
-    }
-
-    /// Updates the current mode's domain list and persists.
-    func updateDomains(_ domains: [String]) {
-        var mode = currentMode
-        mode.domains = domains
-        currentMode = mode
-    }
-
-    /// Toggles the current mode's allowlist flag and persists.
-    func toggleAllowlist() {
-        var mode = currentMode
-        mode.isAllowlist.toggle()
         currentMode = mode
     }
 

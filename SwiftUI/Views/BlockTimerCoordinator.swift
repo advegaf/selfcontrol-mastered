@@ -3,10 +3,7 @@ import SwiftUI
 // MARK: - BlockTimerCoordinator
 
 /// ViewModifier that handles timer startup, configuration-changed notifications,
-/// retry-on-appear, and the addingBlock safety timeout.
-///
-/// Shared between MenuBarContentView and UnifiedRootView to avoid duplicating
-/// the same coordination logic in both places.
+/// retry-on-appear, and the addingBlock safety timeout. Attached to MenuBarContentView.
 @available(macOS 16.0, *)
 struct BlockTimerCoordinator: ViewModifier {
 
