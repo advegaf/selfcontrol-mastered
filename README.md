@@ -18,7 +18,7 @@ SelfControl Mastered is a redesigned fork of SelfControl for macOS with a Nothin
 
 ## Install
 
-Download the latest `SelfControl-1.0.0.dmg` from the [Releases page](https://github.com/advegaf/selfcontrol-mastered/releases).
+Download the latest `SelfControl-1.0.1.dmg` from the [Releases page](https://github.com/advegaf/selfcontrol-mastered/releases).
 
 1. Open the DMG and drag **SelfControl** to the **Applications** folder.
 2. Launch SelfControl from Applications.
