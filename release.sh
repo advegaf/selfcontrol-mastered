@@ -24,7 +24,7 @@ set -euo pipefail
 
 # ─── Configuration ─────────────────────────────────────────────────────────────
 
-readonly VERSION="1.0.0"
+readonly VERSION="1.0.1"
 readonly VOLNAME="SelfControl ${VERSION}"
 readonly DMG_NAME="SelfControl-${VERSION}.dmg"
 readonly NOTARY_PROFILE="selfcontrol-notary"
