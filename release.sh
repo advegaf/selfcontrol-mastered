@@ -286,7 +286,7 @@ for vol in /Volumes/SelfControl /Volumes/SelfControl?*; do
 done
 
 # Phase 1: sindresorhus base DMG
-readonly SINDRE_DMG="${DIST}/SelfControl 1.0.0.dmg"
+readonly SINDRE_DMG="${DIST}/SelfControl ${VERSION}.dmg"
 rm -f "${SINDRE_DMG}"
 info "phase 1: sindresorhus/create-dmg via npx (downloads first run)..."
 npx --yes create-dmg@latest \
