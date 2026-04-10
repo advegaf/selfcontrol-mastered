@@ -1,4 +1,5 @@
 import SwiftUI
+import ServiceManagement
 
 // MARK: - PreferencesViewModel
 
@@ -10,6 +11,31 @@ import SwiftUI
 @available(macOS 16.0, *)
 @Observable
 final class PreferencesViewModel {
+
+    // MARK: - General
+
+    /// Whether the app starts automatically at user login.
+    var launchAtLogin: Bool = false {
+        didSet {
+            guard launchAtLogin != oldValue else { return }
+            do {
+                if launchAtLogin {
+                    try SMAppService.mainApp.register()
+                } else {
+                    try SMAppService.mainApp.unregister()
+                }
+            } catch {
+                print("[Preferences] Launch at login failed: \(error)")
+                launchAtLogin = SMAppService.mainApp.status == .enabled
+            }
+        }
+    }
+
+    /// Whether Sparkle checks for updates automatically in the background.
+    var automaticallyChecksForUpdates: Bool {
+        get { SUUpdater.shared().automaticallyChecksForUpdates }
+        set { SUUpdater.shared().automaticallyChecksForUpdates = newValue }
+    }
 
     // MARK: - Timer & Badge
 
@@ -139,6 +165,7 @@ final class PreferencesViewModel {
     init() {
         let defaults = UserDefaults.standard
 
+        launchAtLogin = SMAppService.mainApp.status == .enabled
         timerWindowFloats = defaults.bool(forKey: "TimerWindowFloats")
         showTimerPill = defaults.object(forKey: "ShowTimerPill") as? Bool ?? true
         timerPillFloatsOnTop = defaults.bool(forKey: "TimerPillFloatsOnTop")

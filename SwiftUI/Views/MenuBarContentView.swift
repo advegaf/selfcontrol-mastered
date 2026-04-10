@@ -63,8 +63,17 @@ struct MenuBarContentView: View {
                 showSettings = false
             }
             // Show floating pill when block starts
-            if started {
+            if started && preferences.showTimerPill {
                 TimerPillWindowController.shared.show()
+            }
+        }
+        .onChange(of: preferences.showTimerPill) { _, show in
+            if timer.hasStarted {
+                if show {
+                    TimerPillWindowController.shared.show()
+                } else {
+                    TimerPillWindowController.shared.hide()
+                }
             }
         }
     }

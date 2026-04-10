@@ -14,3 +14,4 @@
 #import "SCMiscUtilities.h"
 #import "Block Management/HostImporter.h"
 #import "SCXPCClient.h"
+#import <Sparkle/Sparkle.h>

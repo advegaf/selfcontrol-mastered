@@ -18,6 +18,13 @@ struct PreferencesSettingsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: NothingTheme.spaceXL) {
 
+                // MARK: General Section
+
+                preferencesSection("GENERAL") {
+                    Toggle("Launch at login", isOn: $preferences.launchAtLogin)
+                        .toggleStyle(NothingToggleStyle())
+                }
+
                 // MARK: Timer Section
 
                 preferencesSection("TIMER") {
@@ -49,7 +56,7 @@ struct PreferencesSettingsView: View {
 
                 preferencesSection("UPDATES") {
                     VStack(alignment: .leading, spacing: NothingTheme.spaceMD) {
-                        Toggle("Automatically check for updates", isOn: .constant(false))
+                        Toggle("Automatically check for updates", isOn: $preferences.automaticallyChecksForUpdates)
                             .toggleStyle(NothingToggleStyle())
 
                         Toggle("Send anonymized error reports", isOn: $preferences.enableErrorReporting)
