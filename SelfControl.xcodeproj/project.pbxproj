@@ -24,6 +24,7 @@
 		51DEDA1D038E8487A4AB503B /* Pods_SelfControl_SelfControlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 170C73CB13CBF2705CF0BAF2 /* Pods_SelfControl_SelfControlTests.framework */; };
 		5320202D3A2AE00D9E7FFF7E /* SpaceGrotesk-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF99B44CF60E167A663DA640 /* SpaceGrotesk-Regular.ttf */; };
 		56A78048BAAB7C7447DE80EC /* NothingTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602FADAD122DC627ABB162DE /* NothingTheme.swift */; };
+		5CEF5B38421A04F0D35AAB75 /* LockMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E92118CB971F0D346973684 /* LockMode.swift */; };
 		5E2FDDB9630DDA1F846BE9FD /* NothingSegmentedSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D53480A19A81A5149FC38D /* NothingSegmentedSlider.swift */; };
 		6301193B1BDB58B38FCF5799 /* NothingSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75272ADD0E4DBB52D2E3C543 /* NothingSegmentedControl.swift */; };
 		66B07849B87D5EDCBB617179 /* Ndot57-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 140A82561E73F62E4E95D2BC /* Ndot57-Regular.otf */; };
@@ -591,6 +592,7 @@
 		5B0B636B0CB5B5BE37A21733 /* TimerViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		5DCF48950D3D2C5C5E93AC44 /* Pods_SelfControl_Killer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelfControl_Killer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E536F04853E372957FC53BB /* SCSettingsEndConditionTests.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SCSettingsEndConditionTests.m; sourceTree = "<group>"; };
+		5E92118CB971F0D346973684 /* LockMode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LockMode.swift; sourceTree = "<group>"; };
 		602FADAD122DC627ABB162DE /* NothingTheme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingTheme.swift; sourceTree = "<group>"; };
 		640D40CB16D6E962003034B3 /* it */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		640D40CC16D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1772,6 +1774,7 @@
 			isa = PBXGroup;
 			children = (
 				42D9093E11C44BBCB2F50B9A /* BlockMode.swift */,
+				5E92118CB971F0D346973684 /* LockMode.swift */,
 			);
 			name = Models;
 			path = SwiftUI/Models;
@@ -3978,6 +3981,7 @@
 				A6E71D66307443B48B956FE9 /* ModeViewModel.swift in Sources */,
 				D265D5875925448AA152DC54 /* ModeSelector.swift in Sources */,
 				4BA154940D42403E858BAD35 /* MenuBarContentView.swift in Sources */,
+				5CEF5B38421A04F0D35AAB75 /* LockMode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
