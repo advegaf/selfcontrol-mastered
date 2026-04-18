@@ -85,7 +85,12 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: blocklist forKey: @"ActiveBlocklist"];
     [settings setValue: @(isAllowlist) forKey: @"ActiveBlockAsWhitelist"];
     [settings setValue: endDate forKey: @"BlockEndDate"];
-    
+
+    // v1: copy end condition + start date from blockSettings (falls back to "time" / now)
+    NSString* endCondition = blockSettings[@"endCondition"] ?: @"time";
+    [settings setValue: endCondition forKey: @"ActiveBlockEndCondition"];
+    [settings setValue: blockSettings[@"BlockStartDate"] ?: [NSDate date] forKey: @"BlockStartDate"];
+
     // update all the settings for the block, which we're basically just copying from defaults to settings
     [settings setValue: blockSettings[@"ClearCaches"] forKey: @"ClearCaches"];
     [settings setValue: blockSettings[@"AllowLocalNetworks"] forKey: @"AllowLocalNetworks"];
@@ -95,7 +100,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: blockSettings[@"BlockSound"] forKey: @"BlockSound"];
     [settings setValue: blockSettings[@"EnableErrorReporting"] forKey: @"EnableErrorReporting"];
 
-    if(([blocklist count] <= 0 && !isAllowlist) || [SCBlockUtilities currentBlockIsExpired]) {
+    // For QR mode, endDate can be nil/distantPast — only check expiry for time mode
+    BOOL isQRMode = [endCondition isEqualToString: @"qr"];
+    if (([blocklist count] <= 0 && !isAllowlist) || (!isQRMode && [SCBlockUtilities currentBlockIsExpired])) {
         NSLog(@"ERROR: Blocklist is empty, or block end date is in the past");
         NSLog(@"Block End Date: %@ (%@), vs now is %@", [settings valueForKey: @"BlockEndDate"], [[settings valueForKey: @"BlockEndDate"] class], [NSDate date]);
         NSError* err = [SCErr errorWithCode: 302];

@@ -51,9 +51,17 @@
 }
 
 // returns YES if the block should have expired active based on the specified end time (i.e. the end time is in the past), or NO otherwise
+// For QR-mode blocks (ActiveBlockEndCondition == "qr"), always returns NO — they only end via user action (scan/type-code/emergency).
 + (BOOL)currentBlockIsExpired {
-    // the block should be running if the end date hasn't arrived yet
     SCSettings* settings = [SCSettings sharedSettings];
+
+    // QR-mode blocks never expire by wall clock.
+    NSString* endCondition = [settings valueForKey: @"ActiveBlockEndCondition"];
+    if ([endCondition isEqualToString: @"qr"]) {
+        return NO;
+    }
+
+    // Time-mode (default): the block is running if the end date hasn't arrived yet.
     if ([[settings valueForKey: @"BlockEndDate"] timeIntervalSinceNow] > 0) {
         return NO;
     } else {
@@ -71,6 +79,8 @@
     [settings setValue: nil forKey: @"BlockEndDate"];
     [settings setValue: nil forKey: @"ActiveBlocklist"];
     [settings setValue: nil forKey: @"ActiveBlockAsWhitelist"];
+    [settings setValue: @"time" forKey: @"ActiveBlockEndCondition"];
+    [settings setValue: nil forKey: @"BlockStartDate"];
 }
 
 @end

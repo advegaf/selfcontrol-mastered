@@ -16,6 +16,7 @@
 		11F2C295DC7CC0390D379820 /* libPods-selfcontrol-cli.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE54F8769B7134FB513C4650 /* libPods-selfcontrol-cli.a */; };
 		1C33671376E694ED468927B8 /* NothingPillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1842E7C4FD72A2D5952F2EB4 /* NothingPillButton.swift */; };
 		2649FB4668791D03ACE94C25 /* Pods_SelfControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D7E92613B36AE2C94542AC /* Pods_SelfControl.framework */; };
+		3E25D5BEA86B7743EE0654C0 /* SCBlockUtilitiesQRModeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C91222F312000BF36470EF8D /* SCBlockUtilitiesQRModeTests.m */; };
 		42C0327695353CFBED2ECA6B /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B636B0CB5B5BE37A21733 /* TimerViewModel.swift */; };
 		47006584BC290729D6FE7ABF /* libPods-SCKillerHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBEBE222030882B7A217D22D /* libPods-SCKillerHelper.a */; };
 		47227FCB63EFA78B5C4789B9 /* BlockStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830E6297DB4054194B9833C6 /* BlockStateViewModel.swift */; };
@@ -615,6 +616,7 @@
 		BB0001A0000000000010 /* BlockTimerCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BlockTimerCoordinator.swift; sourceTree = "<group>"; };
 		BB0001A0000000000030 /* SCKeyablePanel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SCKeyablePanel.swift; sourceTree = "<group>"; };
 		BCEE112AF2152AF6872B03DE /* PreferencesViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
+		C91222F312000BF36470EF8D /* SCBlockUtilitiesQRModeTests.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SCBlockUtilitiesQRModeTests.m; sourceTree = "<group>"; };
 		CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SelfControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0EEF6120FD8CE00024D27B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB0EEF7720FE49020024D27B /* SCUtilityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUtilityTests.m; sourceTree = "<group>"; };
@@ -1795,6 +1797,7 @@
 				CB0EEF7720FE49020024D27B /* SCUtilityTests.m */,
 				CB0EEF6120FD8CE00024D27B /* Info.plist */,
 				5E536F04853E372957FC53BB /* SCSettingsEndConditionTests.m */,
+				C91222F312000BF36470EF8D /* SCBlockUtilitiesQRModeTests.m */,
 			);
 			path = SelfControlTests;
 			sourceTree = "<group>";
@@ -4000,6 +4003,7 @@
 				CB0EEF7820FE49030024D27B /* SCUtilityTests.m in Sources */,
 				CB81A94D25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 				B8E12E1113275B2D795B2743 /* SCSettingsEndConditionTests.m in Sources */,
+				3E25D5BEA86B7743EE0654C0 /* SCBlockUtilitiesQRModeTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
