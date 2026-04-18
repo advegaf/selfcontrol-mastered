@@ -97,6 +97,12 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 
         @"EnableErrorReporting": @([SCMiscUtilities systemThirdPartyCrashReportingEnabled]),
 
+        // QR lock mode (v1 additions)
+        @"ActiveBlockEndCondition": @"time",
+        @"BlockStartDate": [NSDate distantPast],
+        @"EmergencyUnlockCount": @0,
+        @"EmergencyUnlockTimestamps": @[],
+
         @"SettingsVersionNumber": @0,
         @"LastSettingsUpdate": [NSDate distantPast] // special value that keeps track of when we last updated our settings
     };

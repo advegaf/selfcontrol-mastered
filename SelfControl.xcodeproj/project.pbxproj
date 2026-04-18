@@ -40,6 +40,7 @@
 		ADE090ECA2EFBA7BBC78527E /* NothingColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CE9BFBD857992B6D42FE3E /* NothingColors.swift */; };
 		B0E04A26AA5A463F920B3464 /* BlockMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9093E11C44BBCB2F50B9A /* BlockMode.swift */; };
 		B4134042E0B4B30CFB53528B /* NothingDotGridBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375C126E6666F565DE4EFAB5 /* NothingDotGridBackground.swift */; };
+		B8E12E1113275B2D795B2743 /* SCSettingsEndConditionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E536F04853E372957FC53BB /* SCSettingsEndConditionTests.m */; };
 		B973AFFA15DB5F4875610A8B /* libPods-org.eyebeam.selfcontrold.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76AA0C4370638521F5CBDD26 /* libPods-org.eyebeam.selfcontrold.a */; };
 		BB0001A0000000000020 /* BlockTimerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001A0000000000010 /* BlockTimerCoordinator.swift */; };
 		BB0001A0000000000040 /* SCKeyablePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001A0000000000030 /* SCKeyablePanel.swift */; };
@@ -588,6 +589,7 @@
 		596AF5EC583FB1F38399711A /* Pods-selfcontrol-cli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-selfcontrol-cli.debug.xcconfig"; path = "Pods/Target Support Files/Pods-selfcontrol-cli/Pods-selfcontrol-cli.debug.xcconfig"; sourceTree = "<group>"; };
 		5B0B636B0CB5B5BE37A21733 /* TimerViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		5DCF48950D3D2C5C5E93AC44 /* Pods_SelfControl_Killer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelfControl_Killer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E536F04853E372957FC53BB /* SCSettingsEndConditionTests.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SCSettingsEndConditionTests.m; sourceTree = "<group>"; };
 		602FADAD122DC627ABB162DE /* NothingTheme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NothingTheme.swift; sourceTree = "<group>"; };
 		640D40CB16D6E962003034B3 /* it */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		640D40CC16D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1792,6 +1794,7 @@
 			children = (
 				CB0EEF7720FE49020024D27B /* SCUtilityTests.m */,
 				CB0EEF6120FD8CE00024D27B /* Info.plist */,
+				5E536F04853E372957FC53BB /* SCSettingsEndConditionTests.m */,
 			);
 			path = SelfControlTests;
 			sourceTree = "<group>";
@@ -3996,6 +3999,7 @@
 				CB114284222CD4F0004B7868 /* SCSettings.m in Sources */,
 				CB0EEF7820FE49030024D27B /* SCUtilityTests.m in Sources */,
 				CB81A94D25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
+				B8E12E1113275B2D795B2743 /* SCSettingsEndConditionTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
