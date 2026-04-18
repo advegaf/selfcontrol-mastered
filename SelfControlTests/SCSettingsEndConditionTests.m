@@ -11,17 +11,26 @@
 
 @implementation SCSettingsEndConditionTests
 
-- (void)setUp {
++ (void)setUp {
     [super setUp];
     [[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"isTest"];
     // SCSettings shouldn't be readOnly during tests so we can write values
     [SCSettings sharedSettings].readOnly = NO;
 }
 
+- (void)tearDown {
+    SCSettings* settings = [SCSettings sharedSettings];
+    [settings setValue: @"time" forKey: @"ActiveBlockEndCondition"];
+    [settings setValue: nil forKey: @"BlockStartDate"];
+    [super tearDown];
+}
+
 - (void)testActiveBlockEndConditionDefaultsToTime {
     SCSettings* settings = [SCSettings sharedSettings];
-    NSString* value = [settings valueForKey: @"ActiveBlockEndCondition"];
-    XCTAssertEqualObjects(value, @"time", @"Default end condition must be 'time' for legacy installs");
+    NSString* direct = [settings valueForKey: @"ActiveBlockEndCondition"];
+    XCTAssertEqualObjects(direct, @"time", @"Default end condition must be 'time'");
+    NSString* viaDict = [settings dictionaryRepresentation][@"ActiveBlockEndCondition"];
+    XCTAssertEqualObjects(viaDict, @"time", @"Default must be materialized into dictionaryRepresentation");
 }
 
 - (void)testBlockStartDateRoundTrips {
@@ -40,8 +49,8 @@
 
 - (void)testEmergencyUnlockCountDefaultsToZero {
     SCSettings* settings = [SCSettings sharedSettings];
-    NSNumber* count = [settings valueForKey: @"EmergencyUnlockCount"];
-    XCTAssertEqualObjects(count, @0);
+    XCTAssertEqualObjects([settings valueForKey: @"EmergencyUnlockCount"], @0);
+    XCTAssertEqualObjects([settings dictionaryRepresentation][@"EmergencyUnlockCount"], @0);
 }
 
 @end
