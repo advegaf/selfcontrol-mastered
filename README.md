@@ -1,7 +1,7 @@
 # SelfControl Mastered
 
 <p align="center">
-    <img src="./.github/docs/screenshot.png" />
+    <img src="./artifacts/article-screenshots/exports/hero.png" alt="SelfControl Mastered menu bar control center and floating timer pill" />
 </p>
 
 ## About
