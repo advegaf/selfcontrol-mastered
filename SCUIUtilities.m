@@ -149,7 +149,29 @@
     return NO;
 }
 
++ (BOOL)demoIsActive {
+    return [NSProcessInfo.processInfo.environment[@"SELFCONTROL_DEMO"] isEqualToString: @"curated"];
+}
+
++ (BOOL)demoBlockIsOn {
+    return [self demoIsActive]
+        && [NSProcessInfo.processInfo.environment[@"SELFCONTROL_DEMO_BLOCK"] isEqualToString: @"1"];
+}
+
++ (NSDate*)demoBlockEndDate {
+    if (![self demoBlockIsOn]) return nil;
+    // 26 minutes 40 seconds out. The hours read 00, which is what makes the
+    // faded-zero dimming visible: that behaviour is the reason the timer looks
+    // the way it does, and a picture taken at 01:26:40 would not show it.
+    return [NSDate dateWithTimeIntervalSinceNow: 26 * 60 + 40];
+}
+
 + (BOOL)blockIsRunning {
+    // Every window that decides between idle and blocking routes through here,
+    // in Objective-C and in SwiftUI both, so the demo answer belongs here
+    // rather than in each caller.
+    if ([self demoIsActive]) return [self demoBlockIsOn];
+
     // we'll say a block is running if we find the block info, but
     // also, importantly, if we find a block still going in the hosts file
     // that way if this happens, the user will still see the timer window -

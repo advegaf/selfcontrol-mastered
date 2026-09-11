@@ -53,3 +53,22 @@ final class SelfControlBridge: NSObject {
         return NSHostingView(rootView: view)
     }
 }
+
+// MARK: - Demo-safe preference writes
+
+extension UserDefaults {
+
+    /// Writes a preference, unless this is a demo run.
+    ///
+    /// Every view model persists the same way: a `didSet` that writes the new
+    /// value straight back to `UserDefaults.standard`. Under
+    /// `SELFCONTROL_DEMO=curated` the values being set come from the argument
+    /// domain, which is where the screenshot pipeline puts its fixture, and
+    /// writing one of those back copies the fixture into the real preferences
+    /// of whoever ran the script. Routing the writes through here stops that in
+    /// one place rather than in each of the twenty-odd `didSet`s.
+    func setUnlessDemo(_ value: Any?, forKey key: String) {
+        if SCUIUtilities.demoIsActive() { return }
+        set(value, forKey: key)
+    }
+}

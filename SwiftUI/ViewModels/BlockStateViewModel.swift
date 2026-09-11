@@ -25,7 +25,7 @@ final class BlockStateViewModel {
     var blockDurationMinutes: Int = 0 {
         didSet {
             guard blockDurationMinutes != oldValue else { return }
-            UserDefaults.standard.set(blockDurationMinutes, forKey: "BlockDuration")
+            UserDefaults.standard.setUnlessDemo(blockDurationMinutes, forKey: "BlockDuration")
         }
     }
 
@@ -72,7 +72,12 @@ final class BlockStateViewModel {
 
         blockIsActive = SCUIUtilities.blockIsRunning()
 
-        if let endDate = settings.value(forKey: "BlockEndDate") as? Date,
+        if let demoEndDate = SCUIUtilities.demoBlockEndDate() {
+            // A demo run has no daemon behind it, so there is no BlockEndDate
+            // in settings to read. Everything downstream (the countdown, the
+            // pill) keys off this one value.
+            blockEndDate = demoEndDate
+        } else if let endDate = settings.value(forKey: "BlockEndDate") as? Date,
            endDate.timeIntervalSinceNow > 0 {
             blockEndDate = endDate
         } else if blockIsActive {

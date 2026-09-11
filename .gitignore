@@ -39,3 +39,7 @@ xcuserdata/**/*
 *.certSigningRequest
 *.p12
 *.mobileprovision
+
+# Finder custom-folder-icon resource forks
+Icon?
+Icon

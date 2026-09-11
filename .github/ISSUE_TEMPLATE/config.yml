@@ -1,8 +1,8 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
-  - name: ⛔️ SelfControl Is Still Blocking Sites After The Timer Expired
+  - name: SelfControl is still blocking sites after the timer expired
     url: https://github.com/SelfControlApp/selfcontrol/wiki/Help!-SelfControl-is-still-blocking-sites-even-after-the-block-should-have-ended!
-    about: Follow these directions to remove your block and restore access to blocked websites.
-  - name: 🙋‍♀️ General Comment, Question, or Concern
+    about: Upstream's directions for clearing a stuck block. The blocking engine is shared, so they apply here too.
+  - name: A question about upstream SelfControl rather than this fork
     url: https://github.com/SelfControlApp/selfcontrol/discussions
-    about: Use our discussion board to share tips and tricks, ask questions, or kvetch when SelfControl doesn't work
+    about: For the original app. Anything about this fork's interface, the floating pill or block modes belongs in an issue here.

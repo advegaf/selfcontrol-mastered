@@ -51,9 +51,11 @@ struct TimerPillView: View {
         .background(Capsule().fill(Color.black))
         .clipShape(Capsule())
         .contentTransition(.numericText(countsDown: true))
-        .animation(.easeOut(duration: 0.15), value: timer.hours)
-        .animation(.easeOut(duration: 0.15), value: timer.minutes)
-        .animation(.easeOut(duration: 0.15), value: timer.seconds)
+        // Same reason as the panel's digits: a demo capture must not catch a
+        // roll in progress.
+        .animation(SCUIUtilities.demoIsActive() ? nil : .easeOut(duration: 0.15), value: timer.hours)
+        .animation(SCUIUtilities.demoIsActive() ? nil : .easeOut(duration: 0.15), value: timer.minutes)
+        .animation(SCUIUtilities.demoIsActive() ? nil : .easeOut(duration: 0.15), value: timer.seconds)
         .offset(x: shakeOffset)
         .onTapGesture {
             NotificationCenter.default.post(
