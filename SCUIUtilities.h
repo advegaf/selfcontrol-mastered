@@ -15,6 +15,20 @@ NS_ASSUME_NONNULL_BEGIN
 // SelfControl block is running  Returns NO if it is not.
 + (BOOL)blockIsRunning;
 
+// YES when this process was launched with SELFCONTROL_DEMO=curated. Only
+// Tools/Screenshots/make-docs-images.sh sets it. A demo run never asks the
+// daemon anything and never enforces a block: it reports a fixed one so the
+// countdown and the floating pill can be photographed without a real block
+// being installed on the machine taking the picture.
++ (BOOL)demoIsActive;
+
+// YES when a demo run is also meant to look like a block is on
+// (SELFCONTROL_DEMO_BLOCK=1). The idle screens are shot without it.
++ (BOOL)demoBlockIsOn;
+
+// The end date a demo run reports, or nil outside one.
++ (nullable NSDate*)demoBlockEndDate;
+
 // Checks whether a network connection is available by checking the reachabilty
 // of google.com  This method may not be correct if the network configuration
 // was just changed a few seconds ago.

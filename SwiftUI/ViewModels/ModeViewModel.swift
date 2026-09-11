@@ -47,6 +47,26 @@ final class ModeViewModel {
     init() {
         let defaults = UserDefaults.standard
 
+        if SCUIUtilities.demoIsActive() {
+            // A curated pair of modes. Five sites that read as somebody's real
+            // blocklist without being anybody's, and a second mode so the
+            // selector has something to select. Nothing here is written back:
+            // `save` returns early in a demo run.
+            modeA = BlockMode(
+                id: .a,
+                durationMinutes: 45,
+                domains: ["x.com", "reddit.com", "news.ycombinator.com", "youtube.com", "instagram.com"],
+                isAllowlist: false
+            )
+            modeB = BlockMode(
+                id: .b,
+                durationMinutes: 90,
+                domains: ["mail.google.com", "slack.com"],
+                isAllowlist: false
+            )
+            return
+        }
+
         if let dataA = defaults.data(forKey: BlockMode.keyA),
            let decoded = try? JSONDecoder().decode(BlockMode.self, from: dataA) {
             modeA = decoded
@@ -102,14 +122,18 @@ final class ModeViewModel {
     func writeCurrentModeToLegacyDefaults() {
         let defaults = UserDefaults.standard
         let mode = currentMode
-        defaults.set(mode.domains, forKey: "Blocklist")
-        defaults.set(mode.durationMinutes, forKey: "BlockDuration")
-        defaults.set(mode.isAllowlist, forKey: "BlockAsWhitelist")
+        defaults.setUnlessDemo(mode.domains, forKey: "Blocklist")
+        defaults.setUnlessDemo(mode.durationMinutes, forKey: "BlockDuration")
+        defaults.setUnlessDemo(mode.isAllowlist, forKey: "BlockAsWhitelist")
     }
 
     // MARK: - Private
 
     private func save(_ mode: BlockMode) {
+        // Every write of a mode lands here, from the seeding in `init` and from
+        // `currentMode`'s didSet both, so this is the one place a demo run has
+        // to be stopped from touching the real preferences domain.
+        if SCUIUtilities.demoIsActive() { return }
         guard let data = try? JSONEncoder().encode(mode) else { return }
         UserDefaults.standard.set(data, forKey: BlockMode.key(for: mode.id))
     }

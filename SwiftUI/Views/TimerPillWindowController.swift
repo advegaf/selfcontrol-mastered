@@ -139,7 +139,7 @@ private class TransparentHostingView<Content: View>: NSHostingView<Content> {
 
     private func savePosition() {
         guard let frame = panel?.frame else { return }
-        UserDefaults.standard.set(
+        UserDefaults.standard.setUnlessDemo(
             NSStringFromPoint(frame.origin),
             forKey: "TimerPillPosition"
         )

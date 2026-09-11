@@ -43,7 +43,7 @@ final class PreferencesViewModel {
     var timerWindowFloats: Bool = false {
         didSet {
             guard timerWindowFloats != oldValue else { return }
-            UserDefaults.standard.set(timerWindowFloats, forKey: "TimerWindowFloats")
+            UserDefaults.standard.setUnlessDemo(timerWindowFloats, forKey: "TimerWindowFloats")
         }
     }
 
@@ -52,7 +52,7 @@ final class PreferencesViewModel {
     var showTimerPill: Bool = true {
         didSet {
             guard showTimerPill != oldValue else { return }
-            UserDefaults.standard.set(showTimerPill, forKey: "ShowTimerPill")
+            UserDefaults.standard.setUnlessDemo(showTimerPill, forKey: "ShowTimerPill")
         }
     }
 
@@ -61,7 +61,7 @@ final class PreferencesViewModel {
     var timerPillFloatsOnTop: Bool = false {
         didSet {
             guard timerPillFloatsOnTop != oldValue else { return }
-            UserDefaults.standard.set(timerPillFloatsOnTop, forKey: "TimerPillFloatsOnTop")
+            UserDefaults.standard.setUnlessDemo(timerPillFloatsOnTop, forKey: "TimerPillFloatsOnTop")
         }
     }
 
@@ -71,7 +71,7 @@ final class PreferencesViewModel {
     var blockSoundShouldPlay: Bool = false {
         didSet {
             guard blockSoundShouldPlay != oldValue else { return }
-            UserDefaults.standard.set(blockSoundShouldPlay, forKey: "BlockSoundShouldPlay")
+            UserDefaults.standard.setUnlessDemo(blockSoundShouldPlay, forKey: "BlockSoundShouldPlay")
         }
     }
 
@@ -79,7 +79,7 @@ final class PreferencesViewModel {
     var blockSoundIndex: Int = 0 {
         didSet {
             guard blockSoundIndex != oldValue else { return }
-            UserDefaults.standard.set(blockSoundIndex, forKey: "BlockSound")
+            UserDefaults.standard.setUnlessDemo(blockSoundIndex, forKey: "BlockSound")
         }
     }
 
@@ -89,7 +89,7 @@ final class PreferencesViewModel {
     var enableErrorReporting: Bool = false {
         didSet {
             guard enableErrorReporting != oldValue else { return }
-            UserDefaults.standard.set(enableErrorReporting, forKey: "EnableErrorReporting")
+            UserDefaults.standard.setUnlessDemo(enableErrorReporting, forKey: "EnableErrorReporting")
         }
     }
 
@@ -99,7 +99,7 @@ final class PreferencesViewModel {
     var highlightInvalidHosts: Bool = false {
         didSet {
             guard highlightInvalidHosts != oldValue else { return }
-            UserDefaults.standard.set(highlightInvalidHosts, forKey: "HighlightInvalidHosts")
+            UserDefaults.standard.setUnlessDemo(highlightInvalidHosts, forKey: "HighlightInvalidHosts")
         }
     }
 
@@ -107,7 +107,7 @@ final class PreferencesViewModel {
     var evaluateCommonSubdomains: Bool = true {
         didSet {
             guard evaluateCommonSubdomains != oldValue else { return }
-            UserDefaults.standard.set(evaluateCommonSubdomains, forKey: "EvaluateCommonSubdomains")
+            UserDefaults.standard.setUnlessDemo(evaluateCommonSubdomains, forKey: "EvaluateCommonSubdomains")
         }
     }
 
@@ -115,7 +115,7 @@ final class PreferencesViewModel {
     var includeLinkedDomains: Bool = true {
         didSet {
             guard includeLinkedDomains != oldValue else { return }
-            UserDefaults.standard.set(includeLinkedDomains, forKey: "IncludeLinkedDomains")
+            UserDefaults.standard.setUnlessDemo(includeLinkedDomains, forKey: "IncludeLinkedDomains")
         }
     }
 
@@ -123,7 +123,7 @@ final class PreferencesViewModel {
     var allowLocalNetworks: Bool = true {
         didSet {
             guard allowLocalNetworks != oldValue else { return }
-            UserDefaults.standard.set(allowLocalNetworks, forKey: "AllowLocalNetworks")
+            UserDefaults.standard.setUnlessDemo(allowLocalNetworks, forKey: "AllowLocalNetworks")
         }
     }
 
@@ -131,7 +131,7 @@ final class PreferencesViewModel {
     var clearCaches: Bool = true {
         didSet {
             guard clearCaches != oldValue else { return }
-            UserDefaults.standard.set(clearCaches, forKey: "ClearCaches")
+            UserDefaults.standard.setUnlessDemo(clearCaches, forKey: "ClearCaches")
         }
     }
 
@@ -139,7 +139,7 @@ final class PreferencesViewModel {
     var verifyInternetConnection: Bool = false {
         didSet {
             guard verifyInternetConnection != oldValue else { return }
-            UserDefaults.standard.set(verifyInternetConnection, forKey: "VerifyInternetConnection")
+            UserDefaults.standard.setUnlessDemo(verifyInternetConnection, forKey: "VerifyInternetConnection")
         }
     }
 
@@ -149,7 +149,7 @@ final class PreferencesViewModel {
     var backgroundStyle: NothingBackgroundStyle = .dotGrid {
         didSet {
             guard backgroundStyle != oldValue else { return }
-            UserDefaults.standard.set(backgroundStyle.rawValue, forKey: "NothingBackgroundStyle")
+            UserDefaults.standard.setUnlessDemo(backgroundStyle.rawValue, forKey: "NothingBackgroundStyle")
         }
     }
 

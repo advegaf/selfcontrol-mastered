@@ -20,7 +20,10 @@ struct MenuBarContentView: View {
     @Environment(ModeViewModel.self) private var modeVM
     @Environment(PreferencesViewModel.self) private var preferences
 
-    @State private var showSettings: Bool = false
+    // SELFCONTROL_DEMO_PAGE=settings opens straight onto the settings stack,
+    // so the blocklist editor can be photographed without driving a click.
+    @State private var showSettings: Bool =
+        ProcessInfo.processInfo.environment["SELFCONTROL_DEMO_PAGE"] == "settings"
     @State private var errorMessage: String? = nil
 
     var body: some View {

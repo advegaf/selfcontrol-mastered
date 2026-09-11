@@ -225,7 +225,10 @@
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
     // For test runs, we don't want to pop up the dialog to move to the Applications folder, as it breaks the tests
-    if (NSProcessInfo.processInfo.environment[@"XCTestConfigurationFilePath"] == nil) {
+    // The screenshot pipeline is the same case: the dialog is modal, so it
+    // blocks the capture and lands in the picture.
+    if (NSProcessInfo.processInfo.environment[@"XCTestConfigurationFilePath"] == nil
+        && ![SCUIUtilities demoIsActive]) {
         PFMoveToApplicationsFolderIfNecessary();
     }
 }
@@ -313,6 +316,12 @@
 	blockIsOn = ![SCUIUtilities blockIsRunning];
 
 	[self refreshUserInterface];
+
+    // The panel is what a screenshot is of, and normally it only exists after
+    // someone clicks the menu bar item. A demo run opens it itself.
+    if ([SCUIUtilities demoIsActive]) {
+        [self performSelector: @selector(showMenuPanel) withObject: nil afterDelay: 0.5];
+    }
     
     NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){16,0,0};
     NSString* minRequiredVersionString = @"16.0";
@@ -472,11 +481,38 @@
         CGFloat panelHeight = self.menuPanel.frame.size.height;
         CGFloat x = NSMidX(buttonFrame) - panelWidth / 2;
         CGFloat y = NSMinY(buttonFrame) - panelHeight - 4;
+
+        // Keep it on a screen. Unclamped, a status item close to the right
+        // edge pushed the panel half off it, and a button whose window frame
+        // is not ready yet reported a midpoint thousands of points to the
+        // left, which put the panel somewhere with no display behind it: the
+        // window server then has nothing to draw it into.
+        NSScreen* screen = [NSScreen mainScreen];
+        for (NSScreen* candidate in [NSScreen screens]) {
+            if (NSPointInRect(NSMakePoint(NSMidX(buttonFrame), NSMidY(buttonFrame)), candidate.frame)) {
+                screen = candidate;
+                break;
+            }
+        }
+        NSRect visible = screen.visibleFrame;
+        CGFloat margin = 8;
+        x = MAX(NSMinX(visible) + margin, MIN(x, NSMaxX(visible) - panelWidth - margin));
+        y = MAX(NSMinY(visible) + margin, MIN(y, NSMaxY(visible) - panelHeight - margin));
+
         [self.menuPanel setFrameOrigin:NSMakePoint(x, y)];
     }
 
     [NSApp activate];
     [self.menuPanel makeKeyAndOrderFront:nil];
+
+    // An NSPanel hides itself when its app deactivates, and an accessory app
+    // deactivates on its own a second or two after it asks to be active. That
+    // is the behaviour everywhere except under the screenshot pipeline, where
+    // it ordered the panel out before anything could photograph it.
+    if ([SCUIUtilities demoIsActive]) {
+        self.menuPanel.hidesOnDeactivate = NO;
+        return;
+    }
 
     // Monitor for clicks outside to dismiss
     self.clickMonitor = [NSEvent addGlobalMonitorForEventsMatchingMask:
