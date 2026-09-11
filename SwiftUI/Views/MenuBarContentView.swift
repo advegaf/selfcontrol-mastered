@@ -261,7 +261,10 @@ struct MenuBarContentView: View {
                 .tracking(64 * 0.04)
                 .foregroundColor(color.opacity(dimmed ? 0.35 : 1.0))
                 .contentTransition(.numericText(countsDown: true))
-                .animation(.easeOut(duration: 0.15), value: value)
+                // No roll under the screenshot pipeline. The capture lands at
+                // an arbitrary moment, and a digit caught halfway through the
+                // 150ms transition photographs as a smear.
+                .animation(SCUIUtilities.demoIsActive() ? nil : .easeOut(duration: 0.15), value: value)
 
             Text(label)
                 .font(.spaceMono(.regular, size: 11))

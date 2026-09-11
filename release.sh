@@ -24,7 +24,10 @@ set -euo pipefail
 
 # ─── Configuration ─────────────────────────────────────────────────────────────
 
-readonly VERSION="1.0.2"
+# Read from the project rather than repeated here. The version used to live in
+# three places (this line, MARKETING_VERSION, and a literal in Info.plist) and
+# they drifted.
+readonly VERSION="$(awk '/^[[:space:]]*MARKETING_VERSION = / {gsub(/[^0-9.]/, "", $3); print $3; exit}' "$(cd "$(dirname "$0")" && pwd)/SelfControl.xcodeproj/project.pbxproj")"
 readonly VOLNAME="SelfControl ${VERSION}"
 readonly DMG_NAME="SelfControl-${VERSION}.dmg"
 readonly NOTARY_PROFILE="selfcontrol-notary"

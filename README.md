@@ -5,7 +5,7 @@
 <h1 align="center">SelfControl</h1>
 
 <p align="center">
-  Block it now, argue with it later. Pick a list and a length, start the block, and the sites are gone until the timer runs out. Quitting the app will not bring them back, and neither will deleting it or restarting the Mac.
+  Pick a list of sites and a length, start the block, and those sites are gone until the timer runs out. Quitting the app will not bring them back, and neither will deleting it or restarting the Mac.
 </p>
 
 <p align="center">
@@ -26,8 +26,9 @@ stop being an app at the moment it matters. Starting a block writes the rules
 into the system's own hosts file and hands the clock to a background helper.
 The app is then just a window onto something that is already happening.
 
-This is a fork. The blocking is upstream's, and it is the part that has been
-right for fifteen years. What is new here is everything you look at.
+This is a fork, and the blocking is upstream's: that part has been right for
+fifteen years and is not worth rewriting. What is new here is everything you
+look at.
 
 ## Install
 
@@ -48,13 +49,12 @@ Requires macOS 26.
   <img src="docs/images/idle.png" width="760" alt="The idle window: two mode chips, a dot-matrix duration readout at 45 minutes, a segmented slider and a Start Block button">
 </p>
 
-Drag the slider to a length, press Start Block, and that is the last decision
-you get to make about it. There is no pause, no cancel, and no unlock code kept
-somewhere clever. The only thing that ends a block early is the length of time
-you already chose.
+Drag the slider to a length and press Start Block. There is no pause button, no
+cancel, and no unlock code, because a blocker with a way out is a blocker you
+will use the way out on. What ends a block is the length you already chose.
 
-A block can be extended while it runs. It cannot be shortened. That asymmetry
-is the whole design.
+A block can be extended while it runs and it cannot be shortened, which is the
+one asymmetry the whole thing rests on.
 
 ## While it runs
 
@@ -62,10 +62,10 @@ is the whole design.
   <img src="docs/images/pill.png" width="560" alt="The floating pill: a dot-matrix countdown reading 00:26:36 with a mode badge and an extend button">
 </p>
 
-The window is not the point. Close it and a pill stays on screen with the
-countdown in it, the mode it is running, and a button that adds time. It sits
-at the desktop level by default, so it is there when you look for it and behind
-everything when you are working. Drag it wherever it belongs.
+Close the window and a pill stays on screen with the countdown in it, the mode
+it is running, and a button that adds time. It sits at the desktop level by
+default, so it is there when you look for it and behind everything while you
+work. Drag it wherever it belongs.
 
 A unit that has run out dims rather than disappearing. Under an hour the hours
 fade, under a minute the minutes go too, so the number that is still moving is
@@ -83,6 +83,21 @@ the evening, and switching is a click rather than an edit.
 
 Import fills a list from a preset rather than making you type one out: the
 usual distractions, news, or the adult sites.
+
+## Permissions
+
+Nothing in the usual privacy list. SelfControl asks for no camera, no
+microphone, no contacts, no screen recording and no accessibility, because
+blocking a website needs none of them.
+
+| What you use | What it asks for | Why |
+| --- | --- | --- |
+| Any block at all | An approved login item | The helper writes the hosts file and holds the clock, and macOS only lets an approved login item keep running once the app is closed |
+| Installing the helper | Your admin password, once | Writing to the system hosts file is a root operation |
+
+The login item is the whole permission story, and it is asked once rather than
+on every launch. Nothing leaves the machine: there is no account, no analytics
+and no network call in the app.
 
 ## Build it yourself
 

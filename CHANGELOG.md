@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.0.3
+
+- **`build.sh` no longer uninstalls the app when the build fails.** It changed
+  directory to a path that has not existed for some time, carried no `set -e`,
+  and then ran `rm -rf /Applications/SelfControl.app` whatever had happened
+  above it. A failed build deleted the working copy and installed nothing in its
+  place. It now resolves its own directory, stops at the first error, and checks
+  it has something to install before it deletes anything.
+- **The menu bar panel cannot land off every display.** Its position came
+  straight from the status item's frame with no clamp, so an item near the right
+  edge pushed the panel half off it, and a button whose window frame was not
+  ready yet reported a midpoint thousands of points to the left. The window
+  server has nothing to draw into out there, so the panel was created and never
+  appeared. It is clamped to the visible frame of whichever screen the button is
+  on.
+- Issue templates sent anyone reporting a bug to upstream's wiki and discussion
+  board, and blank issues were switched off, so there was no way to report a bug
+  in this fork to this fork.
+- `Tools/Screenshots/make-docs-images.sh` regenerates every image in the README.
+  It photographs the panel and the floating pill through the window server and
+  composites them onto a flat ground, running against a fixture rather than your
+  blocklist, so no real block is installed and no password is asked for.
+
 ## 1.0.2
 
 - **Launch at login.** A toggle in Preferences, General, registered through

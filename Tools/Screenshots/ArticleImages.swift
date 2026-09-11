@@ -196,7 +196,7 @@ do {
         }
         draw("SelfControl", at: CGPoint(x: 300, y: blockTop + 2), canvasHeight: canvas.height,
              size: 64, weight: .semibold, color: ink)
-        draw("Block it now. Argue with it later.", at: CGPoint(x: 304, y: blockTop + 88),
+        draw("Blocks you cannot turn off early.", at: CGPoint(x: 304, y: blockTop + 88),
              canvasHeight: canvas.height, size: 30, weight: .regular, color: inkSoft)
 
         // The panel is fitted into what the brand block leaves, then the pill
@@ -230,17 +230,24 @@ do {
     write(image, to: outDirectory.appendingPathComponent("hero.png"))
 }
 
-// The panel on its own, at its own size, for the sections that need one.
+// The panel on its own, centred in a fixed canvas, for the sections that need
+// one.
+//
+// The canvas is a constant rather than the capture's own size plus a margin.
+// macOS draws a key window a wider drop shadow than an inactive one, and a
+// capture carries that shadow as transparent margin, so sizing the canvas off
+// the measured content gave a different figure size from one run to the next.
+// Fixing the canvas and centring inside it makes the output the same every
+// time, and a wider shadow just sits further into the margin.
+let panelCanvas = CGSize(width: 1178, height: 1038)
 for name in ["idle", "blocking", "settings"] {
     let capture = raw(name)
-    let margin: CGFloat = 120
-    let canvasSize = CGSize(width: capture.content.width + margin * 2,
-                            height: capture.content.height + margin * 2)
-    let image = ground(Int(canvasSize.width), Int(canvasSize.height))
+    let image = ground(Int(panelCanvas.width), Int(panelCanvas.height))
     withCanvas(image) {
-        let rect = CGRect(x: margin, y: margin,
+        let rect = CGRect(x: (panelCanvas.width - capture.content.width) / 2,
+                          y: (panelCanvas.height - capture.content.height) / 2,
                           width: capture.content.width, height: capture.content.height)
-        place(capture, content: rect, canvasHeight: canvasSize.height, interpolation: .none)
+        place(capture, content: rect, canvasHeight: panelCanvas.height, interpolation: .none)
     }
     write(image, to: outDirectory.appendingPathComponent(name + ".png"))
 }

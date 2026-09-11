@@ -73,7 +73,10 @@ pkill -x SelfControl || true
 # The icon, at the size the hero draws it. Copied rather than re-exported:
 # this is the file the app ships.
 sips -s format png -Z 1024 SelfControlIcon.icns --out "$RAW/logo.png" >/dev/null
-cp "$RAW/logo.png" docs/images/logo.png
+# The hero draws the 1024 copy. The README draws the same icon at 120 points, so
+# it ships at 512: the rest is detail nobody can see at that size, on the first
+# image the page loads.
+sips -Z 512 -s format png "$RAW/logo.png" --out docs/images/logo.png >/dev/null
 
 swift Tools/Screenshots/ArticleImages.swift "$RAW" docs/images
 

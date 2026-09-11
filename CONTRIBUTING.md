@@ -17,6 +17,11 @@ There is no xcodegen here. `SelfControl.xcodeproj/project.pbxproj` is the source
 of truth, so a new Swift file has to be added through Xcode rather than by
 dropping it in a directory.
 
+The version lives in one place, `MARKETING_VERSION` in that same pbxproj.
+`Info.plist` interpolates it, a build phase writes `version-header.h` from it
+(which is why that file is gitignored), and `release.sh` reads it back out.
+It used to be written out longhand in all three, and they drifted.
+
 ## Where the two halves meet
 
 The blocking is Objective-C and it is upstream's: `AppController`, the daemon
