@@ -502,17 +502,20 @@
         [self.menuPanel setFrameOrigin:NSMakePoint(x, y)];
     }
 
-    [NSApp activate];
-    [self.menuPanel makeKeyAndOrderFront:nil];
-
-    // An NSPanel hides itself when its app deactivates, and an accessory app
-    // deactivates on its own a second or two after it asks to be active. That
-    // is the behaviour everywhere except under the screenshot pipeline, where
-    // it ordered the panel out before anything could photograph it.
+    // A demo run never takes focus. An NSPanel hides itself when its app
+    // deactivates, and an accessory app deactivates on its own a second or two
+    // after it asks to be active, which used to order the panel out before
+    // anything could photograph it. Turning that off is enough on its own, so
+    // the panel can be ordered in without activating and the screenshot run
+    // stops pulling the window out from under whoever started it.
     if ([SCUIUtilities demoIsActive]) {
         self.menuPanel.hidesOnDeactivate = NO;
+        [self.menuPanel orderFrontRegardless];
         return;
     }
+
+    [NSApp activate];
+    [self.menuPanel makeKeyAndOrderFront:nil];
 
     // Monitor for clicks outside to dismiss
     self.clickMonitor = [NSEvent addGlobalMonitorForEventsMatchingMask:
