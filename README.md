@@ -114,6 +114,14 @@ path, so a copy in a build directory cannot start a block.
 hardened runtime, notarization, stapling, then the disk image, which is signed,
 notarized and stapled in its own right.
 
+## How I built it
+
+My redesign was built with Claude Code and Codex working like a small team. One agent plans the
+work and writes a spec for each piece, subagents write the code from those specs, and the two tools
+review each other's changes. I approve the plan before any code gets written and read every diff
+before it's committed. The blocking engine underneath is the original project's code, which I
+extended rather than wrote.
+
 ## Credit
 
 Redesigned by [Angel Vega](https://advegaf.com).
